@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-ollama",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A Node-RED module that wraps the ollama.js library, offering its functionalities as configurable nodes for easy integration into flows.",
   "keywords": [
     "ai",
