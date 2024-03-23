@@ -1,0 +1,396 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-chat', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-chat';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-chat">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-chat">
+    <p>Generate the next message in a chat with a provided model.</p>
+
+    <h3>Inputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.model
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The model to use for generating the next message.</dd>
+
+        <dt>
+            payload.messages
+
+            <span class="property-type">array</span>
+        </dt>
+        <dd>
+            The chat history to use for generating the next message.<br />
+            
+            <h4>Message</h4>
+            <dl class="message-properties">
+                <dt>
+                    role
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The role of the message sender ('user', 'system', or 'assistant').</dd>
+
+                <dt>
+                    content
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The content of the message.</dd>
+
+                <dt>
+                    images
+
+                    <span class="property-type">array</span>
+                </dt>
+                <dd>The images attached to the message, either as Uint8Array or base64 encoded strings.</dd>
+            </dl>
+        </dd>
+
+        <dt class="optional">
+            payload.format
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The format of the response (only <code>json</code> for now).</dd>
+
+        <dt class="optional">
+            payload.stream
+
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd>When true an AsyncGenerator is returned.</dd>
+
+        <dt class="optional">
+            payload.keep_alive
+
+            <span class="property-type">string | number</span>
+        </dt>
+        <dd>How long to keep the model loaded.</dd>
+
+        <dt class="optional">
+            payload.options
+
+            <span class="property-type">object</span>
+        </dt>
+        <dd>
+            Options to configure the runtime.<br />
+            
+            <h4>Options</h4>
+            <dl class="message-properties">
+                <dt>
+                    numa
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Use NUMA for the runtime.</dd>
+
+                <dt>
+                    num_ctx
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The number of contexts to use.</dd>
+
+                <dt>
+                    num_batch
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The number of batches to use.</dd>
+
+                <dt>
+                    main_gpu
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The main GPU to use.</dd>
+
+                <dt>
+                    low_vram
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Use low VRAM.</dd>
+
+                <dt>
+                    f16_kv
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Use f16 key-value.</dd>
+
+                <dt>
+                    logits_all
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Return all logits.</dd>
+
+                <dt>
+                    vocab_only
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Return only the vocabulary.</dd>
+
+                <dt>
+                    use_nmap
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Use NMAP.</dd>
+
+                <dt>
+                    use_mlock
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Use mlock.</dd>
+
+                <dt>
+                    embedding_only
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Return only the embeddings.</dd>
+
+                <dt>
+                    num_thread
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The number of threads to use.</dd>
+
+                <dt>
+                    num_keep
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The number of models to keep.</dd>
+
+                <dt>
+                    seed
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The seed to use.</dd>
+
+                <dt>
+                    num_predict
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The number of predictions to use.</dd>
+
+                <dt>
+                    top_k
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The top k to use.</dd>
+
+                <dt>
+                    top_p
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The top p to use.</dd>
+
+                <dt>
+                    typical_p
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The typical p to use.</dd>
+
+                <dt>
+                    repeat_last_n
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The repeat last n to use.</dd>
+
+                <dt>
+                    temperature
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The temperature to use.</dd>
+
+                <dt>
+                    repeat_pentalty
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The repeat pentalty to use.</dd>
+
+                <dt>
+                    presence_penalty
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The presence penalty to use.</dd>
+
+                <dt>
+                    frequency_penalty
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The frequency penalty to use.</dd>
+
+                <dt>
+                    mirostat
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Use mirostat.</dd>
+
+                <dt>
+                    mirostat_tau
+
+                    <span class="property-type">number</span>
+                </dt>
+
+                <dt>
+                    mirostat_eta
+
+                    <span class="property-type">number</span>
+                </dt>
+
+                <dt>
+                    penalize_newline
+
+                    <span class="property-type">boolean</span>
+                </dt>
+                <dd>Penalize newline.</dd>
+
+                <dt>
+                    stop
+
+                    <span class="property-type">array</span>
+                </dt>
+                <dd>The stop to use.</dd>
+            </dl>
+        </dd>
+    </dl>
+
+    <h3>Outputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.model
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The model used for generating the next message.</dd>
+
+        <dt>
+            payload.created_at
+
+            <span class="property-type">Date</span>
+        </dt>
+        <dd>The creation date of the message.</dd>
+
+        <dt>
+            payload.message
+
+            <span class="property-type">object</span>
+        </dt>
+        <dd>
+            The generated message.<br />
+
+            <h4>Message</h4>
+            <dl class="message-properties">
+                <dt>
+                    role
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The role of the message sender ('user', 'system', or 'assistant').</dd>
+
+                <dt>
+                    content
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The content of the message.</dd>
+
+                <dt>
+                    images
+
+                    <span class="property-type">array</span>
+                </dt>
+                <dd>The images attached to the message, either as Uint8Array or base64 encoded strings.</dd>
+            </dl>
+
+        <dt>
+            payload.done
+
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd>Whether the chat is done.</dd>
+
+        <dt>
+            payload.total_duration
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The total duration of the chat.</dd>
+
+        <dt>
+            payload.load_duration
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The load duration of the chat.</dd>
+
+        <dt>
+            payload.prompt_eval_count
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The prompt evaluation count of the chat.</dd>
+
+        <dt>
+            payload.prompt_eval_duration
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The prompt evaluation duration of the chat.</dd>
+
+        <dt>
+            payload.event_count
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The event count of the chat.</dd>
+
+        <dt>
+            payload.event_duration
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The event duration of the chat.</dd>
+    </dl>
+</script>

@@ -1,0 +1,178 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-show', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-show';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-show">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-show">
+    <p>Show information about a model including details, modelfile, template, parameters, license, and system prompt.</p>
+    
+    <h3>Inputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.model
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The model to show information for.</dd>
+
+        <dt class="optional">
+            payload.system
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>Override the model system prompt.</dd>
+
+        <dt class="optional">
+            payload.template
+
+            <span class="property-type">string</span>
+        </dt>
+
+        <dt class="optional">
+            payload.options
+
+            <span class="property-type">object</span>
+        </dt>
+        <dd>Options to configure the runtime.</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.license
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The license of the model.</dd>
+
+        <dt>
+            payload.modelfile
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The modelfile of the model.</dd>
+
+        <dt>
+            payload.parameters
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The parameters of the model.</dd>
+
+        <dt>
+            payload.template
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The template of the model.</dd>
+
+        <dt>
+            payload.system
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The system prompt of the model.</dd>
+
+        <dt>
+            payload.parent_model
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The parent model of the model.</dd>
+
+        <dt>
+            payload.format
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The format of the response.</dd>
+
+        <dt>
+            payload.family
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The family of the model.</dd>
+
+        <dt>
+            payload.families
+
+            <span class="property-type">array</span>
+        </dt>
+        <dd>The families of the model.</dd>
+
+        <dt>
+            payload.parameter_size
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The parameter size of the model.</dd>
+
+        <dt>
+            payload.quantization_size
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The quantization size of the model.</dd>
+
+        <dt>
+            payload.quantization_level
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The quantization level of the model.</dd>
+
+        <dt>
+            payload.messages
+
+            <span class="property-type">array</span>
+        </dt>
+        <dd>
+            The chat history to use for generating the next message.<br />
+
+            <h4>Message</h4>
+            <dl class="message-properties">
+                <dt>
+                    role
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The role of the message sender ('user', 'system', or 'assistant').</dd>
+
+                <dt>
+                    content
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The content of the message.</dd>
+
+                <dt>
+                    images
+
+                    <span class="property-type">array</span>
+                </dt>
+                <dd>The images attached to the message, either as Uint8Array or base64 encoded strings.</dd>
+            </dl>
+        </dd>
+    </dl>
+</script>

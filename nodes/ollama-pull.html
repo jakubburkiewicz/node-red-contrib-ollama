@@ -1,0 +1,83 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-pull', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-pull';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-pull">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-pull">
+    <p>Download a model from the ollama library.</p>
+
+    <h3>Inputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.model
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The name of the model to download.</dd>
+
+        <dt>
+            payload.insecure
+
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd>Pull from servers whose identity cannot be verified.</dd>
+
+        <dt>
+            payload.stream
+
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd>When true an AsyncGenerator is returned.</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.status
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The progress status.</dd>
+
+        <dt>
+            payload.digest
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The progress digest.</dd>
+
+        <dt>
+            payload.total
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The total progress.</dd>
+
+        <dt>
+            payload.completed
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The completed progress.</dd>
+    </dl>
+</script>

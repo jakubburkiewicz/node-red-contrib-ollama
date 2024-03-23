@@ -1,0 +1,55 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-copy', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-copy';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-copy">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-copy">
+    <p>Copy a model. Creates a model with another name from an existing model.</p>
+
+    <h3>Inputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.source
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The name of the model to copy.</dd>
+
+        <dt>
+            payload.destination
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The name of the new model.</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.status
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The status of the copy operation.</dd>
+    </dl>
+</script>

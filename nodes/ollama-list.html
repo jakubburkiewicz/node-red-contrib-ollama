@@ -1,0 +1,123 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-list', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-list';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-list">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-list">
+    <p>List models that are available locally.</p>
+
+    <h3>Outputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.models
+
+            <span class="property-type">array</span>
+        </dt>
+        <dd>
+            The list of models that are available locally.<br />
+
+            <h4>Model</h4>
+            <dl class="message-properties">
+                <dt>
+                    name
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The name of the model.</dd>
+
+                <dt>
+                    modified_at
+
+                    <span class="property-type">Date</span>
+                </dt>
+                <dd>The date the model was last modified.</dd>
+
+                <dt>
+                    size
+
+                    <span class="property-type">number</span>
+                </dt>
+                <dd>The size of the model in bytes.</dd>
+
+                <dt>
+                    digest
+
+                    <span class="property-type">string</span>
+                </dt>
+                <dd>The digest of the model.</dd>
+
+                <dt>
+                    details
+
+                    <span class="property-type">object</span>
+                </dt>
+                <dd>
+                    The details of the model.<br />
+
+                    <h5>Details</h5>
+                    <dl class="message-properties">
+                        <dt>
+                            parent_model
+
+                            <span class="property-type">string</span>
+                        </dt>
+                        <dd>The parent model of the model.</dd>
+
+                        <dt>
+                            format
+
+                            <span class="property-type">string</span>
+                        </dt>
+                        <dd>The format of the model.</dd>
+
+                        <dt>
+                            family
+
+                            <span class="property-type">string</span>
+                        </dt>
+                        <dd>The family of the model.</dd>
+
+                        <dt>
+                            families
+
+                            <span class="property-type">array</span>
+                        </dt>
+                        <dd>The families of the model.</dd>
+
+                        <dt>
+                            parameter_size
+
+                            <span class="property-type">string</span>
+                        </dt>
+                        <dd>The parameter size of the model.</dd>
+
+                        <dt>
+                            quiantization_level
+
+                            <span class="property-type">string</span>
+                        </dt>
+                        <dd>The quantization level of the model.</dd>
+                    </dl>
+                </dd>
+            </dl>
+        </dd>
+</script>

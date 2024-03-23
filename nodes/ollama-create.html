@@ -1,0 +1,90 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-create', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-create';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-create">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-create">
+    <p>Create a model from a <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md" target="_blank">Modelfile</a>.</p>
+
+    <h3>Inputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.model
+
+            <span class="property-type">string</span>
+        </dt>
+        <p>The name of the model to create.</p>
+
+        <dt class="optional">
+            payload.path
+
+            <span class="property-type">string</span>
+        </dt>
+        <p>The path to the Modelfile to use for creating the model.</p>
+
+        <dt class="optional">
+            payload.modelfile
+
+            <span class="property-type">string</span>
+        </dt>
+        <p>The content of the Modelfile to create.</p>
+
+        <dt class="optional">
+            payload.stream
+
+            <span class="property-type">boolean</span>
+        </dt>
+        <p>When true an AsyncGenerator is returned.</p>
+    </dl>
+
+    <h3>Outputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.status
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The progress status.</dd>
+
+        <dt>
+            payload.digest
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The progress digest.</dd>
+
+        <dt>
+            payload.total
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The total progress.</dd>
+
+        <dt>
+            payload.completed
+
+            <span class="property-type">number</span>
+        </dt>
+        <dd>The completed progress.</dd>
+    </dl>
+</script>

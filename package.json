@@ -1,0 +1,36 @@
+{
+  "name": "node-red-contrib-ollama",
+  "version": "0.0.0",
+  "description": "A Node-RED module that wraps the ollama.js library, offering its functionalities as configurable nodes for easy integration into flows.",
+  "keywords": [
+    "ai",
+    "llama",
+    "llm",
+    "llms",
+    "node-red",
+    "ollama"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "node-red": {
+    "nodes": {
+      "ollama-chat": "nodes/ollama-chat.js",
+      "ollama-copy": "nodes/ollama-copy.js",
+      "ollama-create": "nodes/ollama-create.js",
+      "ollama-delete": "nodes/ollama-delete.js",
+      "ollama-embeddings": "nodes/ollama-embeddings.js",
+      "ollama-generate": "nodes/ollama-generate.js",
+      "ollama-list": "nodes/ollama-list.js",
+      "ollama-pull": "nodes/ollama-pull.js",
+      "ollama-push": "nodes/ollama-push.js",
+      "ollama-show": "nodes/ollama-show.js"
+    }
+  },
+  "dependencies": {
+    "ollama": "^0.5.0"
+  },
+  "author": "Jakub Burkiewicz",
+  "license": "MIT"
+}
