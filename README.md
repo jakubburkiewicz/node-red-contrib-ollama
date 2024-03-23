@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="node-red-contrib-ollama-logo.png" alt="Logo">
+  <img src="https://github.com/jakubburkiewicz/node-red-contrib-ollama/raw/0.1.0/node-red-contrib-ollama-logo.png" alt="Logo">
 </p>
 
 # node-red-contrib-ollama
