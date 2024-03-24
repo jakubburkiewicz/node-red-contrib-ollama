@@ -1,0 +1,407 @@
+[
+    {
+        "id": "3bccaf6e46d3dbf5",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "06ce708dd0b486b7",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"model\":\"openhermes-backup\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 260,
+        "wires": [
+            [
+                "6625b01de986973a"
+            ]
+        ]
+    },
+    {
+        "id": "03ee0eeb510c4079",
+        "type": "debug",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "69845d77175921c8",
+        "type": "ollama-list",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "List",
+        "x": 430,
+        "y": 440,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "e15148cc2c0ff715",
+        "type": "ollama-show",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Show",
+        "x": 430,
+        "y": 620,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "9a8ad3fb63fbfdee",
+        "type": "ollama-copy",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Copy",
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "6625b01de986973a",
+        "type": "ollama-delete",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Delete",
+        "x": 430,
+        "y": 260,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "dcbd66b2fb80a571",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 270,
+        "y": 440,
+        "wires": [
+            [
+                "69845d77175921c8"
+            ]
+        ]
+    },
+    {
+        "id": "b477f96fedaa3cbb",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"name\":\"openhermes\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 620,
+        "wires": [
+            [
+                "e15148cc2c0ff715"
+            ]
+        ]
+    },
+    {
+        "id": "41b6514086742437",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"source\":\"openhermes\",\"destination\":\"openhermes-backup\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 140,
+        "wires": [
+            [
+                "9a8ad3fb63fbfdee"
+            ]
+        ]
+    },
+    {
+        "id": "600b4633a7e30d56",
+        "type": "ollama-pull",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Pull",
+        "x": 430,
+        "y": 500,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "b52694191622718c",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"model\":\"llama2\",\"insecure\":false,\"stream\":false}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 500,
+        "wires": [
+            [
+                "600b4633a7e30d56"
+            ]
+        ]
+    },
+    {
+        "id": "dab5ace115f3fa6c",
+        "type": "ollama-push",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Push",
+        "x": 430,
+        "y": 560,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "a7cdb881e2383858",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"model\":\"llama2\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 560,
+        "wires": [
+            [
+                "dab5ace115f3fa6c"
+            ]
+        ]
+    },
+    {
+        "id": "66e2fb897f54a093",
+        "type": "ollama-embeddings",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Embeddings",
+        "x": 450,
+        "y": 320,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "5dc331f9adb5c410",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"model\":\"llama2\",\"prompt\":\"Why is the sky blue?\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 320,
+        "wires": [
+            [
+                "66e2fb897f54a093"
+            ]
+        ]
+    },
+    {
+        "id": "65c862b6ceb04278",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"model\":\"test\",\"modelfile\":\"FROM llama2\\nSYSTEM You are Iron Man\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 200,
+        "wires": [
+            [
+                "3e94dcb40e8ec4ac"
+            ]
+        ]
+    },
+    {
+        "id": "3e94dcb40e8ec4ac",
+        "type": "ollama-create",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Create",
+        "x": 430,
+        "y": 200,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "90e8f4d49463a350",
+        "type": "ollama-chat",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Chat",
+        "x": 430,
+        "y": 80,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "c8825d8d240ac12d",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"model\":\"test\",\"messages\":[{\"role\":\"user\",\"content\":\"What is your real name?\"}]}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 80,
+        "wires": [
+            [
+                "90e8f4d49463a350"
+            ]
+        ]
+    },
+    {
+        "id": "c74ec4ac9b76d0f4",
+        "type": "ollama-generate",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Generate",
+        "x": 440,
+        "y": 380,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "72f0e357f73844e0",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"model\":\"test\",\"prompt\":\"What is your secret?\"}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 380,
+        "wires": [
+            [
+                "c74ec4ac9b76d0f4"
+            ]
+        ]
+    }
+]
