@@ -36,8 +36,7 @@
     "ollama": "^0.5.1"
   },
   "bugs": {
-    "url": "https://github.com/jakubburkiewicz/node-red-contrib-ollama/issues",
-    "email": "node-red-contrib-ollama@conx.eu"
+    "url": "https://github.com/jakubburkiewicz/node-red-contrib-ollama/issues"
   },
   "repository": {
     "type": "git",
