@@ -6,8 +6,9 @@ module.exports = function( RED ) {
         const node = this
 
         node.on( 'input', async function( msg ) {
-            const ollama = new Ollama()
-            const { model } = msg.payload
+            const { host, model } = msg.payload
+
+            const ollama = new Ollama( { host } )
 
             const response = await ollama.delete( { model } )
                 .catch( error => {
