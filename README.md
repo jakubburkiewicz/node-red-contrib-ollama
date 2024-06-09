@@ -4,6 +4,8 @@
 
 # node-red-contrib-ollama
 
+Add AI functionality to your flows! This module includes a set of nodes that enable easy communication with Ollama, enriching your projects with intelligent solutions.
+
 A Node-RED module that wraps the [ollama.js](https://github.com/ollama/ollama-js) library, offering its functionalities as configurable nodes for easy integration into flows.
 
 ## Requirements
