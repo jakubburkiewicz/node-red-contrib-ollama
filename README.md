@@ -12,7 +12,7 @@ A Node-RED module that wraps the [ollama.js](https://github.com/ollama/ollama-js
 
 To use it, you need to have Node-RED installed on your system. For more information on how to install Node-RED, refer to the official [Node-RED documentation](https://nodered.org/docs/getting-started/).
 
-Also you need to install the Ollama on the same system. For more information on how to install Ollama, refer to the official [Ollama site](https://ollama.com/).
+You also need Ollama running on the same or a different system. For detailed instructions on how to install Ollama, please refer to the official [Ollama site](https://ollama.com/).
 
 ## Installation
 
