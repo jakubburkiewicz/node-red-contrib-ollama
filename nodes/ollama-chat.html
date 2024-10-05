@@ -71,6 +71,13 @@
                     <span class="property-type">array</span>
                 </dt>
                 <dd>The images attached to the message, either as Uint8Array or base64 encoded strings.</dd>
+
+                <dt>
+                    tool_calls
+
+                    <span class="property-type">array</span>
+                </dt>
+                <dd>A list of tools the model wants to use.</dd>
             </dl>
         </dd>
 
@@ -91,9 +98,24 @@
         <dt class="optional">
             payload.keep_alive
 
-            <span class="property-type">string | number</span>
+            <span class="property-type">array</span>
         </dt>
         <dd>How long to keep the model loaded.</dd>
+
+        <dt class="optional">
+            payload.tools
+
+            <span class="property-type">array</span>
+        </dt>
+        <dd>
+            Tools for the model to use if supported.<br />
+            Requires <code>stream</code> to be set to <code>false</code>.
+
+            <p>
+                For more information, see the Ollama API documentation:<br />
+                <a href="https://github.com/ollama/ollama/blob/main/docs/api.md#chat-request-with-tools" target="_blank">Chat request with tools</a>
+            </p>
+        </dd>
 
         <dt class="optional">
             payload.options
