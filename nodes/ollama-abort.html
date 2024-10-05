@@ -1,0 +1,37 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-abort', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-abort';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-abort">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-abort">
+    <p>This method will abort all streamed generations currently running. All asynchronous threads listening to streams (typically the for await (const part of response)) will throw an AbortError exception.</p>
+
+    <h3>Inputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.host
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The host of the Ollama instance.</dd>
+    </dl>
+</script>

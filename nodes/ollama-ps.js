@@ -1,16 +1,16 @@
 module.exports = function( RED ) {
     const { Ollama } = require( 'ollama' )
 
-    function OllamaEmbeddingsNode( config )  {
+    function OllamaPsNode( config )  {
         RED.nodes.createNode( this, config )
         const node = this
 
         node.on( 'input', async function( msg ) {
-            const { host, model, prompt, options, keep_alive } = msg.payload
+            const { host } = msg.payload
 
             const ollama = new Ollama( { host } )
 
-            const response = await ollama.embeddings( { model, prompt, options, keep_alive } )
+            const response = await ollama.ps()
                 .catch( error => {
                     node.error( error )
                 } )
@@ -20,5 +20,5 @@ module.exports = function( RED ) {
         } )
     }
 
-    RED.nodes.registerType( 'ollama-embeddings', OllamaEmbeddingsNode )
+    RED.nodes.registerType( 'ollama-ps', OllamaPsNode )
 }

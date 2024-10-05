@@ -1,7 +1,7 @@
 module.exports = function( RED ) {
     const { Ollama } = require( 'ollama' )
 
-    function OllamaShowNode( config )  {
+    function OllamaEmbedNode( config )  {
         RED.nodes.createNode( this, config )
         const node = this
 
@@ -9,17 +9,19 @@ module.exports = function( RED ) {
             const {
                 host,
                 model,
-                system,
-                template,
+                input,
+                truncate,
+                keep_alive,
                 options
             } = msg.payload
 
             const ollama = new Ollama( { host } )
 
-            const response = await ollama.show( {
+            const response = await ollama.embed( {
                 model,
-                system,
-                template,
+                input,
+                truncate,
+                keep_alive,
                 options
             } )
             .catch( error => {
@@ -31,5 +33,5 @@ module.exports = function( RED ) {
         } )
     }
 
-    RED.nodes.registerType( 'ollama-show', OllamaShowNode )
+    RED.nodes.registerType( 'ollama-embed', OllamaEmbedNode )
 }

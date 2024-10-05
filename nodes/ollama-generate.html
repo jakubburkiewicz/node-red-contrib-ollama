@@ -48,54 +48,26 @@
         </dt>
         <dd>The prompt to generate a response for.</dd>
 
+        <dt>
+            payload.suffix
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The text after the model response.</dd>
+
         <dt class="optional">
             payload.images
 
             <span class="property-type">array</span>
         </dt>
-        <dd>Images to be included, either as Uint8Array or base64 encoded strings.</dd>
-
-        <dt class="optional">
-            payload.system
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>Override the model system prompt.</dd>
-
-        <dt class="optional">
-            payload.template
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>Override the model template.</dd>
-
-        <dt class="optional">
-            payload.raw
-
-            <span class="property-type">boolean</span>
-        </dt>
-        <dd>Bypass the prompt template and pass the prompt directly to the model.</dd>
+        <dd>A list of base64-encoded images (for multimodal models such as <code>llava</code>)</dd>
 
         <dt class="optional">
             payload.format
 
             <span class="property-type">string</span>
         </dt>
-        <dd>Set the expected format of the response (<code>json</code>).</dd>
-
-        <dt class="optional">
-            payload.stream
-
-            <span class="property-type">boolean</span>
-        </dt>
-        <dd>When true an AsyncGenerator is returned.</dd>
-
-        <dt class="optional">
-            payload.keep_alive
-
-            <span class="property-type">string | number</span>
-        </dt>
-        <dd>How long to keep the model loaded.</dd>
+        <dd>The format to return a response in. Currently the only accepted value is <code>json</code></dd>
 
         <dt class="optional">
             payload.options
@@ -103,205 +75,46 @@
             <span class="property-type">object</span>
         </dt>
         <dd>
-            Options to configure the runtime.<br />
-
-            <h4>Options</h4>
-            <dl class="message-properties">
-                <dt>
-                    numa
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use NUMA for the runtime.</dd>
-
-                <dt>
-                    num_ctx
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of contexts to use.</dd>
-
-                <dt>
-                    num_batch
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of batches to use.</dd>
-
-                <dt>
-                    main_gpu
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The main GPU to use.</dd>
-
-                <dt>
-                    low_vram
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use low VRAM.</dd>
-
-                <dt>
-                    f16_kv
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use f16 key-value.</dd>
-
-                <dt>
-                    logits_all
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return all logits.</dd>
-
-                <dt>
-                    vocab_only
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return only the vocabulary.</dd>
-
-                <dt>
-                    use_nmap
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use NMAP.</dd>
-
-                <dt>
-                    use_mlock
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use mlock.</dd>
-
-                <dt>
-                    embedding_only
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return only the embeddings.</dd>
-
-                <dt>
-                    num_thread
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of threads to use.</dd>
-
-                <dt>
-                    num_keep
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of models to keep.</dd>
-
-                <dt>
-                    seed
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The seed to use.</dd>
-
-                <dt>
-                    num_predict
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of predictions to use.</dd>
-
-                <dt>
-                    top_k
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The top k to use.</dd>
-
-                <dt>
-                    top_p
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The top p to use.</dd>
-
-                <dt>
-                    typical_p
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The typical p to use.</dd>
-
-                <dt>
-                    repeat_last_n
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The repeat last n to use.</dd>
-
-                <dt>
-                    temperature
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The temperature to use.</dd>
-
-                <dt>
-                    repeat_pentalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The repeat pentalty to use.</dd>
-
-                <dt>
-                    presence_penalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The presence penalty to use.</dd>
-
-                <dt>
-                    frequency_penalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The frequency penalty to use.</dd>
-
-                <dt>
-                    mirostat
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use mirostat.</dd>
-
-                <dt>
-                    mirostat_tau
-
-                    <span class="property-type">number</span>
-                </dt>
-
-                <dt>
-                    mirostat_eta
-
-                    <span class="property-type">number</span>
-                </dt>
-
-                <dt>
-                    penalize_newline
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Penalize newline.</dd>
-
-                <dt>
-                    stop
-
-                    <span class="property-type">array</span>
-                </dt>
-                <dd>The stop to use.</dd>
-            </dl>
+            Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.
         </dd>
+
+        <dt class="optional">
+            payload.system
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>System message to (overrides what is defined in the <code>Modelfile</code>)</dd>
+
+        <dt class="optional">
+            payload.template
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The prompt template to use (overrides what is defined in the <code>Modelfile</code>)</dd>
+
+        <dt class="optional">
+            payload.stream
+
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd>If <code>false</code> the response will be returned as a single response object, rather than a stream of objects.</dd>
+
+        <dt class="optional">
+            payload.raw
+
+            <span class="property-type">boolean</span>
+        </dt>
+        <dd>
+            If <code>true</code> no formatting will be applied to the prompt.<br />
+            You may choose to use the <code>raw</code> parameter if you are specifying a full templated prompt in your request to the API.
+        </dd>
+
+        <dt class="optional">
+            payload.keep_alive
+
+            <span class="property-type">string | number</span>
+        </dt>
+        <dd>Controls how long the model will stay loaded into memory following the request (default: <code>5m</code>)</dd>
     </dl>
 
     <h3>Outputs</h3>

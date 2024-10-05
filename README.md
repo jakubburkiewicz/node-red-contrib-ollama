@@ -10,6 +10,8 @@ A Node-RED module that wraps the [ollama.js](https://github.com/ollama/ollama-js
 
 ## Requirements
 
+This module requires Node.js version 18 or higher.
+
 To use it, you need to have Node-RED installed on your system. For more information on how to install Node-RED, refer to the official [Node-RED documentation](https://nodered.org/docs/getting-started/).
 
 You also need Ollama running on the same or a different system. For detailed instructions on how to install Ollama, please refer to the official [Ollama site](https://ollama.com/).
@@ -46,12 +48,14 @@ The module provides a set of nodes that can be used to interact with the ollama.
 - **Copy**: Copy a model. Creates a model with another name from an existing model.
 - **Create**: Create a model from a [Modelfile](https://github.com/ollama/ollama/blob/main/docs/modelfile.md).
 - **Delete**: Delete a model and its data.
-- **Embeddings**: Generate embeddings from a model.
+- **Embed**: Generate embeddings from a model.
 - **Generate**: Generate a response for a given prompt with a provided model.
 - **List**: List models that are available locally.
 - **Pull**: Download a model from the [ollama library](https://ollama.com/library).
 - **Push**: Upload a model to a model library. Requires registering for ollama.ai and adding a public key first.
 - **Show**: Show information about a model including details, modelfile, template, parameters, license, and system prompt.
+- **Ps**: List models that are currently loaded into memory.
+- **Abort**: This method will abort all streamed generations currently running.
 
 Each node has its own set of configuration options that can be used to customize its behavior. For more information on how to use each node, refer to the help text provided in the Node-RED editor.
 

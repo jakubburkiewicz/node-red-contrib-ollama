@@ -6,11 +6,28 @@ module.exports = function( RED ) {
         const node = this
 
         node.on( 'input', async function( msg ) {
-            const { host, model, messages, format, stream, keep_alive, options } = msg.payload
+            const {
+                host,
+                model,
+                messages,
+                format,
+                stream,
+                keep_alive,
+                tools,
+                options
+            } = msg.payload
 
             const ollama = new Ollama( { host } )
 
-            const response = await ollama.chat( { model, messages, format, stream, keep_alive, options } )
+            const response = await ollama.chat( {
+                model,
+                messages,
+                format,
+                stream,
+                keep_alive,
+                tools,
+                options
+            } )
                 .catch( error => {
                     node.error( error )
                 } )
