@@ -8,7 +8,7 @@ module.exports = function( RED ) {
         node.on( 'input', async function( msg ) {
             const {
                 host,
-                name,
+                model,
                 modelfile,
                 stream,
                 path
@@ -17,7 +17,7 @@ module.exports = function( RED ) {
             const ollama = new Ollama( { host } )
 
             const response = await ollama.create( {
-                name,
+                model,
                 modelfile,
                 stream,
                 path
