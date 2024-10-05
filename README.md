@@ -10,6 +10,8 @@ A Node-RED module that wraps the [ollama.js](https://github.com/ollama/ollama-js
 
 ## Requirements
 
+This module requires Node.js version 18 or higher.
+
 To use it, you need to have Node-RED installed on your system. For more information on how to install Node-RED, refer to the official [Node-RED documentation](https://nodered.org/docs/getting-started/).
 
 You also need Ollama running on the same or a different system. For detailed instructions on how to install Ollama, please refer to the official [Ollama site](https://ollama.com/).
