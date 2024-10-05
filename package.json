@@ -26,7 +26,8 @@
       "ollama-list": "nodes/ollama-list.js",
       "ollama-pull": "nodes/ollama-pull.js",
       "ollama-push": "nodes/ollama-push.js",
-      "ollama-show": "nodes/ollama-show.js"
+      "ollama-show": "nodes/ollama-show.js",
+      "ollama-ps": "nodes/ollama-ps.js"
     }
   },
   "engines": {

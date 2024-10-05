@@ -1,0 +1,136 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-ps', {
+        category: 'AI',
+        color: 'rgb(186 230 253)',
+        defaults: {
+            name: { value: '' },
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'ollama.png',
+        label: function() {
+            return this.name || 'ollama-ps';
+        },
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-ps">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" />
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ollama-ps">
+    <p>List models that are currently loaded into memory.</p>
+
+    <h3>Inputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.host
+
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The host of the Ollama instance.</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+
+    <dl class="message-properties">
+        <dt>
+            payload.models
+
+            <span class="property-type">array</span>
+        </dt>
+        <dd>
+            The list of models that are available locally.<br />
+
+            <h4>Model</h4>
+            <dl class="message-properties">
+                <dt>
+                    name
+
+                    <span class="property-type">string</span>
+                </dt>
+
+                <dt>
+                    model
+
+                    <span class="property-type">string</span>
+                </dt>
+
+                <dt>
+                    size
+
+                    <span class="property-type">number</span>
+                </dt>
+
+                <dt>
+                    digest
+
+                    <span class="property-type">string</span>
+                </dt>
+
+                <dt>
+                    expires_at
+
+                    <span class="property-type">Date</span>
+                </dt>
+
+                <dt>
+                    size_vram
+
+                    <span class="property-type">number</span>
+                </dt>
+
+                <dt>
+                    details
+
+                    <span class="property-type">object</span>
+                </dt>
+                <dd>
+                    The details of the model.<br />
+
+                    <h5>Details</h5>
+                    <dl class="message-properties">
+                        <dt>
+                            parent_model
+
+                            <span class="property-type">string</span>
+                        </dt>
+
+                        <dt>
+                            format
+
+                            <span class="property-type">string</span>
+                        </dt>
+
+                        <dt>
+                            family
+
+                            <span class="property-type">string</span>
+                        </dt>
+
+                        <dt>
+                            families
+
+                            <span class="property-type">array</span>
+                        </dt>
+
+                        <dt>
+                            parameter_size
+
+                            <span class="property-type">string</span>
+                        </dt>
+
+                        <dt>
+                            quiantization_level
+
+                            <span class="property-type">string</span>
+                        </dt>
+                    </dl>
+                </dd>
+            </dl>
+        </dd>
+</script>
