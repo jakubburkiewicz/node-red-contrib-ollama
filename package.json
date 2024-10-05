@@ -21,7 +21,7 @@
       "ollama-copy": "nodes/ollama-copy.js",
       "ollama-create": "nodes/ollama-create.js",
       "ollama-delete": "nodes/ollama-delete.js",
-      "ollama-embeddings": "nodes/ollama-embeddings.js",
+      "ollama-embed": "nodes/ollama-embed.js",
       "ollama-generate": "nodes/ollama-generate.js",
       "ollama-list": "nodes/ollama-list.js",
       "ollama-pull": "nodes/ollama-pull.js",
