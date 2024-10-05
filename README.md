@@ -53,6 +53,7 @@ The module provides a set of nodes that can be used to interact with the ollama.
 - **Push**: Upload a model to a model library. Requires registering for ollama.ai and adding a public key first.
 - **Show**: Show information about a model including details, modelfile, template, parameters, license, and system prompt.
 - **Ps**: List models that are currently loaded into memory.
+- **Abort**: This method will abort all streamed generations currently running.
 
 Each node has its own set of configuration options that can be used to customize its behavior. For more information on how to use each node, refer to the help text provided in the Node-RED editor.
 
