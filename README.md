@@ -46,7 +46,7 @@ The module provides a set of nodes that can be used to interact with the ollama.
 - **Copy**: Copy a model. Creates a model with another name from an existing model.
 - **Create**: Create a model from a [Modelfile](https://github.com/ollama/ollama/blob/main/docs/modelfile.md).
 - **Delete**: Delete a model and its data.
-- **Embeddings**: Generate embeddings from a model.
+- **Embed**: Generate embeddings from a model.
 - **Generate**: Generate a response for a given prompt with a provided model.
 - **List**: List models that are available locally.
 - **Pull**: Download a model from the [ollama library](https://ollama.com/library).
