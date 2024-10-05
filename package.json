@@ -33,7 +33,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "ollama": "^0.5.1"
+    "ollama": "^0.5.9"
   },
   "bugs": {
     "url": "https://github.com/jakubburkiewicz/node-red-contrib-ollama/issues"
