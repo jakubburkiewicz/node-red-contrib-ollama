@@ -18,8 +18,7 @@ module.exports = function( RED ) {
                 format,
                 stream,
                 keep_alive,
-                options,
-                context
+                options
             } = msg.payload
 
             const ollama = new Ollama( { host } )
@@ -35,8 +34,7 @@ module.exports = function( RED ) {
                 format,
                 stream,
                 keep_alive,
-                options,
-                context
+                options
             } )
             .catch( error => {
                 node.error( error )
