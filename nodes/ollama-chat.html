@@ -6,6 +6,7 @@
             name: { value: 'Ollama Chat' },
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', type: 'ollama-config-model', required: true },
+            tools: { value: '', type: 'ollama-config-tools', required: false },
         },
         inputs: 1,
         outputs: 1,
@@ -30,6 +31,11 @@
     <div class="form-row">
         <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
         <input type="text" id="node-input-model" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-tools"><i class="fa fa-cog"></i> Tools</label>
+        <input type="text" id="node-input-tools" />
     </div>
 </script>
 
@@ -114,6 +120,7 @@
                 <dd>
                     Tools for the model to use if supported.<br />
                     Requires <code>stream</code> to be set to <code>false</code>.
+                    <em>Alternative to the <code>Model</code> field.</em>
 
                     <p>
                         For more information, see the Ollama API documentation:<br />
