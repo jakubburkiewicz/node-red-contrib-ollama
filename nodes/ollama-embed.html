@@ -6,6 +6,7 @@
             name: { value: 'Ollama Embed' },
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', type: 'ollama-config-model', required: false },
+            options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
         outputs: 1,
@@ -30,6 +31,11 @@
     <div class="form-row">
         <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
         <input type="text" id="node-input-model" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-options"><i class="fa fa-cog"></i> Options</label>
+        <input type="text" id="node-input-options" />
     </div>
 </script>
 
@@ -83,6 +89,7 @@
                 </dt>
                 <dd>
                     Options to configure the runtime.<br />
+                    <em>Alternative to the <code>Options</code> field.</em>
 
                     <h4>Options</h4>
                     <dl class="message-properties">

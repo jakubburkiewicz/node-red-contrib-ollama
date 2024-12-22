@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    RED.nodes.registerType( 'ollama-config-options', {
+        category: 'config',
+        defaults: {
+            name: { value: 'Ollama Options Config' },
+            json: { value: '' }
+        },
+        label: function() {
+            return this.name;
+        },
+        oneditprepare: function() {
+            $( '#node-config-input-json' ).typedInput( {
+                type: 'json',
+                types: [ 'json' ]
+            } )
+        }
+    } )
+</script>
+
+<script type="text/html" data-template-name="ollama-config-options">
+    <div class="form-row">
+        <label for="node-config-input-json"><i class="fa fa-server"></i> JSON</label>
+        <input type="text" id="node-config-input-json" />
+    </div>
+</script>
