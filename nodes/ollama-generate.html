@@ -5,6 +5,7 @@
         defaults: {
             name: { value: 'Ollama Generate' },
             server: { value: '', type: 'ollama-config-server', required: false },
+            format: { value: '', type: 'ollama-config-format', required: false },
             model: { value: '', type: 'ollama-config-model', required: false },
         },
         inputs: 1,
@@ -25,6 +26,11 @@
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-format"><i class="fa fa-cog"></i> Format</label>
+        <input type="text" id="node-input-format" />
     </div>
 
     <div class="form-row">
@@ -81,7 +87,10 @@
                 <dt class="optional">
                     payload.format <span class="property-type">string</span>
                 </dt>
-                <dd>The format to return a response in. Currently the only accepted value is <code>json</code></dd>
+                <dd>
+                    The format to return a response in. Currently the only accepted value is <code>json</code><br />
+                    <em>Alternative to the <code>Format</code> field.</em>
+                </dd>
 
                 <dt class="optional">
                     payload.options <span class="property-type">object</span>
