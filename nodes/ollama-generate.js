@@ -18,7 +18,7 @@ module.exports = function( RED ) {
                 format: payloadFormat,
                 stream,
                 keep_alive,
-                options
+                options: payloadOptions
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -31,6 +31,9 @@ module.exports = function( RED ) {
 
             const formatConfig = RED.nodes.getNode( config.format )
             const format = ( formatConfig ) ? formatConfig.json : payloadFormat
+
+            const optionsConfig = RED.nodes.getNode( config.options )
+            const options = ( optionsConfig ) ? optionsConfig.json : payloadOptions
 
             const response = await ollama.generate( {
                 model,

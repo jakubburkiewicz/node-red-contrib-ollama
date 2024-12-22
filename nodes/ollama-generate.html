@@ -7,6 +7,7 @@
             server: { value: '', type: 'ollama-config-server', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
             model: { value: '', type: 'ollama-config-model', required: false },
+            options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
         outputs: 1,
@@ -36,6 +37,11 @@
     <div class="form-row">
         <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
         <input type="text" id="node-input-model" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-options"><i class="fa fa-cog"></i> Options</label>
+        <input type="text" id="node-input-options" />
     </div>
 </script>
 
@@ -96,7 +102,8 @@
                     payload.options <span class="property-type">object</span>
                 </dt>
                 <dd>
-                    Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.
+                    Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.<br />
+                    <em>Alternative to the <code>Options</code> field.</em>
                 </dd>
 
                 <dt class="optional">
