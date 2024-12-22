@@ -4,6 +4,7 @@
         color: 'rgb(186 230 253)',
         defaults: {
             name: { value: 'Ollama Pull' },
+            server: { value: '', type: 'ollama-config-server', required: false }
         },
         inputs: 1,
         outputs: 1,
@@ -19,6 +20,11 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name" />
     </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" />
+    </div>
 </script>
 
 <script type="text/html" data-help-name="ollama-pull">
@@ -27,33 +33,38 @@
     <h3>Inputs</h3>
 
     <dl class="message-properties">
-        <dt>
-            payload.host
-
-            <span class="property-type">string</span>
+        <dt class="optional">
+            payload <span class="property-type">object</span>
         </dt>
-        <dd>The host of the Ollama instance.</dd>
 
-        <dt>
-            payload.model
+        <dd>
+            The payload object.
 
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The name of the model to download.</dd>
+            <dl class="message-properties">
+                <dt class="optional">
+                    payload.host <span class="property-type">string</span>
+                </dt>
+                <dd>
+                    The host of the Ollama instance.<br />
+                    <em>Alternative to the <code>Server</code> field.</em>
+                </dd>
 
-        <dt>
-            payload.insecure
+                <dt>
+                    payload.model <span class="property-type">string</span>
+                </dt>
+                <dd>The name of the model to download.</dd>
 
-            <span class="property-type">boolean</span>
-        </dt>
-        <dd>Pull from servers whose identity cannot be verified.</dd>
+                <dt>
+                    payload.insecure <span class="property-type">boolean</span>
+                </dt>
+                <dd>Pull from servers whose identity cannot be verified.</dd>
 
-        <dt>
-            payload.stream
-
-            <span class="property-type">boolean</span>
-        </dt>
-        <dd>When true an AsyncGenerator is returned.</dd>
+                <dt>
+                    payload.stream <span class="property-type">boolean</span>
+                </dt>
+                <dd>When true an AsyncGenerator is returned.</dd>
+            </dl>
+        </dd>
     </dl>
 
     <h3>Outputs</h3>
