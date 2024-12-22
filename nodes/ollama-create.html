@@ -4,6 +4,7 @@
         color: 'rgb(186 230 253)',
         defaults: {
             name: { value: 'Ollama Create' },
+            server: { value: '', type: 'ollama-config-server', required: false }
         },
         inputs: 1,
         outputs: 1,
@@ -19,6 +20,11 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name" />
     </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" />
+    </div>
 </script>
 
 <script type="text/html" data-help-name="ollama-create">
@@ -27,40 +33,43 @@
     <h3>Inputs</h3>
 
     <dl class="message-properties">
-        <dt>
-            payload.host
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The host of the Ollama instance.</dd>
-
-        <dt>
-            payload.model
-
-            <span class="property-type">string</span>
-        </dt>
-        <p>The name of the model to create.</p>
-
         <dt class="optional">
-            payload.path
-
-            <span class="property-type">string</span>
+            payload <span class="property-type">object</span>
         </dt>
-        <p>The path to the Modelfile to use for creating the model.</p>
 
-        <dt class="optional">
-            payload.modelfile
+        <dd>
+            The payload object.
 
-            <span class="property-type">string</span>
-        </dt>
-        <p>The content of the Modelfile to create.</p>
+            <dl class="message-properties">
+                <dt class="optional">
+                    payload.host <span class="property-type">string</span>
+                </dt>
+                <dd>
+                    The host of the Ollama instance.<br />
+                    <em>Alternative to the <code>Server</code> field.</em>
+                </dd>
 
-        <dt class="optional">
-            payload.stream
+                <dt>
+                    payload.model <span class="property-type">string</span>
+                </dt>
+                <p>The name of the model to create.</p>
 
-            <span class="property-type">boolean</span>
-        </dt>
-        <p>When true an AsyncGenerator is returned.</p>
+                <dt class="optional">
+                    payload.path <span class="property-type">string</span>
+                </dt>
+                <p>The path to the Modelfile to use for creating the model.</p>
+
+                <dt class="optional">
+                    payload.modelfile <span class="property-type">string</span>
+                </dt>
+                <p>The content of the Modelfile to create.</p>
+
+                <dt class="optional">
+                    payload.stream <span class="property-type">boolean</span>
+                </dt>
+                <p>When true an AsyncGenerator is returned.</p>
+            </dl>
+        </dd>
     </dl>
 
     <h3>Outputs</h3>
