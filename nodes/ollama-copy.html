@@ -4,6 +4,7 @@
         color: 'rgb(186 230 253)',
         defaults: {
             name: { value: 'Ollama Copy' },
+            server: { value: '', type: 'ollama-config-server', required: false }
         },
         inputs: 1,
         outputs: 1,
@@ -19,6 +20,11 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name" />
     </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" />
+    </div>
 </script>
 
 <script type="text/html" data-help-name="ollama-copy">
@@ -27,26 +33,33 @@
     <h3>Inputs</h3>
 
     <dl class="message-properties">
-        <dt>
-            payload.host
-
-            <span class="property-type">string</span>
+        <dt class="optional">
+            payload <span class="property-type">object</span>
         </dt>
-        <dd>The host of the Ollama instance.</dd>
 
-        <dt>
-            payload.source
+        <dd>
+            The payload object.
 
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The name of the model to copy.</dd>
+            <dl class="message-properties">
+                <dt class="optional">
+                    payload.host <span class="property-type">string</span>
+                </dt>
+                <dd>
+                    The host of the Ollama instance.<br />
+                    <em>Alternative to the <code>Server</code> field.</em>
+                </dd>
 
-        <dt>
-            payload.destination
+                <dt>
+                    payload.source <span class="property-type">string</span>
+                </dt>
+                <dd>The name of the model to copy.</dd>
 
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The name of the new model.</dd>
+                <dt>
+                    payload.destination <span class="property-type">string</span>
+                </dt>
+                <dd>The name of the new model.</dd>
+            </dl>
+        </dd>
     </dl>
 
     <h3>Outputs</h3>
