@@ -14,7 +14,7 @@ module.exports = function( RED ) {
                 stream,
                 keep_alive,
                 tools: payloadTools,
-                options
+                options: payloadOptions
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -30,6 +30,9 @@ module.exports = function( RED ) {
 
             const toolsConfig = RED.nodes.getNode( config.tools )
             const tools = ( toolsConfig ) ? toolsConfig.json : payloadTools
+
+            const optionsConfig = RED.nodes.getNode( config.options )
+            const options = ( optionsConfig ) ? optionsConfig.json : payloadOptions
 
             const response = await ollama.chat( {
                     model,
