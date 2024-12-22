@@ -4,7 +4,8 @@
         color: 'rgb(186 230 253)',
         defaults: {
             name: { value: 'Ollama Chat' },
-            server: { value: '', type: 'ollama-config-server', required: false }
+            server: { value: '', type: 'ollama-config-server', required: false },
+            model: { value: '', type: 'ollama-config-model', required: true },
         },
         inputs: 1,
         outputs: 1,
@@ -24,6 +25,11 @@
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <input type="text" id="node-input-model" />
     </div>
 </script>
 
@@ -49,10 +55,13 @@
                     <em>Alternative to the <code>Server</code> field.</em>
                 </dd>
 
-                <dt>
+                <dt class="optional">
                     payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>The model to use for generating the next message.</dd>
+                <dd>
+                    The model to use for generating the next message.<br />
+                    <em>Alternative to the <code>Model</code> field.</em>
+                </dd>
 
                 <dt>
                     payload.messages <span class="property-type">array</span>
