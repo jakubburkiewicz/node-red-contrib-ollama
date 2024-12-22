@@ -4,6 +4,7 @@
         color: 'rgb(186 230 253)',
         defaults: {
             name: { value: 'Ollama Chat' },
+            server: { value: '', type: 'ollama-config-server', required: false }
         },
         inputs: 1,
         outputs: 1,
@@ -17,7 +18,12 @@
 <script type="text/html" data-template-name="ollama-chat">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name" />
+        <input type="text" id="node-input-name" placeholder="Node Name" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" />
     </div>
 </script>
 
@@ -27,299 +33,232 @@
     <h3>Inputs</h3>
 
     <dl class="message-properties">
-        <dt>
-            payload.host
-
-            <span class="property-type">string</span>
+        <dt class="optional">
+            payload <span class="property-type">object</span>
         </dt>
-        <dd>The host of the Ollama instance.</dd>
 
-        <dt>
-            payload.model
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The model to use for generating the next message.</dd>
-
-        <dt>
-            payload.messages
-
-            <span class="property-type">array</span>
-        </dt>
         <dd>
-            The chat history to use for generating the next message.<br />
+            The payload object.
 
-            <h4>Message</h4>
             <dl class="message-properties">
-                <dt>
-                    role
-
-                    <span class="property-type">string</span>
+                <dt class="optional">
+                    payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>The role of the message sender ('user', 'system', or 'assistant').</dd>
-
-                <dt>
-                    content
-
-                    <span class="property-type">string</span>
-                </dt>
-                <dd>The content of the message.</dd>
+                <dd>
+                    The host of the Ollama instance.<br />
+                    <em>Alternative to the <code>Server</code> field.</em>
+                </dd>
 
                 <dt>
-                    images
-
-                    <span class="property-type">array</span>
+                    payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>The images attached to the message, either as Uint8Array or base64 encoded strings.</dd>
+                <dd>The model to use for generating the next message.</dd>
 
                 <dt>
-                    tool_calls
-
-                    <span class="property-type">array</span>
+                    payload.messages <span class="property-type">array</span>
                 </dt>
-                <dd>A list of tools the model wants to use.</dd>
-            </dl>
-        </dd>
+                <dd>
+                    The chat history to use for generating the next message.<br />
 
-        <dt class="optional">
-            payload.format
+                    <h4>Message</h4>
+                    <dl class="message-properties">
+                        <dt>
+                            role <span class="property-type">string</span>
+                        </dt>
+                        <dd>The role of the message sender ('user', 'system', or 'assistant').</dd>
 
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The format of the response (only <code>json</code> for now).</dd>
+                        <dt>
+                            content <span class="property-type">string</span>
+                        </dt>
+                        <dd>The content of the message.</dd>
 
-        <dt class="optional">
-            payload.stream
+                        <dt>
+                            images <span class="property-type">array</span>
+                        </dt>
+                        <dd>The images attached to the message, either as Uint8Array or base64 encoded strings.</dd>
 
-            <span class="property-type">boolean</span>
-        </dt>
-        <dd>When true an AsyncGenerator is returned.</dd>
+                        <dt>
+                            tool_calls <span class="property-type">array</span>
+                        </dt>
+                        <dd>A list of tools the model wants to use.</dd>
+                    </dl>
+                </dd>
 
-        <dt class="optional">
-            payload.keep_alive
-
-            <span class="property-type">array</span>
-        </dt>
-        <dd>How long to keep the model loaded.</dd>
-
-        <dt class="optional">
-            payload.tools
-
-            <span class="property-type">array</span>
-        </dt>
-        <dd>
-            Tools for the model to use if supported.<br />
-            Requires <code>stream</code> to be set to <code>false</code>.
-
-            <p>
-                For more information, see the Ollama API documentation:<br />
-                <a href="https://github.com/ollama/ollama/blob/main/docs/api.md#chat-request-with-tools" target="_blank">Chat request with tools</a>
-            </p>
-        </dd>
-
-        <dt class="optional">
-            payload.options
-
-            <span class="property-type">object</span>
-        </dt>
-        <dd>
-            Options to configure the runtime.<br />
-
-            <h4>Options</h4>
-            <dl class="message-properties">
-                <dt>
-                    numa
-
-                    <span class="property-type">boolean</span>
+                <dt class="optional">
+                    payload.format <span class="property-type">string</span>
                 </dt>
-                <dd>Use NUMA for the runtime.</dd>
+                <dd>The format of the response (only <code>json</code> for now).</dd>
 
-                <dt>
-                    num_ctx
-
-                    <span class="property-type">number</span>
+                <dt class="optional">
+                    payload.stream <span class="property-type">boolean</span>
                 </dt>
-                <dd>The number of contexts to use.</dd>
+                <dd>When true an AsyncGenerator is returned.</dd>
 
-                <dt>
-                    num_batch
-
-                    <span class="property-type">number</span>
+                <dt class="optional">
+                    payload.keep_alive <span class="property-type">array</span>
                 </dt>
-                <dd>The number of batches to use.</dd>
+                <dd>How long to keep the model loaded.</dd>
 
-                <dt>
-                    main_gpu
-
-                    <span class="property-type">number</span>
+                <dt class="optional">
+                    payload.tools <span class="property-type">array</span>
                 </dt>
-                <dd>The main GPU to use.</dd>
+                <dd>
+                    Tools for the model to use if supported.<br />
+                    Requires <code>stream</code> to be set to <code>false</code>.
 
-                <dt>
-                    low_vram
+                    <p>
+                        For more information, see the Ollama API documentation:<br />
+                        <a href="https://github.com/ollama/ollama/blob/main/docs/api.md#chat-request-with-tools" target="_blank">Chat request with tools</a>
+                    </p>
+                </dd>
 
-                    <span class="property-type">boolean</span>
+                <dt class="optional">
+                    payload.options <span class="property-type">object</span>
                 </dt>
-                <dd>Use low VRAM.</dd>
+                <dd>
+                    Options to configure the runtime.<br />
 
-                <dt>
-                    f16_kv
+                    <h4>Options</h4>
+                    <dl class="message-properties">
+                        <dt>
+                            numa <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use NUMA for the runtime.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use f16 key-value.</dd>
+                        <dt>
+                            num_ctx <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of contexts to use.</dd>
 
-                <dt>
-                    logits_all
+                        <dt>
+                            num_batch <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of batches to use.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return all logits.</dd>
+                        <dt>
+                            main_gpu <span class="property-type">number</span>
+                        </dt>
+                        <dd>The main GPU to use.</dd>
 
-                <dt>
-                    vocab_only
+                        <dt>
+                            low_vram <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use low VRAM.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return only the vocabulary.</dd>
+                        <dt>
+                            f16_kv <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use f16 key-value.</dd>
 
-                <dt>
-                    use_nmap
+                        <dt>
+                            logits_all <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Return all logits.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use NMAP.</dd>
+                        <dt>
+                            vocab_only <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Return only the vocabulary.</dd>
 
-                <dt>
-                    use_mlock
+                        <dt>
+                            use_nmap <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use NMAP.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use mlock.</dd>
+                        <dt>
+                            use_mlock <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use mlock.</dd>
 
-                <dt>
-                    embedding_only
+                        <dt>
+                            embedding_only <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Return only the embeddings.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return only the embeddings.</dd>
+                        <dt>
+                            num_thread <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of threads to use.</dd>
 
-                <dt>
-                    num_thread
+                        <dt>
+                            num_keep <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of models to keep.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of threads to use.</dd>
+                        <dt>
+                            seed <span class="property-type">number</span>
+                        </dt>
+                        <dd>The seed to use.</dd>
 
-                <dt>
-                    num_keep
+                        <dt>
+                            num_predict <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of predictions to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of models to keep.</dd>
+                        <dt>
+                            top_k <span class="property-type">number</span>
+                        </dt>
+                        <dd>The top k to use.</dd>
 
-                <dt>
-                    seed
+                        <dt>
+                            top_p <span class="property-type">number</span>
+                        </dt>
+                        <dd>The top p to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The seed to use.</dd>
+                        <dt>
+                            typical_p <span class="property-type">number</span>
+                        </dt>
+                        <dd>The typical p to use.</dd>
 
-                <dt>
-                    num_predict
+                        <dt>
+                            repeat_last_n <span class="property-type">number</span>
+                        </dt>
+                        <dd>The repeat last n to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of predictions to use.</dd>
+                        <dt>
+                            temperature <span class="property-type">number</span>
+                        </dt>
+                        <dd>The temperature to use.</dd>
 
-                <dt>
-                    top_k
+                        <dt>
+                            repeat_pentalty <span class="property-type">number</span>
+                        </dt>
+                        <dd>The repeat pentalty to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The top k to use.</dd>
+                        <dt>
+                            presence_penalty <span class="property-type">number</span>
+                        </dt>
+                        <dd>The presence penalty to use.</dd>
 
-                <dt>
-                    top_p
+                        <dt>
+                            frequency_penalty <span class="property-type">number</span>
+                        </dt>
+                        <dd>The frequency penalty to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The top p to use.</dd>
+                        <dt>
+                            mirostat <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use mirostat.</dd>
 
-                <dt>
-                    typical_p
+                        <dt>
+                            mirostat_tau <span class="property-type">number</span>
+                        </dt>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The typical p to use.</dd>
+                        <dt>
+                            mirostat_eta <span class="property-type">number</span>
+                        </dt>
 
-                <dt>
-                    repeat_last_n
+                        <dt>
+                            penalize_newline <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Penalize newline.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The repeat last n to use.</dd>
-
-                <dt>
-                    temperature
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The temperature to use.</dd>
-
-                <dt>
-                    repeat_pentalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The repeat pentalty to use.</dd>
-
-                <dt>
-                    presence_penalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The presence penalty to use.</dd>
-
-                <dt>
-                    frequency_penalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The frequency penalty to use.</dd>
-
-                <dt>
-                    mirostat
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use mirostat.</dd>
-
-                <dt>
-                    mirostat_tau
-
-                    <span class="property-type">number</span>
-                </dt>
-
-                <dt>
-                    mirostat_eta
-
-                    <span class="property-type">number</span>
-                </dt>
-
-                <dt>
-                    penalize_newline
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Penalize newline.</dd>
-
-                <dt>
-                    stop
-
-                    <span class="property-type">array</span>
-                </dt>
-                <dd>The stop to use.</dd>
+                        <dt>
+                            stop <span class="property-type">array</span>
+                        </dt>
+                        <dd>The stop to use.</dd>
+                    </dl>
+                </dd>
             </dl>
         </dd>
     </dl>
