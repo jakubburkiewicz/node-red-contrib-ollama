@@ -10,7 +10,7 @@ module.exports = function( RED ) {
                 host: payloadHost,
                 model: payloadModel,
                 messages,
-                format,
+                format: payloadFormat,
                 stream,
                 keep_alive,
                 tools: payloadTools,
@@ -24,6 +24,9 @@ module.exports = function( RED ) {
 
             const modelConfig = RED.nodes.getNode( config.model )
             const model = ( modelConfig ) ? modelConfig.name : payloadModel
+
+            const formatConfig = RED.nodes.getNode( config.format )
+            const format = ( formatConfig ) ? formatConfig.json : payloadFormat
 
             const toolsConfig = RED.nodes.getNode( config.tools )
             const tools = ( toolsConfig ) ? toolsConfig.json : payloadTools

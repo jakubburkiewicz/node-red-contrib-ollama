@@ -6,6 +6,7 @@
             name: { value: 'Ollama Chat' },
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', type: 'ollama-config-model', required: true },
+            format: { value: '', type: 'ollama-config-format', required: false },
             tools: { value: '', type: 'ollama-config-tools', required: false },
         },
         inputs: 1,
@@ -31,6 +32,11 @@
     <div class="form-row">
         <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
         <input type="text" id="node-input-model" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-format"><i class="fa fa-cog"></i> Format</label>
+        <input type="text" id="node-input-format" />
     </div>
 
     <div class="form-row">
@@ -102,7 +108,10 @@
                 <dt class="optional">
                     payload.format <span class="property-type">string</span>
                 </dt>
-                <dd>The format of the response (only <code>json</code> for now).</dd>
+                <dd>
+                    The format of the response (only <code>json</code> for now).<br />
+                    <em>Alternative to the <code>Format</code> field.</em>
+                </dd>
 
                 <dt class="optional">
                     payload.stream <span class="property-type">boolean</span>
@@ -119,7 +128,7 @@
                 </dt>
                 <dd>
                     Tools for the model to use if supported.<br />
-                    Requires <code>stream</code> to be set to <code>false</code>.
+                    Requires <code>stream</code> to be set to <code>false</code>.<br />
                     <em>Alternative to the <code>Model</code> field.</em>
 
                     <p>
