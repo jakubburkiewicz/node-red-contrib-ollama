@@ -15,7 +15,7 @@ module.exports = function( RED ) {
                 template,
                 raw,
                 images,
-                format,
+                format: payloadFormat,
                 stream,
                 keep_alive,
                 options
@@ -28,6 +28,9 @@ module.exports = function( RED ) {
 
             const modelConfig = RED.nodes.getNode( config.model )
             const model = ( modelConfig ) ? modelConfig.name : payloadModel
+
+            const formatConfig = RED.nodes.getNode( config.format )
+            const format = ( formatConfig ) ? formatConfig.json : payloadFormat
 
             const response = await ollama.generate( {
                 model,
