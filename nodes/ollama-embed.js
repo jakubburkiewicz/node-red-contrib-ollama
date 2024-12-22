@@ -12,7 +12,7 @@ module.exports = function( RED ) {
                 input,
                 truncate,
                 keep_alive,
-                options
+                options: payloadOptions
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -22,6 +22,9 @@ module.exports = function( RED ) {
 
             const modelConfig = RED.nodes.getNode( config.model )
             const model = ( modelConfig ) ? modelConfig.name : payloadModel
+
+            const optionsConfig = RED.nodes.getNode( config.options )
+            const options = ( optionsConfig ) ? optionsConfig.json : payloadOptions
 
             const response = await ollama.embed( {
                 model,
