@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-ollama",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Add AI functionality to your flows! This module includes a set of nodes that enable easy communication with Ollama, enriching your projects with intelligent solutions.",
   "keywords": [
     "ai",
@@ -29,7 +29,8 @@
       "ollama-show": "nodes/ollama-show.js",
       "ollama-ps": "nodes/ollama-ps.js",
       "ollama-abort": "nodes/ollama-abort.js",
-      "ollama-config-server": "nodes/ollama-config-server.js"
+      "ollama-config-server": "nodes/ollama-config-server.js",
+      "ollama-config-model": "nodes/ollama-config-model.js"
     }
   },
   "engines": {
