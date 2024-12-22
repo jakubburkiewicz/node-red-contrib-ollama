@@ -3,7 +3,8 @@
         category: 'AI',
         color: 'rgb(186 230 253)',
         defaults: {
-            name: { value: '' },
+            name: { value: 'Ollama Embed' },
+            server: { value: '', type: 'ollama-config-server', required: false }
         },
         inputs: 1,
         outputs: 1,
@@ -19,6 +20,11 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name" />
     </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" />
+    </div>
 </script>
 
 <script type="text/html" data-help-name="ollama-embed">
@@ -27,244 +33,189 @@
     <h3>Inputs</h3>
 
     <dl class="message-properties">
-        <dt>
-            payload.host
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The host of the Ollama instance.</dd>
-
-        <dt>
-            payload.model
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The name of the model used to generate the embeddings.</dd>
-
-        <dt>
-            payload.input
-
-            <span class="property-type">string | array[string]</span>
-        </dt>
-        <dd>The input used to generate the embeddings.</dd>
-
         <dt class="optional">
-            payload.truncate
-
-            <span class="property-type">boolean</span>
+            payload <span class="property-type">object</span>
         </dt>
-        <dd>Truncate the input to fit the maximum context length supported by the model.</dd>
 
-        <dt class="optional">
-            payload.keep_alive
-
-            <span class="property-type">string | number</span>
-        </dt>
-        <dd>How long to keep the model loaded.</dd>
-
-        <dt class="optional">
-            payload.options
-
-            <span class="property-type">object</span>
-        </dt>
         <dd>
-            Options to configure the runtime.<br />
+            The payload object.
 
-            <h4>Options</h4>
             <dl class="message-properties">
-                <dt>
-                    numa
-
-                    <span class="property-type">boolean</span>
+                <dt class="optional">
+                    payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>Use NUMA for the runtime.</dd>
-
-                <dt>
-                    num_ctx
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of contexts to use.</dd>
+                <dd>
+                    The host of the Ollama instance.<br />
+                    <em>Alternative to the <code>Server</code> field.</em>
+                </dd>
 
                 <dt>
-                    num_batch
-
-                    <span class="property-type">number</span>
+                    payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>The number of batches to use.</dd>
+                <dd>The name of the model used to generate the embeddings.</dd>
 
                 <dt>
-                    main_gpu
-
-                    <span class="property-type">number</span>
+                    payload.input <span class="property-type">string | array[string]</span>
                 </dt>
-                <dd>The main GPU to use.</dd>
+                <dd>The input used to generate the embeddings.</dd>
 
-                <dt>
-                    low_vram
-
-                    <span class="property-type">boolean</span>
+                <dt class="optional">
+                    payload.truncate <span class="property-type">boolean</span>
                 </dt>
-                <dd>Use low VRAM.</dd>
+                <dd>Truncate the input to fit the maximum context length supported by the model.</dd>
 
-                <dt>
-                    f16_kv
-
-                    <span class="property-type">boolean</span>
+                <dt class="optional">
+                    payload.keep_alive <span class="property-type">string | number</span>
                 </dt>
-                <dd>Use f16 key-value.</dd>
+                <dd>How long to keep the model loaded.</dd>
 
-                <dt>
-                    logits_all
-
-                    <span class="property-type">boolean</span>
+                <dt class="optional">
+                    payload.options <span class="property-type">object</span>
                 </dt>
-                <dd>Return all logits.</dd>
+                <dd>
+                    Options to configure the runtime.<br />
 
-                <dt>
-                    vocab_only
+                    <h4>Options</h4>
+                    <dl class="message-properties">
+                        <dt>
+                            numa <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use NUMA for the runtime.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return only the vocabulary.</dd>
+                        <dt>
+                            num_ctx <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of contexts to use.</dd>
 
-                <dt>
-                    use_nmap
+                        <dt>
+                            num_batch <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of batches to use.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use NMAP.</dd>
+                        <dt>
+                            main_gpu <span class="property-type">number</span>
+                        </dt>
+                        <dd>The main GPU to use.</dd>
 
-                <dt>
-                    use_mlock
+                        <dt>
+                            low_vram <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use low VRAM.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use mlock.</dd>
+                        <dt>
+                            f16_kv <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use f16 key-value.</dd>
 
-                <dt>
-                    embedding_only
+                        <dt>
+                            logits_all <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Return all logits.</dd>
 
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Return only the embeddings.</dd>
+                        <dt>
+                            vocab_only <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Return only the vocabulary.</dd>
 
-                <dt>
-                    num_thread
+                        <dt>
+                            use_nmap <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use NMAP.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of threads to use.</dd>
+                        <dt>
+                            use_mlock <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use mlock.</dd>
 
-                <dt>
-                    num_keep
+                        <dt>
+                            embedding_only <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Return only the embeddings.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of models to keep.</dd>
+                        <dt>
+                            num_thread <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of threads to use.</dd>
 
-                <dt>
-                    seed
+                        <dt>
+                            num_keep <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of models to keep.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The seed to use.</dd>
+                        <dt>
+                            seed <span class="property-type">number</span>
+                        </dt>
+                        <dd>The seed to use.</dd>
 
-                <dt>
-                    num_predict
+                        <dt>
+                            num_predict <span class="property-type">number</span>
+                        </dt>
+                        <dd>The number of predictions to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The number of predictions to use.</dd>
+                        <dt>
+                            top_k <span class="property-type">number</span>
+                        </dt>
+                        <dd>The top k to use.</dd>
 
-                <dt>
-                    top_k
+                        <dt>
+                            top_p <span class="property-type">number</span>
+                        </dt>
+                        <dd>The top p to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The top k to use.</dd>
+                        <dt>
+                            typical_p <span class="property-type">number</span>
+                        </dt>
+                        <dd>The typical p to use.</dd>
 
-                <dt>
-                    top_p
+                        <dt>
+                            repeat_last_n <span class="property-type">number</span>
+                        </dt>
+                        <dd>The repeat last n to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The top p to use.</dd>
+                        <dt>
+                            temperature <span class="property-type">number</span>
+                        </dt>
+                        <dd>The temperature to use.</dd>
 
-                <dt>
-                    typical_p
+                        <dt>
+                            repeat_pentalty <span class="property-type">number</span>
+                        </dt>
+                        <dd>The repeat pentalty to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The typical p to use.</dd>
+                        <dt>
+                            presence_penalty <span class="property-type">number</span>
+                        </dt>
+                        <dd>The presence penalty to use.</dd>
 
-                <dt>
-                    repeat_last_n
+                        <dt>
+                            frequency_penalty <span class="property-type">number</span>
+                        </dt>
+                        <dd>The frequency penalty to use.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The repeat last n to use.</dd>
+                        <dt>
+                            mirostat <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Use mirostat.</dd>
 
-                <dt>
-                    temperature
+                        <dt>
+                            mirostat_tau <span class="property-type">number</span>
+                        </dt>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The temperature to use.</dd>
+                        <dt>
+                            mirostat_eta <span class="property-type">number</span>
+                        </dt>
 
-                <dt>
-                    repeat_pentalty
+                        <dt>
+                            penalize_newline <span class="property-type">boolean</span>
+                        </dt>
+                        <dd>Penalize newline.</dd>
 
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The repeat pentalty to use.</dd>
-
-                <dt>
-                    presence_penalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The presence penalty to use.</dd>
-
-                <dt>
-                    frequency_penalty
-
-                    <span class="property-type">number</span>
-                </dt>
-                <dd>The frequency penalty to use.</dd>
-
-                <dt>
-                    mirostat
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Use mirostat.</dd>
-
-                <dt>
-                    mirostat_tau
-
-                    <span class="property-type">number</span>
-                </dt>
-
-                <dt>
-                    mirostat_eta
-
-                    <span class="property-type">number</span>
-                </dt>
-
-                <dt>
-                    penalize_newline
-
-                    <span class="property-type">boolean</span>
-                </dt>
-                <dd>Penalize newline.</dd>
-
-                <dt>
-                    stop
-
-                    <span class="property-type">array</span>
-                </dt>
-                <dd>The stop to use.</dd>
+                        <dt>
+                            stop <span class="property-type">array</span>
+                        </dt>
+                        <dd>The stop to use.</dd>
+                    </dl>
+                </dd>
             </dl>
         </dd>
     </dl>

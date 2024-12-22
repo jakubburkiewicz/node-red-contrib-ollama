@@ -6,7 +6,15 @@ module.exports = function( RED ) {
         const node = this
 
         node.on( 'input', async function( msg ) {
-            const { host, source, destination } = msg.payload
+            const {
+                host: payloadHost,
+                source,
+                destination
+            } = msg.payload
+
+            const server = RED.nodes.getNode( config.server )
+
+            const host = ( server ) ? server.host + ':' + server.port : payloadHost
 
             const ollama = new Ollama( { host } )
 

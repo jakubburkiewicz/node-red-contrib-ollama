@@ -3,7 +3,8 @@
         category: 'AI',
         color: 'rgb(186 230 253)',
         defaults: {
-            name: { value: '' },
+            name: { value: 'Ollama Generate' },
+            server: { value: '', type: 'ollama-config-server', required: false }
         },
         inputs: 1,
         outputs: 1,
@@ -19,6 +20,11 @@
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name" />
     </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" />
+    </div>
 </script>
 
 <script type="text/html" data-help-name="ollama-generate">
@@ -27,94 +33,83 @@
     <h3>Inputs</h3>
 
     <dl class="message-properties">
-        <dt>
-            payload.host
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The host of the Ollama instance.</dd>
-
-        <dt>
-            payload.model
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The model to use for generating the next message.</dd>
-
-        <dt>
-            payload.prompt
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The prompt to generate a response for.</dd>
-
-        <dt>
-            payload.suffix
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The text after the model response.</dd>
-
         <dt class="optional">
-            payload.images
-
-            <span class="property-type">array</span>
+            payload <span class="property-type">object</span>
         </dt>
-        <dd>A list of base64-encoded images (for multimodal models such as <code>llava</code>)</dd>
 
-        <dt class="optional">
-            payload.format
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The format to return a response in. Currently the only accepted value is <code>json</code></dd>
-
-        <dt class="optional">
-            payload.options
-
-            <span class="property-type">object</span>
-        </dt>
         <dd>
-            Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.
+            The payload object.
+
+            <dl class="message-properties">
+                <dt class="optional">
+                    payload.host <span class="property-type">string</span>
+                </dt>
+                <dd>
+                    The host of the Ollama instance.<br />
+                    <em>Alternative to the <code>Server</code> field.</em>
+                </dd>
+
+                <dt>
+                    payload.model <span class="property-type">string</span>
+                </dt>
+                <dd>The model to use for generating the next message.</dd>
+
+                <dt>
+                    payload.prompt <span class="property-type">string</span>
+                </dt>
+                <dd>The prompt to generate a response for.</dd>
+
+                <dt>
+                    payload.suffix <span class="property-type">string</span>
+                </dt>
+                <dd>The text after the model response.</dd>
+
+                <dt class="optional">
+                    payload.images <span class="property-type">array</span>
+                </dt>
+                <dd>A list of base64-encoded images (for multimodal models such as <code>llava</code>)</dd>
+
+                <dt class="optional">
+                    payload.format <span class="property-type">string</span>
+                </dt>
+                <dd>The format to return a response in. Currently the only accepted value is <code>json</code></dd>
+
+                <dt class="optional">
+                    payload.options <span class="property-type">object</span>
+                </dt>
+                <dd>
+                    Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.
+                </dd>
+
+                <dt class="optional">
+                    payload.system <span class="property-type">string</span>
+                </dt>
+                <dd>System message to (overrides what is defined in the <code>Modelfile</code>)</dd>
+
+                <dt class="optional">
+                    payload.template <span class="property-type">string</span>
+                </dt>
+                <dd>The prompt template to use (overrides what is defined in the <code>Modelfile</code>)</dd>
+
+                <dt class="optional">
+                    payload.stream <span class="property-type">boolean</span>
+                </dt>
+                <dd>If <code>false</code> the response will be returned as a single response object, rather than a stream of objects.</dd>
+
+                <dt class="optional">
+                    payload.raw <span class="property-type">boolean</span>
+                </dt>
+                <dd>
+                    If <code>true</code> no formatting will be applied to the prompt.<br />
+                    You may choose to use the <code>raw</code> parameter if you are specifying a full templated prompt in your request to the API.
+                </dd>
+
+                <dt class="optional">
+                    payload.keep_alive <span class="property-type">string | number</span>
+                </dt>
+                <dd>Controls how long the model will stay loaded into memory following the request (default: <code>5m</code>)</dd>
+            </dl>
         </dd>
-
-        <dt class="optional">
-            payload.system
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>System message to (overrides what is defined in the <code>Modelfile</code>)</dd>
-
-        <dt class="optional">
-            payload.template
-
-            <span class="property-type">string</span>
-        </dt>
-        <dd>The prompt template to use (overrides what is defined in the <code>Modelfile</code>)</dd>
-
-        <dt class="optional">
-            payload.stream
-
-            <span class="property-type">boolean</span>
-        </dt>
-        <dd>If <code>false</code> the response will be returned as a single response object, rather than a stream of objects.</dd>
-
-        <dt class="optional">
-            payload.raw
-
-            <span class="property-type">boolean</span>
-        </dt>
-        <dd>
-            If <code>true</code> no formatting will be applied to the prompt.<br />
-            You may choose to use the <code>raw</code> parameter if you are specifying a full templated prompt in your request to the API.
-        </dd>
-
-        <dt class="optional">
-            payload.keep_alive
-
-            <span class="property-type">string | number</span>
-        </dt>
-        <dd>Controls how long the model will stay loaded into memory following the request (default: <code>5m</code>)</dd>
     </dl>
 
     <h3>Outputs</h3>

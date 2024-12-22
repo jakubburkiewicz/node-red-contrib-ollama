@@ -7,7 +7,7 @@ module.exports = function( RED ) {
 
         node.on( 'input', async function( msg ) {
             const {
-                host,
+                host: payloadHost,
                 model,
                 messages,
                 format,
@@ -17,17 +17,21 @@ module.exports = function( RED ) {
                 options
             } = msg.payload
 
+            const server = RED.nodes.getNode( config.server )
+
+            const host = ( server ) ? server.host + ':' + server.port : payloadHost
+
             const ollama = new Ollama( { host } )
 
             const response = await ollama.chat( {
-                model,
-                messages,
-                format,
-                stream,
-                keep_alive,
-                tools,
-                options
-            } )
+                    model,
+                    messages,
+                    format,
+                    stream,
+                    keep_alive,
+                    tools,
+                    options
+                } )
                 .catch( error => {
                     node.error( error )
                 } )
