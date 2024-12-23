@@ -59,7 +59,6 @@ module.exports = function( RED ) {
             } else {
                 keep_alive = payloadKeepAlive
             }
-            console.log( 'keep_alive', typeof keep_alive, keep_alive )
 
             const toolsConfig = RED.nodes.getNode( config.tools )
             const tools = ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : payloadTools
