@@ -10,20 +10,12 @@ module.exports = function( RED ) {
         this.systemType = config.systemType || 'str'
         this.templateType = config.templateType || 'str'
         this.raw = config.raw || false
+        this.imagesType = config.imagesType || 'json'
         this.stream = config.stream || false
         this.keepAliveType = config.keepAliveType || 'str'
 
         const node = this
         node.on( 'input', async function( msg ) {
-            const {
-                prompt,
-                suffix,
-                system,
-                template,
-                raw,
-                images
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
             const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
@@ -105,6 +97,21 @@ module.exports = function( RED ) {
             }
 
             const raw = ( node.raw !== undefined ) ? node.raw : msg?.payload?.raw
+
+            let images = null
+            if( !!config.images ) {
+                if( node.imagesType === 'json' ) {
+                    images = JSON.parse( config.images )
+                } else if( node.imagesType === 'msg' ) {
+                    images = msg[ config.images ]
+                } else if( node.imagesType === 'flow' ) {
+                    images = node.context().flow.get( config.images )
+                } else if( node.imagesType === 'global' ) {
+                    images = node.context().global.get( config.images )
+                }
+            } else {
+                images = msg?.payload?.images
+            }
 
             const formatConfig = RED.nodes.getNode( config.format )
             const format = ( formatConfig ) ? formatConfig.json : msg?.payload?.format
