@@ -5,11 +5,11 @@ module.exports = function( RED ) {
         RED.nodes.createNode( this, config )
 
         this.modelType = config.modelType || 'str'
+        this.systemType = config.systemType || 'str'
 
         const node = this
         node.on( 'input', async function( msg ) {
             const {
-                system,
                 template
             } = msg.payload
 
@@ -31,6 +31,21 @@ module.exports = function( RED ) {
                 }
             } else {
                 model = msg?.payload?.model
+            }
+
+            let system = null
+            if( !!config.system ) {
+                if( node.systemType === 'str' ) {
+                    system = config.system
+                } else if( node.systemType === 'msg' ) {
+                    system = msg[ config.system ]
+                } else if( node.systemType === 'flow' ) {
+                    system = node.context().flow.get( config.system )
+                } else if( node.systemType === 'global' ) {
+                    system = node.context().global.get( config.system )
+                }
+            } else {
+                system = msg?.payload?.system
             }
 
             const optionsConfig = RED.nodes.getNode( config.options )

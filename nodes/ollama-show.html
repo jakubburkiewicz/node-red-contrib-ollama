@@ -7,6 +7,8 @@
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', required: false },
             modelType: { value: 'str', required: false },
+            system: { value: '', required: false },
+            systemType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
@@ -24,6 +26,16 @@
                 type: 'str',
                 types: [ 'str', 'msg', 'flow', 'global' ],
                 typeField: '#node-input-modelType'
+            } )
+
+            if( !this.systemType ) {
+                this.systemType = 'str'
+            }
+
+            $( '#node-input-system' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-systemType'
             } )
         }
     } )
@@ -44,6 +56,12 @@
         <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
         <input type="hidden" id="node-input-modelType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-system"><i class="fa fa-comment"></i> System</label>
+        <input type="text" id="node-input-system" />
+        <input type="hidden" id="node-input-systemType" />
     </div>
 
     <div class="form-row">
