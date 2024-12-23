@@ -43,7 +43,7 @@ module.exports = function( RED ) {
             }
 
             const formatConfig = RED.nodes.getNode( config.format )
-            const format = ( formatConfig ) ? JSON.parse( formatConfig.json ) : payloadFormat
+            const format = ( formatConfig ) ? formatConfig.json : payloadFormat
 
             const toolsConfig = RED.nodes.getNode( config.tools )
             const tools = ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : payloadTools
