@@ -4,6 +4,7 @@ module.exports = function( RED ) {
     function OllamaGenerateNode( config )  {
         RED.nodes.createNode( this, config )
 
+        this.stream = config.stream || false
         this.keepAliveType = config.keepAliveType || 'str'
 
         const node = this
@@ -14,8 +15,7 @@ module.exports = function( RED ) {
                 system,
                 template,
                 raw,
-                images,
-                stream
+                images
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -28,6 +28,8 @@ module.exports = function( RED ) {
 
             const formatConfig = RED.nodes.getNode( config.format )
             const format = ( formatConfig ) ? formatConfig.json : msg?.payload?.format
+
+            const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
 
             let keep_alive = null
             if( !!config.keepAlive ) {
