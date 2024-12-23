@@ -5,6 +5,7 @@ module.exports = function( RED ) {
         RED.nodes.createNode( this, config )
 
         this.messagesType = config.messagesType || 'msg'
+        this.stream = config.stream || false
 
         const node = this
         node.on( 'input', async function( msg ) {
@@ -13,7 +14,7 @@ module.exports = function( RED ) {
                 model: payloadModel,
                 messages: payloadMessages,
                 format: payloadFormat,
-                stream,
+                stream: payloadStream,
                 keep_alive,
                 tools: payloadTools,
                 options: payloadOptions
@@ -44,6 +45,8 @@ module.exports = function( RED ) {
 
             const formatConfig = RED.nodes.getNode( config.format )
             const format = ( formatConfig ) ? formatConfig.json : payloadFormat
+
+            const stream = ( node.stream !== undefined ) ? node.stream : payloadStream
 
             const toolsConfig = RED.nodes.getNode( config.tools )
             const tools = ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : payloadTools

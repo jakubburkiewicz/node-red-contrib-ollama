@@ -9,6 +9,7 @@
             messages: { value: 'payload', required: false },
             messagesType: { value: 'mgs', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
+            stream: { value: false },
             tools: { value: '', type: 'ollama-config-tools', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
@@ -57,6 +58,11 @@
     <div class="form-row">
         <label for="node-input-format"><i class="fa fa-cog"></i> Format</label>
         <input type="text" id="node-input-format" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-stream"><i class="fa fa-cog"></i> Stream</label>
+        <input type="checkbox" id="node-input-stream" />
     </div>
 
     <div class="form-row">
@@ -138,11 +144,6 @@
                     The format of the response (only <code>json</code> for now).<br />
                     <em>Alternative to the <code>Format</code> field.</em>
                 </dd>
-
-                <dt class="optional">
-                    payload.stream <span class="property-type">boolean</span>
-                </dt>
-                <dd>When true an AsyncGenerator is returned.</dd>
 
                 <dt class="optional">
                     payload.keep_alive <span class="property-type">array</span>
