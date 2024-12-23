@@ -10,24 +10,13 @@ module.exports = function( RED ) {
 
         const node = this
         node.on( 'input', async function( msg ) {
-            const {
-                host: payloadHost,
-                model: payloadModel,
-                messages: payloadMessages,
-                format: payloadFormat,
-                stream: payloadStream,
-                keep_alive: payloadKeepAlive,
-                tools: payloadTools,
-                options: payloadOptions
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : payloadHost
+            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
             const ollama = new Ollama( { host } )
 
             const modelConfig = RED.nodes.getNode( config.model )
-            const model = ( modelConfig ) ? modelConfig.name : payloadModel
+            const model = ( modelConfig ) ? modelConfig.name : msg?.payload?.model
 
             let messages = null
             if( !!config.messages ) {
@@ -41,13 +30,13 @@ module.exports = function( RED ) {
                     messages = JSON.parse( config.messages )
                 }
             } else {
-                messages = payloadMessages
+                messages = msg?.payload?.messages
             }
 
             const formatConfig = RED.nodes.getNode( config.format )
-            const format = ( formatConfig ) ? formatConfig.json : payloadFormat
+            const format = ( formatConfig ) ? formatConfig.json : msg?.payload?.format
 
-            const stream = ( node.stream !== undefined ) ? node.stream : payloadStream
+            const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
 
             let keep_alive = null
             if( !!config.keepAlive ) {
@@ -57,14 +46,14 @@ module.exports = function( RED ) {
                     keep_alive = Number( config.keepAlive )
                 }
             } else {
-                keep_alive = payloadKeepAlive
+                keep_alive = msg?.payload?.keep_alive
             }
 
             const toolsConfig = RED.nodes.getNode( config.tools )
-            const tools = ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : payloadTools
+            const tools = ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : msg?.payload?.tools
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : payloadOptions
+            const options = ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : msg?.payload?.options
 
             const response = await ollama.chat( {
                     model,
