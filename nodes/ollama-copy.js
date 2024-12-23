@@ -11,12 +11,14 @@ module.exports = function( RED ) {
         node.on( 'input', async function( msg ) {
             const server = RED.nodes.getNode( config.server )
 
-            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
             let source = null
-            if( !!config.source ) {
+            if( msg?.payload?.source ) {
+                source = msg?.payload?.source
+            } else if( !!config.source ) {
                 if( node.sourceType === 'str' ) {
                     source = config.source
                 } else if( node.sourceType === 'msg' ) {
@@ -26,12 +28,12 @@ module.exports = function( RED ) {
                 } else if( node.sourceType === 'global' ) {
                     source = node.context().global.get( config.source )
                 }
-            } else {
-                source = msg?.payload?.source
             }
 
             let destination = null
-            if( !!config.destination ) {
+            if( msg?.payload?.destination ) {
+                destination = msg?.payload?.destination
+            } else if( !!config.destination ) {
                 if( node.destinationType === 'str' ) {
                     destination = config.destination
                 } else if( node.destinationType === 'msg' ) {
@@ -41,8 +43,6 @@ module.exports = function( RED ) {
                 } else if( node.destinationType === 'global' ) {
                     destination = node.context().global.get( config.destination )
                 }
-            } else {
-                destination = msg?.payload?.destination
             }
 
             const response = await ollama.copy( {
