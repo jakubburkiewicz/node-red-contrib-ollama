@@ -5,9 +5,10 @@
         defaults: {
             name: { value: 'Ollama Chat' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', type: 'ollama-config-model', required: true },
+            model: { value: '', required: false },
+            modelType: { value: 'str', required: false },
             messages: { value: 'payload', required: false },
-            messagesType: { value: 'mgs', required: false },
+            messagesType: { value: 'msg', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
             stream: { value: false },
             keepAlive: { value: '5m', required: false },
@@ -22,6 +23,16 @@
             return this.name || 'ollama-chat'
         },
         oneditprepare: function() {
+            if( !this.modelType ) {
+                this.modelType = 'str'
+            }
+
+            $( '#node-input-model' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-modelType'
+            } )
+
             if( !this.messagesType ) {
                 this.messagesType = 'msg'
             }
@@ -57,8 +68,9 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
+        <input type="hidden" id="node-input-modelType" />
     </div>
 
     <div class="form-row">

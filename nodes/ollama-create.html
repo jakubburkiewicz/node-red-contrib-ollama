@@ -5,7 +5,8 @@
         defaults: {
             name: { value: 'Ollama Create' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', type: 'ollama-config-model', required: false },
+            model: { value: '', required: false },
+            modelType: { value: 'str', required: false },
             stream: { value: false },
             path: { value: '', required: false },
             pathType: { value: 'str', required: false },
@@ -17,6 +18,16 @@
             return this.name || 'ollama-create';
         },
         oneditprepare: function() {
+            if( !this.modelType ) {
+                this.modelType = 'str'
+            }
+
+            $( '#node-input-model' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-modelType'
+            } )
+
             if( !this.pathType ) {
                 this.pathType = 'str'
             }
@@ -42,8 +53,9 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
+        <input type="hidden" id="node-input-modelType" />
     </div>
 
     <div class="form-row">

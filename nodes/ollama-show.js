@@ -3,8 +3,10 @@ module.exports = function( RED ) {
 
     function OllamaShowNode( config )  {
         RED.nodes.createNode( this, config )
-        const node = this
 
+        this.modelType = config.modelType || 'str'
+
+        const node = this
         node.on( 'input', async function( msg ) {
             const {
                 system,
@@ -16,8 +18,20 @@ module.exports = function( RED ) {
 
             const ollama = new Ollama( { host } )
 
-            const modelConfig = RED.nodes.getNode( config.model )
-            const model = ( modelConfig ) ? modelConfig.name : msg?.payload?.model
+            let model = null
+            if( !!config.model ) {
+                if( node.modelType === 'str' ) {
+                    model = config.model
+                } else if( node.modelType === 'msg' ) {
+                    model = msg[ config.model ]
+                } else if( node.modelType === 'flow' ) {
+                    model = node.context().flow.get( config.model )
+                } else if( node.modelType === 'global' ) {
+                    model = node.context().global.get( config.model )
+                }
+            } else {
+                model = msg?.payload?.model
+            }
 
             const optionsConfig = RED.nodes.getNode( config.options )
             const options = ( optionsConfig ) ? optionsConfig.json : msg?.payload?.options

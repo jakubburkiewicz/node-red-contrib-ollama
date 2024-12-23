@@ -4,6 +4,7 @@ module.exports = function( RED ) {
     function OllamaEmbedNode( config )  {
         RED.nodes.createNode( this, config )
 
+        this.modelType = config.modelType || 'str'
         this.keepAliveType = config.keepAliveType || 'str'
 
         const node = this
@@ -18,8 +19,20 @@ module.exports = function( RED ) {
 
             const ollama = new Ollama( { host } )
 
-            const modelConfig = RED.nodes.getNode( config.model )
-            const model = ( modelConfig ) ? modelConfig.name : msg?.payload?.model
+            let model = null
+            if( !!config.model ) {
+                if( node.modelType === 'str' ) {
+                    model = config.model
+                } else if( node.modelType === 'msg' ) {
+                    model = msg[ config.model ]
+                } else if( node.modelType === 'flow' ) {
+                    model = node.context().flow.get( config.model )
+                } else if( node.modelType === 'global' ) {
+                    model = node.context().global.get( config.model )
+                }
+            } else {
+                model = msg?.payload?.model
+            }
 
             let keep_alive = null
             if( !!config.keepAlive ) {

@@ -5,7 +5,8 @@
         defaults: {
             name: { value: 'Ollama Show' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', type: 'ollama-config-model', required: false },
+            model: { value: '', required: false },
+            modelType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
@@ -14,6 +15,17 @@
         label: function() {
             return this.name || 'ollama-show';
         },
+        oneditprepare: function() {
+            if( !this.modelType ) {
+                this.modelType = 'str'
+            }
+
+            $( '#node-input-model' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-modelType'
+            } )
+        }
     } )
 </script>
 
@@ -29,8 +41,9 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
+        <input type="hidden" id="node-input-modelType" />
     </div>
 
     <div class="form-row">
