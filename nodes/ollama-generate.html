@@ -189,31 +189,26 @@
         </dt>
 
         <dd>
-            The payload object.
+            The payload object is an alternative way to configure the node.<br />
+            Any properties in the payload object will override the node configuration.
 
             <dl class="message-properties">
                 <dt class="optional">
                     payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The host of the Ollama instance.<br />
-                    <em>Alternative to the <code>Server</code> field.</em>
-                </dd>
+                <dd>The host of the Ollama instance.</dd>
 
                 <dt class="optional">
                     payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The model to use for generating the next message.<br />
-                    <em>Alternative to the <code>Model</code> field.</em>
-                </dd>
+                <dd>The model to use for generating the next message.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.prompt <span class="property-type">string</span>
                 </dt>
                 <dd>The prompt to generate a response for.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.suffix <span class="property-type">string</span>
                 </dt>
                 <dd>The text after the model response.</dd>
@@ -226,18 +221,12 @@
                 <dt class="optional">
                     payload.format <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The format to return a response in. Currently the only accepted value is <code>json</code><br />
-                    <em>Alternative to the <code>Format</code> field.</em>
-                </dd>
+                <dd>The format to return a response in. Currently the only accepted value is <code>json</code></dd>
 
                 <dt class="optional">
                     payload.options <span class="property-type">object</span>
                 </dt>
-                <dd>
-                    Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.<br />
-                    <em>Alternative to the <code>Options</code> field.</em>
-                </dd>
+                <dd>Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.</dd>
 
                 <dt class="optional">
                     payload.system <span class="property-type">string</span>

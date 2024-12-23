@@ -101,24 +101,19 @@
         </dt>
 
         <dd>
-            The payload object.
+            The payload object is an alternative way to configure the node.<br />
+            Any properties in the payload object will override the node configuration.
 
             <dl class="message-properties">
                 <dt class="optional">
                     payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The host of the Ollama instance.<br />
-                    <em>Alternative to the <code>Server</code> field.</em>
-                </dd>
+                <dd>The host of the Ollama instance.</dd>
 
                 <dt class="optional">
                     payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The name of the model to create.<br />
-                    <em>Alternative to the <code>Model</code> field.</em>
-                </dd>
+                <dd>The name of the model to create.</dd>
 
                 <dt class="optional">
                     payload.path <span class="property-type">string</span>
