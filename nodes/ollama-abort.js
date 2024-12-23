@@ -8,7 +8,7 @@ module.exports = function( RED ) {
         node.on( 'input', async function( msg ) {
             const server = RED.nodes.getNode( config.server )
 
-            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
