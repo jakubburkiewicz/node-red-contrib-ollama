@@ -43,13 +43,13 @@ module.exports = function( RED ) {
             }
 
             const formatConfig = RED.nodes.getNode( config.format )
-            const format = ( formatConfig ) ? formatConfig.json : payloadFormat
+            const format = ( formatConfig ) ? JSON.parse( formatConfig.json ) : payloadFormat
 
             const toolsConfig = RED.nodes.getNode( config.tools )
-            const tools = ( toolsConfig ) ? toolsConfig.json : payloadTools
+            const tools = ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : payloadTools
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = ( optionsConfig ) ? optionsConfig.json : payloadOptions
+            const options = ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : payloadOptions
 
             const response = await ollama.chat( {
                     model,
