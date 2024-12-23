@@ -9,12 +9,14 @@ module.exports = function( RED ) {
         const node = this
         node.on( 'input', async function( msg ) {
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
             let model = null
-            if( !!config.model ) {
+            if( msg?.payload?.model ) {
+                model = msg?.payload?.model
+            } else if( !!config.model ) {
                 if( node.modelType === 'str' ) {
                     model = config.model
                 } else if( node.modelType === 'msg' ) {
@@ -24,8 +26,6 @@ module.exports = function( RED ) {
                 } else if( node.modelType === 'global' ) {
                     model = node.context().global.get( config.model )
                 }
-            } else {
-                model = msg?.payload?.model
             }
 
             const response = await ollama.delete( { model } )
