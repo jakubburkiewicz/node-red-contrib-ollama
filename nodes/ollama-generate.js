@@ -17,12 +17,14 @@ module.exports = function( RED ) {
         const node = this
         node.on( 'input', async function( msg ) {
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
             let model = null
-            if( !!config.model ) {
+            if( msg?.payload?.model ) {
+                model = msg?.payload?.model
+            } else if( !!config.model ) {
                 if( node.modelType === 'str' ) {
                     model = config.model
                 } else if( node.modelType === 'msg' ) {
@@ -32,12 +34,12 @@ module.exports = function( RED ) {
                 } else if( node.modelType === 'global' ) {
                     model = node.context().global.get( config.model )
                 }
-            } else {
-                model = msg?.payload?.model
             }
 
             let prompt = null
-            if( !!config.prompt ) {
+            if( msg?.payload?.prompt ) {
+                prompt = msg?.payload?.prompt
+            } else if( !!config.prompt ) {
                 if( node.promptType === 'str' ) {
                     prompt = config.prompt
                 } else if( node.promptType === 'msg' ) {
@@ -47,12 +49,12 @@ module.exports = function( RED ) {
                 } else if( node.promptType === 'global' ) {
                     prompt = node.context().global.get( config.prompt )
                 }
-            } else {
-                prompt = msg?.payload?.prompt
             }
 
             let suffix = null
-            if( !!config.suffix ) {
+            if( msg?.payload?.suffix ) {
+                suffix = msg?.payload?.suffix
+            } else if( !!config.suffix ) {
                 if( node.suffixType === 'str' ) {
                     suffix = config.suffix
                 } else if( node.suffixType === 'msg' ) {
@@ -62,12 +64,12 @@ module.exports = function( RED ) {
                 } else if( node.suffixType === 'global' ) {
                     suffix = node.context().global.get( config.suffix )
                 }
-            } else {
-                suffix = msg?.payload?.suffix
             }
 
             let system = null
-            if( !!config.system ) {
+            if( msg?.payload?.system ) {
+                system = msg?.payload?.system
+            } else if( !!config.system ) {
                 if( node.systemType === 'str' ) {
                     system = config.system
                 } else if( node.systemType === 'msg' ) {
@@ -77,12 +79,12 @@ module.exports = function( RED ) {
                 } else if( node.systemType === 'global' ) {
                     system = node.context().global.get( config.system )
                 }
-            } else {
-                system = msg?.payload?.system
             }
 
             let template = null
-            if( !!config.template ) {
+            if( msg?.payload?.template ) {
+                template = msg?.payload?.template
+            } else if( !!config.template ) {
                 if( node.templateType === 'str' ) {
                     template = config.template
                 } else if( node.templateType === 'msg' ) {
@@ -92,14 +94,14 @@ module.exports = function( RED ) {
                 } else if( node.templateType === 'global' ) {
                     template = node.context().global.get( config.template )
                 }
-            } else {
-                template = msg?.payload?.template
             }
 
-            const raw = ( node.raw !== undefined ) ? node.raw : msg?.payload?.raw
+            const raw = ( msg?.payload?.raw !== undefined ) ? msg?.payload?.raw : node.raw
 
             let images = null
-            if( !!config.images ) {
+            if( msg?.payload?.images ) {
+                images = msg?.payload?.images
+            } else if( !!config.images ) {
                 if( node.imagesType === 'json' ) {
                     images = JSON.parse( config.images )
                 } else if( node.imagesType === 'msg' ) {
@@ -109,28 +111,26 @@ module.exports = function( RED ) {
                 } else if( node.imagesType === 'global' ) {
                     images = node.context().global.get( config.images )
                 }
-            } else {
-                images = msg?.payload?.images
             }
 
             const formatConfig = RED.nodes.getNode( config.format )
-            const format = ( formatConfig ) ? formatConfig.json : msg?.payload?.format
+            const format = msg?.payload?.format || ( formatConfig ) ? formatConfig.json : null
 
-            const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
+            const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
 
             let keep_alive = null
-            if( !!config.keepAlive ) {
+            if( msg?.payload?.keep_alive ) {
+                keep_alive = msg?.payload?.keep_alive
+            } else if( !!config.keepAlive ) {
                 if( node.keepAliveType === 'str' ) {
                     keep_alive = config.keepAlive
                 } else if( node.keepAliveType === 'num' ) {
                     keep_alive = Number( config.keepAlive )
                 }
-            } else {
-                keep_alive = msg?.payload?.keep_alive
             }
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = ( optionsConfig ) ? optionsConfig.json : msg?.payload?.options
+            const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
 
             const response = await ollama.generate( {
                 model,
