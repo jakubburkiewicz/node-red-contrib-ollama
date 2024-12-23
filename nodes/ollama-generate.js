@@ -7,33 +7,29 @@ module.exports = function( RED ) {
 
         node.on( 'input', async function( msg ) {
             const {
-                host: payloadHost,
-                model: payloadModel,
                 prompt,
                 suffix,
                 system,
                 template,
                 raw,
                 images,
-                format: payloadFormat,
                 stream,
-                keep_alive,
-                options: payloadOptions
+                keep_alive
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : payloadHost
+            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
             const ollama = new Ollama( { host } )
 
             const modelConfig = RED.nodes.getNode( config.model )
-            const model = ( modelConfig ) ? modelConfig.name : payloadModel
+            const model = ( modelConfig ) ? modelConfig.name : msg?.payload?.model
 
             const formatConfig = RED.nodes.getNode( config.format )
-            const format = ( formatConfig ) ? formatConfig.json : payloadFormat
+            const format = ( formatConfig ) ? formatConfig.json : msg?.payload?.format
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = ( optionsConfig ) ? optionsConfig.json : payloadOptions
+            const options = ( optionsConfig ) ? optionsConfig.json : msg?.payload?.options
 
             const response = await ollama.generate( {
                 model,
