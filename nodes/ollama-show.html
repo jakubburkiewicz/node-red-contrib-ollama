@@ -9,6 +9,8 @@
             modelType: { value: 'str', required: false },
             system: { value: '', required: false },
             systemType: { value: 'str', required: false },
+            template: { value: '', required: false },
+            templateType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
@@ -37,6 +39,16 @@
                 types: [ 'str', 'msg', 'flow', 'global' ],
                 typeField: '#node-input-systemType'
             } )
+
+            if( !this.templateType ) {
+                this.templateType = 'str'
+            }
+
+            $( '#node-input-template' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-templateType'
+            } )
         }
     } )
 </script>
@@ -62,6 +74,12 @@
         <label for="node-input-system"><i class="fa fa-comment"></i> System</label>
         <input type="text" id="node-input-system" />
         <input type="hidden" id="node-input-systemType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-template"><i class="fa fa-comment"></i> Template</label>
+        <input type="text" id="node-input-template" />
+        <input type="hidden" id="node-input-templateType" />
     </div>
 
     <div class="form-row">

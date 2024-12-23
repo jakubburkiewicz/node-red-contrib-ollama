@@ -6,13 +6,10 @@ module.exports = function( RED ) {
 
         this.modelType = config.modelType || 'str'
         this.systemType = config.systemType || 'str'
+        this.templateType = config.templateType || 'str'
 
         const node = this
         node.on( 'input', async function( msg ) {
-            const {
-                template
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
             const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
@@ -46,6 +43,21 @@ module.exports = function( RED ) {
                 }
             } else {
                 system = msg?.payload?.system
+            }
+
+            let template = null
+            if( !!config.template ) {
+                if( node.templateType === 'str' ) {
+                    template = config.template
+                } else if( node.templateType === 'msg' ) {
+                    template = msg[ config.template ]
+                } else if( node.templateType === 'flow' ) {
+                    template = node.context().flow.get( config.template )
+                } else if( node.templateType === 'global' ) {
+                    template = node.context().global.get( config.template )
+                }
+            } else {
+                template = msg?.payload?.template
             }
 
             const optionsConfig = RED.nodes.getNode( config.options )
