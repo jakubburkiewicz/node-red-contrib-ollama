@@ -5,12 +5,12 @@ module.exports = function( RED ) {
         RED.nodes.createNode( this, config )
 
         this.stream = config.stream || false
+        this.pathType = config.pathType || 'str'
 
         const node = this
         node.on( 'input', async function( msg ) {
             const {
-                modelfile,
-                path
+                modelfile
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -22,6 +22,21 @@ module.exports = function( RED ) {
             const model = ( modelConfig ) ? modelConfig.name : msg?.payload?.model
 
             const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
+
+            let path = null
+            if( !!config.path ) {
+                if( node.pathType === 'str' ) {
+                    path = config.path
+                } else if( node.pathType === 'msg' ) {
+                    path = msg[ config.path ]
+                } else if( node.pathType === 'flow' ) {
+                    path = node.context().flow.get( config.path )
+                } else if( node.pathType === 'global' ) {
+                    path = node.context().global.get( config.path )
+                }
+            } else {
+                path = msg?.payload?.path
+            }
 
             const response = await ollama.create( {
                     model,

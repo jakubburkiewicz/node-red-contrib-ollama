@@ -7,6 +7,8 @@
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', type: 'ollama-config-model', required: false },
             stream: { value: false },
+            path: { value: '', required: false },
+            pathType: { value: 'str', required: false },
         },
         inputs: 1,
         outputs: 1,
@@ -14,6 +16,17 @@
         label: function() {
             return this.name || 'ollama-create';
         },
+        oneditprepare: function() {
+            if( !this.pathType ) {
+                this.pathType = 'str'
+            }
+
+            $( '#node-input-path' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-pathType'
+            } )
+        }
     } )
 </script>
 
@@ -36,6 +49,12 @@
     <div class="form-row">
         <label for="node-input-stream"><i class="fa fa-cog"></i> Stream</label>
         <input type="checkbox" id="node-input-stream" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-path"><i class="fa fa-comment"></i> Path</label>
+        <input type="text" id="node-input-path" />
+        <input type="hidden" id="node-input-pathType" />
     </div>
 </script>
 
