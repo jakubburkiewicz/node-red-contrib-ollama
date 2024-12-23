@@ -4,7 +4,7 @@ module.exports = function( RED ) {
     function OllamaChatNode( config )  {
         RED.nodes.createNode( this, config )
 
-        const messagesType = config.messagesType || 'msg'
+        this.messagesType = config.messagesType || 'msg'
 
         const node = this
         node.on( 'input', async function( msg ) {
@@ -29,13 +29,13 @@ module.exports = function( RED ) {
 
             let messages = null
             if( !!config.messages ) {
-                if( messagesType === 'msg' ) {
+                if( node.messagesType === 'msg' ) {
                     messages = msg[ config.messages ]
-                } else if( messagesType === 'flow' ) {
+                } else if( node.messagesType === 'flow' ) {
                     messages = node.context().flow.get( config.messages )
-                } else if( messagesType === 'global' ) {
+                } else if( node.messagesType === 'global' ) {
                     messages = node.context().global.get( config.messages )
-                } else if( messagesType === 'json' ) {
+                } else if( node.messagesType === 'json' ) {
                     messages = JSON.parse( config.messages )
                 }
             } else {
