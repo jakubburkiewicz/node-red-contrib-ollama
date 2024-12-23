@@ -6,6 +6,7 @@ module.exports = function( RED ) {
 
         this.modelType = config.modelType || 'str'
         this.promptType = config.promptType || 'str'
+        this.suffixType = config.suffixType || 'str'
         this.stream = config.stream || false
         this.keepAliveType = config.keepAliveType || 'str'
 
@@ -53,6 +54,21 @@ module.exports = function( RED ) {
                 }
             } else {
                 prompt = msg?.payload?.prompt
+            }
+
+            let suffix = null
+            if( !!config.suffix ) {
+                if( node.suffixType === 'str' ) {
+                    suffix = config.suffix
+                } else if( node.suffixType === 'msg' ) {
+                    suffix = msg[ config.suffix ]
+                } else if( node.suffixType === 'flow' ) {
+                    suffix = node.context().flow.get( config.suffix )
+                } else if( node.suffixType === 'global' ) {
+                    suffix = node.context().global.get( config.suffix )
+                }
+            } else {
+                suffix = msg?.payload?.suffix
             }
 
             const formatConfig = RED.nodes.getNode( config.format )

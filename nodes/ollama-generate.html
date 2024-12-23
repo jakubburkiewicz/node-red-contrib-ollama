@@ -10,6 +10,8 @@
             modelType: { value: 'str', required: false },
             prompt: { value: '', required: true },
             promptType: { value: 'str', required: false },
+            suffix: { value: '', required: false },
+            suffixType: { value: 'str', required: false },
             stream: { value: false },
             keepAlive: { value: '5m', required: false },
             keepAliveType: { value: 'str', required: false },
@@ -40,6 +42,16 @@
                 type: 'str',
                 types: [ 'str', 'msg', 'flow', 'global' ],
                 typeField: '#node-input-promptType'
+            } )
+
+            if( !this.suffixType ) {
+                this.suffixType = 'str'
+            }
+
+            $( '#node-input-suffix' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-suffixType'
             } )
 
             if( !this.keepAliveType ) {
@@ -81,6 +93,12 @@
         <label for="node-input-prompt"><i class="fa fa-comment"></i> Prompt</label>
         <input type="text" id="node-input-prompt" />
         <input type="hidden" id="node-input-promptType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-suffix"><i class="fa fa-comment"></i> Suffix</label>
+        <input type="text" id="node-input-suffix" />
+        <input type="hidden" id="node-input-suffixType" />
     </div>
 
     <div class="form-row">
