@@ -4,17 +4,10 @@ module.exports = function( RED ) {
     function OllamaCopyNode( config )  {
         RED.nodes.createNode( this, config )
         const node = this
-
         node.on( 'input', async function( msg ) {
-            const {
-                host: payloadHost,
-                source,
-                destination
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
 
-            const host = ( server ) ? server.host + ':' + server.port : payloadHost
+            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
             const ollama = new Ollama( { host } )
 
