@@ -10,10 +10,6 @@ module.exports = function( RED ) {
 
         const node = this
         node.on( 'input', async function( msg ) {
-            const {
-                modelfile
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
             const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
@@ -33,6 +29,8 @@ module.exports = function( RED ) {
             } else {
                 model = msg?.payload?.model
             }
+
+            const modelfile = config.modelfile || msg?.payload?.modelfile
 
             const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
 

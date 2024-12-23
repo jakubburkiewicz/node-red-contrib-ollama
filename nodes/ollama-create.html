@@ -7,6 +7,7 @@
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', required: false },
             modelType: { value: 'str', required: false },
+            modelfile: { value: '', required: false },
             stream: { value: false },
             path: { value: '', required: false },
             pathType: { value: 'str', required: false },
@@ -28,6 +29,13 @@
                 typeField: '#node-input-modelType'
             } )
 
+            this.editor = RED.editor.createEditor( {
+                id: 'node-input-modelfile-editor',
+                mode: 'yaml',
+                value: this.modelfile,
+                mode: 'ace/mode/text'
+            } )
+
             if( !this.pathType ) {
                 this.pathType = 'str'
             }
@@ -37,6 +45,15 @@
                 types: [ 'str', 'msg', 'flow', 'global' ],
                 typeField: '#node-input-pathType'
             } )
+        },
+        oneditsave: function() {
+            this.modelfile = this.editor.getValue()
+            this.editor.destroy()
+            delete this.editor
+        },
+        oneditcancel: function() {
+            this.editor.destroy()
+            delete this.editor
         }
     } )
 </script>
@@ -68,6 +85,9 @@
         <input type="text" id="node-input-path" />
         <input type="hidden" id="node-input-pathType" />
     </div>
+
+    <label>Modelfile</label>
+    <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-modelfile-editor" />
 </script>
 
 <script type="text/html" data-help-name="ollama-create">
