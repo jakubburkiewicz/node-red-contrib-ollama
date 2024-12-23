@@ -14,6 +14,8 @@
             suffixType: { value: 'str', required: false },
             system: { value: '', required: false },
             systemType: { value: 'str', required: false },
+            template: { value: '', required: false },
+            templateType: { value: 'str', required: false },
             stream: { value: false },
             keepAlive: { value: '5m', required: false },
             keepAliveType: { value: 'str', required: false },
@@ -64,6 +66,16 @@
                 type: 'str',
                 types: [ 'str', 'msg', 'flow', 'global' ],
                 typeField: '#node-input-systemType'
+            } )
+
+            if( !this.templateType ) {
+                this.templateType = 'str'
+            }
+
+            $( '#node-input-template' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-templateType'
             } )
 
             if( !this.keepAliveType ) {
@@ -117,6 +129,12 @@
         <label for="node-input-system"><i class="fa fa-cog"></i> System</label>
         <input type="text" id="node-input-system" />
         <input type="hidden" id="node-input-systemType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-template"><i class="fa fa-cog"></i> Template</label>
+        <input type="text" id="node-input-template" />
+        <input type="hidden" id="node-input-templateType" />
     </div>
 
     <div class="form-row">

@@ -8,6 +8,7 @@ module.exports = function( RED ) {
         this.promptType = config.promptType || 'str'
         this.suffixType = config.suffixType || 'str'
         this.systemType = config.systemType || 'str'
+        this.templateType = config.templateType || 'str'
         this.stream = config.stream || false
         this.keepAliveType = config.keepAliveType || 'str'
 
@@ -85,6 +86,21 @@ module.exports = function( RED ) {
                 }
             } else {
                 system = msg?.payload?.system
+            }
+
+            let template = null
+            if( !!config.template ) {
+                if( node.templateType === 'str' ) {
+                    template = config.template
+                } else if( node.templateType === 'msg' ) {
+                    template = msg[ config.template ]
+                } else if( node.templateType === 'flow' ) {
+                    template = node.context().flow.get( config.template )
+                } else if( node.templateType === 'global' ) {
+                    template = node.context().global.get( config.template )
+                }
+            } else {
+                template = msg?.payload?.template
             }
 
             const formatConfig = RED.nodes.getNode( config.format )
