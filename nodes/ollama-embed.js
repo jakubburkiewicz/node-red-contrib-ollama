@@ -5,12 +5,12 @@ module.exports = function( RED ) {
         RED.nodes.createNode( this, config )
 
         this.modelType = config.modelType || 'str'
+        this.inputType = config.inputType || 'str'
         this.keepAliveType = config.keepAliveType || 'str'
 
         const node = this
         node.on( 'input', async function( msg ) {
             const {
-                input,
                 truncate
             } = msg.payload
 
@@ -32,6 +32,23 @@ module.exports = function( RED ) {
                 }
             } else {
                 model = msg?.payload?.model
+            }
+
+            let input = null
+            if( !!config.input ) {
+                if( node.inputType === 'str' ) {
+                    input = config.input
+                } else if( node.inputType === 'msg' ) {
+                    input = msg[ config.input ]
+                } else if( node.inputType === 'flow' ) {
+                    input = node.context().flow.get( config.input )
+                } else if( node.inputType === 'global' ) {
+                    input = node.context().global.get( config.input )
+                } else if( node.inputType === 'json' ) {
+                    input = JSON.parse( config.input )
+                }
+            } else {
+                input = msg?.payload?.input
             }
 
             let keep_alive = null

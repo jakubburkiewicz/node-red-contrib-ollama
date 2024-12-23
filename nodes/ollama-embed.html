@@ -7,6 +7,8 @@
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', required: false },
             modelType: { value: 'str', required: false },
+            input: { value: '', required: false },
+            inputType: { value: 'str', required: false },
             keepAlive: { value: '5m', required: false },
             keepAliveType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
@@ -26,6 +28,16 @@
                 type: 'str',
                 types: [ 'str', 'msg', 'flow', 'global' ],
                 typeField: '#node-input-modelType'
+            } )
+
+            if( !this.inputType ) {
+                this.inputType = 'str'
+            }
+
+            $( '#node-input-input' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'json', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-inputType'
             } )
 
             if( !this.keepAliveType ) {
@@ -56,6 +68,12 @@
         <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
         <input type="hidden" id="node-input-modelType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-input"><i class="fa fa-comment"></i> Input</label>
+        <input type="text" id="node-input-input" />
+        <input type="hidden" id="node-input-inputType" />
     </div>
 
     <div class="form-row">
