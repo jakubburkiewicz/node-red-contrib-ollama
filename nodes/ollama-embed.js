@@ -6,14 +6,11 @@ module.exports = function( RED ) {
 
         this.modelType = config.modelType || 'str'
         this.inputType = config.inputType || 'str'
+        this.thuncate = config.thuncate || false
         this.keepAliveType = config.keepAliveType || 'str'
 
         const node = this
         node.on( 'input', async function( msg ) {
-            const {
-                truncate
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
             const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
@@ -50,6 +47,8 @@ module.exports = function( RED ) {
             } else {
                 input = msg?.payload?.input
             }
+
+            const truncate = ( node.truncate !== undefined ) ? node.truncate : msg?.payload?.truncate
 
             let keep_alive = null
             if( !!config.keepAlive ) {

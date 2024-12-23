@@ -9,6 +9,7 @@
             modelType: { value: 'str', required: false },
             input: { value: '', required: false },
             inputType: { value: 'str', required: false },
+            truncate: { value: false, required: false },
             keepAlive: { value: '5m', required: false },
             keepAliveType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
@@ -74,6 +75,11 @@
         <label for="node-input-input"><i class="fa fa-comment"></i> Input</label>
         <input type="text" id="node-input-input" />
         <input type="hidden" id="node-input-inputType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-truncate"><i class="fa fa-cog"></i> Truncate</label>
+        <input type="checkbox" id="node-input-truncate" />
     </div>
 
     <div class="form-row">
