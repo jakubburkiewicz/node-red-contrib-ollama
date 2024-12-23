@@ -5,14 +5,11 @@ module.exports = function( RED ) {
         RED.nodes.createNode( this, config )
 
         this.modelType = config.modelType || 'str'
+        this.insecure = config.insecure || false
         this.stream = config.stream || false
 
         const node = this
         node.on( 'input', async function( msg ) {
-            const {
-                insecure
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
             const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
 
@@ -32,6 +29,8 @@ module.exports = function( RED ) {
             } else {
                 model = msg?.payload?.model
             }
+
+            const insecure = ( node.insecure !== undefined ) ? node.insecure : msg?.payload?.insecure
 
             const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
 

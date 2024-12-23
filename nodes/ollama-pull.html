@@ -7,6 +7,7 @@
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', required: false },
             modelType: { value: 'str', required: false },
+            insecure: { value: false },
             stream: { value: false },
         },
         inputs: 1,
@@ -44,6 +45,11 @@
         <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
         <input type="hidden" id="node-input-modelType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-insecure"><i class="fa fa-lock"></i> Insecure</label>
+        <input type="checkbox" id="node-input-insecure" />
     </div>
 
     <div class="form-row">
