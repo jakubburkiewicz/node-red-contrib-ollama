@@ -3,13 +3,14 @@ module.exports = function( RED ) {
 
     function OllamaEmbedNode( config )  {
         RED.nodes.createNode( this, config )
-        const node = this
 
+        this.keepAliveType = config.keepAliveType || 'str'
+
+        const node = this
         node.on( 'input', async function( msg ) {
             const {
                 input,
-                truncate,
-                keep_alive
+                truncate
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -19,6 +20,17 @@ module.exports = function( RED ) {
 
             const modelConfig = RED.nodes.getNode( config.model )
             const model = ( modelConfig ) ? modelConfig.name : msg?.payload?.model
+
+            let keep_alive = null
+            if( !!config.keepAlive ) {
+                if( node.keepAliveType === 'str' ) {
+                    keep_alive = config.keepAlive
+                } else if( node.keepAliveType === 'num' ) {
+                    keep_alive = Number( config.keepAlive )
+                }
+            } else {
+                keep_alive = msg?.payload?.keep_alive
+            }
 
             const optionsConfig = RED.nodes.getNode( config.options )
             const options = ( optionsConfig ) ? optionsConfig.json : msg?.payload?.options
