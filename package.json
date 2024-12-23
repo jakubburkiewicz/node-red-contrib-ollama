@@ -30,7 +30,6 @@
       "ollama-ps": "nodes/ollama-ps.js",
       "ollama-abort": "nodes/ollama-abort.js",
       "ollama-config-server": "nodes/ollama-config-server.js",
-      "ollama-config-model": "nodes/ollama-config-model.js",
       "ollama-config-format": "nodes/ollama-config-format.js",
       "ollama-config-tools": "nodes/ollama-config-tools.js",
       "ollama-config-options": "nodes/ollama-config-options.js"
