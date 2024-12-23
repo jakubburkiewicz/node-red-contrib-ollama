@@ -3,8 +3,10 @@ module.exports = function( RED ) {
 
     function OllamaGenerateNode( config )  {
         RED.nodes.createNode( this, config )
-        const node = this
 
+        this.keepAliveType = config.keepAliveType || 'str'
+
+        const node = this
         node.on( 'input', async function( msg ) {
             const {
                 prompt,
@@ -13,8 +15,7 @@ module.exports = function( RED ) {
                 template,
                 raw,
                 images,
-                stream,
-                keep_alive
+                stream
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -27,6 +28,17 @@ module.exports = function( RED ) {
 
             const formatConfig = RED.nodes.getNode( config.format )
             const format = ( formatConfig ) ? formatConfig.json : msg?.payload?.format
+
+            let keep_alive = null
+            if( !!config.keepAlive ) {
+                if( node.keepAliveType === 'str' ) {
+                    keep_alive = config.keepAlive
+                } else if( node.keepAliveType === 'num' ) {
+                    keep_alive = Number( config.keepAlive )
+                }
+            } else {
+                keep_alive = msg?.payload?.keep_alive
+            }
 
             const optionsConfig = RED.nodes.getNode( config.options )
             const options = ( optionsConfig ) ? optionsConfig.json : msg?.payload?.options

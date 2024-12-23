@@ -7,6 +7,8 @@
             server: { value: '', type: 'ollama-config-server', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
             model: { value: '', type: 'ollama-config-model', required: false },
+            keepAlive: { value: '5m', required: false },
+            keepAliveType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
@@ -15,6 +17,17 @@
         label: function() {
             return this.name || 'ollama-generate';
         },
+        oneditprepare: function() {
+            if( !this.keepAliveType ) {
+                this.keepAliveType = 'str'
+            }
+
+            $( '#node-input-keepAlive' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'num' ],
+                typeField: '#node-input-keepAliveType'
+            } )
+        }
     } )
 </script>
 
@@ -37,6 +50,12 @@
     <div class="form-row">
         <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
         <input type="text" id="node-input-model" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-keepAlive"><i class="fa fa-cog"></i> Keep Alive</label>
+        <input type="text" id="node-input-keepAlive" />
+        <input type="hidden" id="node-input-keepAliveType" />
     </div>
 
     <div class="form-row">
