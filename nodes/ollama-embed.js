@@ -12,12 +12,14 @@ module.exports = function( RED ) {
         const node = this
         node.on( 'input', async function( msg ) {
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
             let model = null
-            if( !!config.model ) {
+            if( msg?.payload?.model ) {
+                model = msg?.payload?.model
+            } else if( !!config.model ) {
                 if( node.modelType === 'str' ) {
                     model = config.model
                 } else if( node.modelType === 'msg' ) {
@@ -27,12 +29,12 @@ module.exports = function( RED ) {
                 } else if( node.modelType === 'global' ) {
                     model = node.context().global.get( config.model )
                 }
-            } else {
-                model = msg?.payload?.model
             }
 
             let input = null
-            if( !!config.input ) {
+            if( msg?.payload?.input ) {
+                input = msg?.payload?.input
+            } else if( !!config.input ) {
                 if( node.inputType === 'str' ) {
                     input = config.input
                 } else if( node.inputType === 'msg' ) {
@@ -44,25 +46,23 @@ module.exports = function( RED ) {
                 } else if( node.inputType === 'json' ) {
                     input = JSON.parse( config.input )
                 }
-            } else {
-                input = msg?.payload?.input
             }
 
-            const truncate = ( node.truncate !== undefined ) ? node.truncate : msg?.payload?.truncate
+            const truncate = ( msg?.payload?.truncate !== undefined ) ? msg?.payload?.truncate : node.truncate
 
             let keep_alive = null
-            if( !!config.keepAlive ) {
+            if( msg?.payload?.keep_alive ) {
+                keep_alive = msg?.payload?.keep_alive
+            } else if( !!config.keepAlive ) {
                 if( node.keepAliveType === 'str' ) {
                     keep_alive = config.keepAlive
                 } else if( node.keepAliveType === 'num' ) {
                     keep_alive = Number( config.keepAlive )
                 }
-            } else {
-                keep_alive = msg?.payload?.keep_alive
             }
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = ( optionsConfig ) ? optionsConfig.json : msg?.payload?.options
+            const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
 
             const response = await ollama.embed( {
                 model,
