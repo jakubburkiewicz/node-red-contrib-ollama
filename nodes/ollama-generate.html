@@ -6,7 +6,22 @@
             name: { value: 'Ollama Generate' },
             server: { value: '', type: 'ollama-config-server', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
-            model: { value: '', type: 'ollama-config-model', required: false },
+            model: { value: '', required: false },
+            modelType: { value: 'str', required: false },
+            prompt: { value: '', required: true },
+            promptType: { value: 'str', required: false },
+            suffix: { value: '', required: false },
+            suffixType: { value: 'str', required: false },
+            system: { value: '', required: false },
+            systemType: { value: 'str', required: false },
+            template: { value: '', required: false },
+            templateType: { value: 'str', required: false },
+            raw: { value: false },
+            images: { value: '', required: false },
+            imagesType: { value: 'json', required: false },
+            stream: { value: false },
+            keepAlive: { value: '5m', required: false },
+            keepAliveType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
@@ -15,6 +30,77 @@
         label: function() {
             return this.name || 'ollama-generate';
         },
+        oneditprepare: function() {
+            if( !this.modelType ) {
+                this.modelType = 'str'
+            }
+
+            $( '#node-input-model' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-modelType'
+            } )
+
+            if( !this.promptType ) {
+                this.promptType = 'str'
+            }
+
+            $( '#node-input-prompt' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-promptType'
+            } )
+
+            if( !this.suffixType ) {
+                this.suffixType = 'str'
+            }
+
+            $( '#node-input-suffix' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-suffixType'
+            } )
+
+            if( !this.systemType ) {
+                this.systemType = 'str'
+            }
+
+            $( '#node-input-system' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-systemType'
+            } )
+
+            if( !this.templateType ) {
+                this.templateType = 'str'
+            }
+
+            $( '#node-input-template' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-templateType'
+            } )
+
+            if( !this.imagesType ) {
+                this.imagesType = 'json'
+            }
+
+            $( '#node-input-images' ).typedInput( {
+                type: 'json',
+                types: [ 'json', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-imagesType'
+            } )
+
+            if( !this.keepAliveType ) {
+                this.keepAliveType = 'str'
+            }
+
+            $( '#node-input-keepAlive' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'num' ],
+                typeField: '#node-input-keepAliveType'
+            } )
+        }
     } )
 </script>
 
@@ -35,8 +121,55 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
+        <input type="hidden" id="node-input-modelType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-prompt"><i class="fa fa-comment"></i> Prompt</label>
+        <input type="text" id="node-input-prompt" />
+        <input type="hidden" id="node-input-promptType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-suffix"><i class="fa fa-comment"></i> Suffix</label>
+        <input type="text" id="node-input-suffix" />
+        <input type="hidden" id="node-input-suffixType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-system"><i class="fa fa-cog"></i> System</label>
+        <input type="text" id="node-input-system" />
+        <input type="hidden" id="node-input-systemType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-template"><i class="fa fa-cog"></i> Template</label>
+        <input type="text" id="node-input-template" />
+        <input type="hidden" id="node-input-templateType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-raw"><i class="fa fa-cog"></i> Raw</label>
+        <input type="checkbox" id="node-input-raw" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-images"><i class="fa fa-cog"></i> Images</label>
+        <input type="text" id="node-input-images" />
+        <input type="hidden" id="node-input-imagesType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-stream"><i class="fa fa-cog"></i> Stream</label>
+        <input type="checkbox" id="node-input-stream" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-keepAlive"><i class="fa fa-cog"></i> Keep Alive</label>
+        <input type="text" id="node-input-keepAlive" />
+        <input type="hidden" id="node-input-keepAliveType" />
     </div>
 
     <div class="form-row">
@@ -56,31 +189,26 @@
         </dt>
 
         <dd>
-            The payload object.
+            The payload object is an alternative way to configure the node.<br />
+            Any properties in the payload object will override the node configuration.
 
             <dl class="message-properties">
                 <dt class="optional">
                     payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The host of the Ollama instance.<br />
-                    <em>Alternative to the <code>Server</code> field.</em>
-                </dd>
+                <dd>The host of the Ollama instance.</dd>
 
                 <dt class="optional">
                     payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The model to use for generating the next message.<br />
-                    <em>Alternative to the <code>Model</code> field.</em>
-                </dd>
+                <dd>The model to use for generating the next message.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.prompt <span class="property-type">string</span>
                 </dt>
                 <dd>The prompt to generate a response for.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.suffix <span class="property-type">string</span>
                 </dt>
                 <dd>The text after the model response.</dd>
@@ -93,18 +221,12 @@
                 <dt class="optional">
                     payload.format <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The format to return a response in. Currently the only accepted value is <code>json</code><br />
-                    <em>Alternative to the <code>Format</code> field.</em>
-                </dd>
+                <dd>The format to return a response in. Currently the only accepted value is <code>json</code></dd>
 
                 <dt class="optional">
                     payload.options <span class="property-type">object</span>
                 </dt>
-                <dd>
-                    Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.<br />
-                    <em>Alternative to the <code>Options</code> field.</em>
-                </dd>
+                <dd>Additional model parameters listed in the documentation for the <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values">Modelfile</a>.</dd>
 
                 <dt class="optional">
                     payload.system <span class="property-type">string</span>

@@ -3,36 +3,70 @@ module.exports = function( RED ) {
 
     function OllamaChatNode( config )  {
         RED.nodes.createNode( this, config )
+
+        this.modelType = config.modelType || 'str'
+        this.messagesType = config.messagesType || 'msg'
+        this.stream = config.stream || false
+        this.keepAliveType = config.keepAliveType || 'str'
+
         const node = this
-
         node.on( 'input', async function( msg ) {
-            const {
-                host: payloadHost,
-                model: payloadModel,
-                messages,
-                format: payloadFormat,
-                stream,
-                keep_alive,
-                tools: payloadTools,
-                options: payloadOptions
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : payloadHost
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
-            const modelConfig = RED.nodes.getNode( config.model )
-            const model = ( modelConfig ) ? modelConfig.name : payloadModel
+            let model = null
+            if( msg?.payload?.model ) {
+                model = msg?.payload?.model
+            } else if( !!config.model ) {
+                if( node.modelType === 'str' ) {
+                    model = config.model
+                } else if( node.modelType === 'msg' ) {
+                    model = msg[ config.model ]
+                } else if( node.modelType === 'flow' ) {
+                    model = node.context().flow.get( config.model )
+                } else if( node.modelType === 'global' ) {
+                    model = node.context().global.get( config.model )
+                }
+            }
+
+            let messages = null
+            if( msg?.payload?.messages ) {
+                messages = msg?.payload?.messages
+            } else if( !!config.messages ) {
+                if( node.messagesType === 'msg' ) {
+                    messages = msg[ config.messages ]
+                } else if( node.messagesType === 'flow' ) {
+                    messages = node.context().flow.get( config.messages )
+                } else if( node.messagesType === 'global' ) {
+                    messages = node.context().global.get( config.messages )
+                } else if( node.messagesType === 'json' ) {
+                    messages = JSON.parse( config.messages )
+                }
+            }
 
             const formatConfig = RED.nodes.getNode( config.format )
-            const format = ( formatConfig ) ? formatConfig.json : payloadFormat
+            const format = msg?.payload?.format || ( formatConfig ) ? formatConfig.json : null
+
+            const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
+
+            let keep_alive = null
+            if( msg?.payload?.keep_alive ) {
+                keep_alive = msg?.payload?.keep_alive
+            } else if( !!config.keepAlive ) {
+                if( node.keepAliveType === 'str' ) {
+                    keep_alive = config.keepAlive
+                } else if( node.keepAliveType === 'num' ) {
+                    keep_alive = Number( config.keepAlive )
+                }
+            }
 
             const toolsConfig = RED.nodes.getNode( config.tools )
-            const tools = ( toolsConfig ) ? toolsConfig.json : payloadTools
+            const tools = msg?.payload?.tools || ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : null
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = ( optionsConfig ) ? optionsConfig.json : payloadOptions
+            const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
 
             const response = await ollama.chat( {
                     model,

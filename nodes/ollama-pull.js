@@ -3,23 +3,36 @@ module.exports = function( RED ) {
 
     function OllamaPulltNode( config )  {
         RED.nodes.createNode( this, config )
+
+        this.modelType = config.modelType || 'str'
+        this.insecure = config.insecure || false
+        this.stream = config.stream || false
+
         const node = this
-
         node.on( 'input', async function( msg ) {
-            const {
-                host: payloadHost,
-                model: payloadModel,
-                insecure,
-                stream
-            } = msg.payload
-
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : payloadHost
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
-            const modelConfig = RED.nodes.getNode( config.model )
-            const model = ( modelConfig ) ? modelConfig.name : payloadModel
+            let model = null
+            if( msg?.payload?.model ) {
+                model = msg?.payload?.model
+            } else if( !!config.model ) {
+                if( node.modelType === 'str' ) {
+                    model = config.model
+                } else if( node.modelType === 'msg' ) {
+                    model = msg[ config.model ]
+                } else if( node.modelType === 'flow' ) {
+                    model = node.context().flow.get( config.model )
+                } else if( node.modelType === 'global' ) {
+                    model = node.context().global.get( config.model )
+                }
+            }
+
+            const insecure = ( msg?.payload?.insecure !== undefined ) ? msg?.payload?.insecure : node.insecure
+
+            const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
 
             const response = await ollama.pull( {
                     model,

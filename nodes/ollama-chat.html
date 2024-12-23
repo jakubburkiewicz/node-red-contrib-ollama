@@ -5,8 +5,14 @@
         defaults: {
             name: { value: 'Ollama Chat' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', type: 'ollama-config-model', required: true },
+            model: { value: '', required: false },
+            modelType: { value: 'str', required: false },
+            messages: { value: 'payload', required: false },
+            messagesType: { value: 'msg', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
+            stream: { value: false },
+            keepAlive: { value: '5m', required: false },
+            keepAliveType: { value: 'str', required: false },
             tools: { value: '', type: 'ollama-config-tools', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
@@ -14,8 +20,39 @@
         outputs: 1,
         icon: 'ollama.png',
         label: function() {
-            return this.name || 'ollama-chat';
+            return this.name || 'ollama-chat'
         },
+        oneditprepare: function() {
+            if( !this.modelType ) {
+                this.modelType = 'str'
+            }
+
+            $( '#node-input-model' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-modelType'
+            } )
+
+            if( !this.messagesType ) {
+                this.messagesType = 'msg'
+            }
+
+            $( '#node-input-messages' ).typedInput( {
+                type: 'msg',
+                types: [ 'msg', 'flow', 'global', 'json' ],
+                typeField: '#node-input-messagesType'
+            } )
+
+            if( !this.keepAliveType ) {
+                this.keepAliveType = 'str'
+            }
+
+            $( '#node-input-keepAlive' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'num' ],
+                typeField: '#node-input-keepAliveType'
+            } )
+        }
     } )
 </script>
 
@@ -31,13 +68,31 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
+        <input type="hidden" id="node-input-modelType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-messages"><i class="fa fa-comment"></i> Messages</label>
+        <input type="text" id="node-input-messages" />
+        <input type="hidden" id="node-input-messagesType" />
     </div>
 
     <div class="form-row">
         <label for="node-input-format"><i class="fa fa-cog"></i> Format</label>
         <input type="text" id="node-input-format" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-stream"><i class="fa fa-cog"></i> Stream</label>
+        <input type="checkbox" id="node-input-stream" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-keepAlive"><i class="fa fa-cog"></i> Keep Alive</label>
+        <input type="text" id="node-input-keepAlive" />
+        <input type="hidden" id="node-input-keepAliveType" />
     </div>
 
     <div class="form-row">
@@ -62,49 +117,44 @@
         </dt>
 
         <dd>
-            The payload object.
+            The payload object is an alternative way to configure the node.<br />
+            Any properties in the payload object will override the node configuration.
 
             <dl class="message-properties">
                 <dt class="optional">
                     payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The host of the Ollama instance.<br />
-                    <em>Alternative to the <code>Server</code> field.</em>
-                </dd>
+                <dd>The host of the Ollama instance.</dd>
 
                 <dt class="optional">
                     payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The model to use for generating the next message.<br />
-                    <em>Alternative to the <code>Model</code> field.</em>
-                </dd>
+                <dd>The model to use for generating the next message.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.messages <span class="property-type">array</span>
                 </dt>
                 <dd>
-                    The chat history to use for generating the next message.<br />
+                    The chat history to use for generating the next message.
 
                     <h4>Message</h4>
                     <dl class="message-properties">
-                        <dt>
+                        <dt class="optional">
                             role <span class="property-type">string</span>
                         </dt>
                         <dd>The role of the message sender ('user', 'system', or 'assistant').</dd>
 
-                        <dt>
+                        <dt class="optional">
                             content <span class="property-type">string</span>
                         </dt>
                         <dd>The content of the message.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             images <span class="property-type">array</span>
                         </dt>
                         <dd>The images attached to the message, either as Uint8Array or base64 encoded strings.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             tool_calls <span class="property-type">array</span>
                         </dt>
                         <dd>A list of tools the model wants to use.</dd>
@@ -114,15 +164,7 @@
                 <dt class="optional">
                     payload.format <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The format of the response (only <code>json</code> for now).<br />
-                    <em>Alternative to the <code>Format</code> field.</em>
-                </dd>
-
-                <dt class="optional">
-                    payload.stream <span class="property-type">boolean</span>
-                </dt>
-                <dd>When true an AsyncGenerator is returned.</dd>
+                <dd>The format of the response (only <code>json</code> for now).</dd>
 
                 <dt class="optional">
                     payload.keep_alive <span class="property-type">array</span>
@@ -134,8 +176,7 @@
                 </dt>
                 <dd>
                     Tools for the model to use if supported.<br />
-                    Requires <code>stream</code> to be set to <code>false</code>.<br />
-                    <em>Alternative to the <code>Model</code> field.</em>
+                    Requires <code>stream</code> to be set to <code>false</code>.
 
                     <p>
                         For more information, see the Ollama API documentation:<br />
@@ -147,145 +188,144 @@
                     payload.options <span class="property-type">object</span>
                 </dt>
                 <dd>
-                    Options to configure the runtime.<br />
-                    <em>Alternative to the <code>Options</code> field.</em>
+                    Options to configure the runtime.
 
                     <h4>Options</h4>
                     <dl class="message-properties">
-                        <dt>
+                        <dt class="optional">
                             numa <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use NUMA for the runtime.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_ctx <span class="property-type">number</span>
                         </dt>
                         <dd>The number of contexts to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_batch <span class="property-type">number</span>
                         </dt>
                         <dd>The number of batches to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             main_gpu <span class="property-type">number</span>
                         </dt>
                         <dd>The main GPU to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             low_vram <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use low VRAM.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             f16_kv <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use f16 key-value.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             logits_all <span class="property-type">boolean</span>
                         </dt>
                         <dd>Return all logits.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             vocab_only <span class="property-type">boolean</span>
                         </dt>
                         <dd>Return only the vocabulary.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             use_nmap <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use NMAP.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             use_mlock <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use mlock.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             embedding_only <span class="property-type">boolean</span>
                         </dt>
                         <dd>Return only the embeddings.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_thread <span class="property-type">number</span>
                         </dt>
                         <dd>The number of threads to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_keep <span class="property-type">number</span>
                         </dt>
                         <dd>The number of models to keep.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             seed <span class="property-type">number</span>
                         </dt>
                         <dd>The seed to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_predict <span class="property-type">number</span>
                         </dt>
                         <dd>The number of predictions to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             top_k <span class="property-type">number</span>
                         </dt>
                         <dd>The top k to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             top_p <span class="property-type">number</span>
                         </dt>
                         <dd>The top p to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             typical_p <span class="property-type">number</span>
                         </dt>
                         <dd>The typical p to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             repeat_last_n <span class="property-type">number</span>
                         </dt>
                         <dd>The repeat last n to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             temperature <span class="property-type">number</span>
                         </dt>
                         <dd>The temperature to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             repeat_pentalty <span class="property-type">number</span>
                         </dt>
                         <dd>The repeat pentalty to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             presence_penalty <span class="property-type">number</span>
                         </dt>
                         <dd>The presence penalty to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             frequency_penalty <span class="property-type">number</span>
                         </dt>
                         <dd>The frequency penalty to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             mirostat <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use mirostat.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             mirostat_tau <span class="property-type">number</span>
                         </dt>
 
-                        <dt>
+                        <dt class="optional">
                             mirostat_eta <span class="property-type">number</span>
                         </dt>
 
-                        <dt>
+                        <dt class="optional">
                             penalize_newline <span class="property-type">boolean</span>
                         </dt>
                         <dd>Penalize newline.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             stop <span class="property-type">array</span>
                         </dt>
                         <dd>The stop to use.</dd>

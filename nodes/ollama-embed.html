@@ -5,7 +5,13 @@
         defaults: {
             name: { value: 'Ollama Embed' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', type: 'ollama-config-model', required: false },
+            model: { value: '', required: false },
+            modelType: { value: 'str', required: false },
+            input: { value: '', required: false },
+            inputType: { value: 'str', required: false },
+            truncate: { value: false, required: false },
+            keepAlive: { value: '5m', required: false },
+            keepAliveType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
@@ -14,6 +20,37 @@
         label: function() {
             return this.name || 'ollama-embed';
         },
+        oneditprepare: function() {
+            if( !this.modelType ) {
+                this.modelType = 'str'
+            }
+
+            $( '#node-input-model' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-modelType'
+            } )
+
+            if( !this.inputType ) {
+                this.inputType = 'str'
+            }
+
+            $( '#node-input-input' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'json', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-inputType'
+            } )
+
+            if( !this.keepAliveType ) {
+                this.keepAliveType = 'str'
+            }
+
+            $( '#node-input-keepAlive' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'num' ],
+                typeField: '#node-input-keepAliveType'
+            } )
+        }
     } )
 </script>
 
@@ -29,8 +66,26 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
+        <input type="hidden" id="node-input-modelType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-input"><i class="fa fa-comment"></i> Input</label>
+        <input type="text" id="node-input-input" />
+        <input type="hidden" id="node-input-inputType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-truncate"><i class="fa fa-cog"></i> Truncate</label>
+        <input type="checkbox" id="node-input-truncate" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-keepAlive"><i class="fa fa-cog"></i> Keep Alive</label>
+        <input type="text" id="node-input-keepAlive" />
+        <input type="hidden" id="node-input-keepAliveType" />
     </div>
 
     <div class="form-row">
@@ -50,28 +105,23 @@
         </dt>
 
         <dd>
-            The payload object.
+            The payload object is an alternative way to configure the node.<br />
+            Any properties in the payload object will override the node configuration.
 
             <dl class="message-properties">
                 <dt class="optional">
                     payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The host of the Ollama instance.<br />
-                    <em>Alternative to the <code>Server</code> field.</em>
-                </dd>
+                <dd>The host of the Ollama instance.</dd>
 
                 <dt class="optional">
                     payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The name of the model used to generate the embeddings.<br />
-                    <em>Alternative to the <code>Model</code> field.</em>
-                </dd>
+                <dd>The name of the model used to generate the embeddings.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.input <span class="property-type">string | array[string]</span>
-                </dt>
+                </d>
                 <dd>The input used to generate the embeddings.</dd>
 
                 <dt class="optional">
@@ -93,140 +143,140 @@
 
                     <h4>Options</h4>
                     <dl class="message-properties">
-                        <dt>
+                        <dt class="optional">
                             numa <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use NUMA for the runtime.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_ctx <span class="property-type">number</span>
                         </dt>
                         <dd>The number of contexts to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_batch <span class="property-type">number</span>
                         </dt>
                         <dd>The number of batches to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             main_gpu <span class="property-type">number</span>
                         </dt>
                         <dd>The main GPU to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             low_vram <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use low VRAM.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             f16_kv <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use f16 key-value.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             logits_all <span class="property-type">boolean</span>
                         </dt>
                         <dd>Return all logits.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             vocab_only <span class="property-type">boolean</span>
                         </dt>
                         <dd>Return only the vocabulary.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             use_nmap <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use NMAP.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             use_mlock <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use mlock.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             embedding_only <span class="property-type">boolean</span>
                         </dt>
                         <dd>Return only the embeddings.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_thread <span class="property-type">number</span>
                         </dt>
                         <dd>The number of threads to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_keep <span class="property-type">number</span>
                         </dt>
                         <dd>The number of models to keep.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             seed <span class="property-type">number</span>
                         </dt>
                         <dd>The seed to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             num_predict <span class="property-type">number</span>
                         </dt>
                         <dd>The number of predictions to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             top_k <span class="property-type">number</span>
                         </dt>
                         <dd>The top k to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             top_p <span class="property-type">number</span>
                         </dt>
                         <dd>The top p to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             typical_p <span class="property-type">number</span>
                         </dt>
                         <dd>The typical p to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             repeat_last_n <span class="property-type">number</span>
                         </dt>
                         <dd>The repeat last n to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             temperature <span class="property-type">number</span>
                         </dt>
                         <dd>The temperature to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             repeat_pentalty <span class="property-type">number</span>
                         </dt>
                         <dd>The repeat pentalty to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             presence_penalty <span class="property-type">number</span>
                         </dt>
                         <dd>The presence penalty to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             frequency_penalty <span class="property-type">number</span>
                         </dt>
                         <dd>The frequency penalty to use.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             mirostat <span class="property-type">boolean</span>
                         </dt>
                         <dd>Use mirostat.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             mirostat_tau <span class="property-type">number</span>
                         </dt>
 
-                        <dt>
+                        <dt class="optional">
                             mirostat_eta <span class="property-type">number</span>
                         </dt>
 
-                        <dt>
+                        <dt class="optional">
                             penalize_newline <span class="property-type">boolean</span>
                         </dt>
                         <dd>Penalize newline.</dd>
 
-                        <dt>
+                        <dt class="optional">
                             stop <span class="property-type">array</span>
                         </dt>
                         <dd>The stop to use.</dd>

@@ -4,14 +4,39 @@
         color: 'rgb(186 230 253)',
         defaults: {
             name: { value: 'Ollama Copy' },
-            server: { value: '', type: 'ollama-config-server', required: false }
+            server: { value: '', type: 'ollama-config-server', required: false },
+            source: { value: '', required: true },
+            sourceType: { value: 'str' },
+            destination: { value: '', required: true },
+            destinationType: { value: 'str' },
         },
         inputs: 1,
         outputs: 1,
         icon: 'ollama.png',
         label: function() {
-            return this.name || 'ollama-copy';
+            return this.name || 'ollama-copy'
         },
+        oneditprepare: function() {
+            if( !this.sourceType ) {
+                this.sourceType = 'msg'
+            }
+
+            $( '#node-input-source' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-sourceType'
+            } )
+
+            if( !this.destinationType ) {
+                this.destinationType = 'msg'
+            }
+
+            $( '#node-input-destination' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-destinationType'
+            } )
+        }
     } )
 </script>
 
@@ -24,6 +49,18 @@
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-source"><i class="fa fa-comment"></i> Source</label>
+        <input type="text" id="node-input-source" />
+        <input type="hidden" id="node-input-sourceType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-destination"><i class="fa fa-comment"></i> Destination</label>
+        <input type="text" id="node-input-destination" />
+        <input type="hidden" id="node-input-destinationType" />
     </div>
 </script>
 
@@ -38,23 +75,21 @@
         </dt>
 
         <dd>
-            The payload object.
+            The payload object is an alternative way to configure the node.<br />
+            Any properties in the payload object will override the node configuration.
 
             <dl class="message-properties">
                 <dt class="optional">
                     payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The host of the Ollama instance.<br />
-                    <em>Alternative to the <code>Server</code> field.</em>
-                </dd>
+                <dd>The host of the Ollama instance.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.source <span class="property-type">string</span>
                 </dt>
                 <dd>The name of the model to copy.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.destination <span class="property-type">string</span>
                 </dt>
                 <dd>The name of the new model.</dd>

@@ -5,7 +5,10 @@
         defaults: {
             name: { value: 'Ollama Pull' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', type: 'ollama-config-model', required: false },
+            model: { value: '', required: false },
+            modelType: { value: 'str', required: false },
+            insecure: { value: false },
+            stream: { value: false },
         },
         inputs: 1,
         outputs: 1,
@@ -13,6 +16,17 @@
         label: function() {
             return this.name || 'ollama-pull';
         },
+        oneditprepare: function() {
+            if( !this.modelType ) {
+                this.modelType = 'str'
+            }
+
+            $( '#node-input-model' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-modelType'
+            } )
+        }
     } )
 </script>
 
@@ -28,8 +42,19 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
+        <label for="node-input-model"><i class="fa fa-comment"></i> Model</label>
         <input type="text" id="node-input-model" />
+        <input type="hidden" id="node-input-modelType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-insecure"><i class="fa fa-lock"></i> Insecure</label>
+        <input type="checkbox" id="node-input-insecure" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-stream"><i class="fa fa-cog"></i> Stream</label>
+        <input type="checkbox" id="node-input-stream" />
     </div>
 </script>
 
@@ -44,31 +69,26 @@
         </dt>
 
         <dd>
-            The payload object.
+            The payload object is an alternative way to configure the node.<br />
+            Any properties in the payload object will override the node configuration.
 
             <dl class="message-properties">
                 <dt class="optional">
                     payload.host <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The host of the Ollama instance.<br />
-                    <em>Alternative to the <code>Server</code> field.</em>
-                </dd>
+                <dd>The host of the Ollama instance.</dd>
 
                 <dt class="optional">
                     payload.model <span class="property-type">string</span>
                 </dt>
-                <dd>
-                    The name of the model to download.<br />
-                    <em>Alternative to the <code>Model</code> field.</em>
-                </dd>
+                <dd>The name of the model to download.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.insecure <span class="property-type">boolean</span>
                 </dt>
                 <dd>Pull from servers whose identity cannot be verified.</dd>
 
-                <dt>
+                <dt class="optional">
                     payload.stream <span class="property-type">boolean</span>
                 </dt>
                 <dd>When true an AsyncGenerator is returned.</dd>
