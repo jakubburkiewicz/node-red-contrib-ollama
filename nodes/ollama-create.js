@@ -11,12 +11,14 @@ module.exports = function( RED ) {
         const node = this
         node.on( 'input', async function( msg ) {
             const server = RED.nodes.getNode( config.server )
-            const host = ( server ) ? server.host + ':' + server.port : msg?.payload?.host
+            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
 
             const ollama = new Ollama( { host } )
 
             let model = null
-            if( !!config.model ) {
+            if( msg?.payload?.model ) {
+                model = msg?.payload?.model
+            } else if( !!config.model ) {
                 if( node.modelType === 'str' ) {
                     model = config.model
                 } else if( node.modelType === 'msg' ) {
@@ -26,16 +28,16 @@ module.exports = function( RED ) {
                 } else if( node.modelType === 'global' ) {
                     model = node.context().global.get( config.model )
                 }
-            } else {
-                model = msg?.payload?.model
             }
 
-            const modelfile = config.modelfile || msg?.payload?.modelfile
+            const modelfile = msg?.payload?.modelfile || config.modelfile
 
-            const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
+            const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
 
             let path = null
-            if( !!config.path ) {
+            if( msg?.payload?.path ) {
+                path = msg?.payload?.path
+            } else if( !!config.path ) {
                 if( node.pathType === 'str' ) {
                     path = config.path
                 } else if( node.pathType === 'msg' ) {
@@ -45,8 +47,6 @@ module.exports = function( RED ) {
                 } else if( node.pathType === 'global' ) {
                     path = node.context().global.get( config.path )
                 }
-            } else {
-                path = msg?.payload?.path
             }
 
             const response = await ollama.create( {
