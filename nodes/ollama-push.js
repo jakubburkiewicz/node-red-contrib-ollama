@@ -3,12 +3,13 @@ module.exports = function( RED ) {
 
     function OllamaPushNode( config )  {
         RED.nodes.createNode( this, config )
-        const node = this
 
+        this.stream = config.stream || false
+
+        const node = this
         node.on( 'input', async function( msg ) {
             const {
-                insecure,
-                stream
+                insecure
             } = msg.payload
 
             const server = RED.nodes.getNode( config.server )
@@ -18,6 +19,8 @@ module.exports = function( RED ) {
 
             const modelConfig = RED.nodes.getNode( config.model )
             const model = ( modelConfig ) ? modelConfig.name : msg?.payload?.model
+
+            const stream = ( node.stream !== undefined ) ? node.stream : msg?.payload?.stream
 
             const response = await ollama.push( {
                     model,
