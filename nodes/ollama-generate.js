@@ -5,6 +5,7 @@ module.exports = function( RED ) {
         RED.nodes.createNode( this, config )
 
         this.modelType = config.modelType || 'str'
+        this.promptType = config.promptType || 'str'
         this.stream = config.stream || false
         this.keepAliveType = config.keepAliveType || 'str'
 
@@ -37,6 +38,21 @@ module.exports = function( RED ) {
                 }
             } else {
                 model = msg?.payload?.model
+            }
+
+            let prompt = null
+            if( !!config.prompt ) {
+                if( node.promptType === 'str' ) {
+                    prompt = config.prompt
+                } else if( node.promptType === 'msg' ) {
+                    prompt = msg[ config.prompt ]
+                } else if( node.promptType === 'flow' ) {
+                    prompt = node.context().flow.get( config.prompt )
+                } else if( node.promptType === 'global' ) {
+                    prompt = node.context().global.get( config.prompt )
+                }
+            } else {
+                prompt = msg?.payload?.prompt
             }
 
             const formatConfig = RED.nodes.getNode( config.format )
