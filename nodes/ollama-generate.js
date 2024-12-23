@@ -9,6 +9,7 @@ module.exports = function( RED ) {
         this.suffixType = config.suffixType || 'str'
         this.systemType = config.systemType || 'str'
         this.templateType = config.templateType || 'str'
+        this.raw = config.raw || false
         this.stream = config.stream || false
         this.keepAliveType = config.keepAliveType || 'str'
 
@@ -102,6 +103,8 @@ module.exports = function( RED ) {
             } else {
                 template = msg?.payload?.template
             }
+
+            const raw = ( node.raw !== undefined ) ? node.raw : msg?.payload?.raw
 
             const formatConfig = RED.nodes.getNode( config.format )
             const format = ( formatConfig ) ? formatConfig.json : msg?.payload?.format
