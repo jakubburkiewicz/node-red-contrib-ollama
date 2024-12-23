@@ -6,6 +6,7 @@
             name: { value: 'Ollama Create' },
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', type: 'ollama-config-model', required: false },
+            stream: { value: false },
         },
         inputs: 1,
         outputs: 1,
@@ -30,6 +31,11 @@
     <div class="form-row">
         <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
         <input type="text" id="node-input-model" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-stream"><i class="fa fa-cog"></i> Stream</label>
+        <input type="checkbox" id="node-input-stream" />
     </div>
 </script>
 
