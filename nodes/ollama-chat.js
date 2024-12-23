@@ -3,13 +3,15 @@ module.exports = function( RED ) {
 
     function OllamaChatNode( config )  {
         RED.nodes.createNode( this, config )
-        const node = this
 
+        const messagesType = config.messagesType || 'msg'
+
+        const node = this
         node.on( 'input', async function( msg ) {
             const {
                 host: payloadHost,
                 model: payloadModel,
-                messages,
+                messages: payloadMessages,
                 format: payloadFormat,
                 stream,
                 keep_alive,
@@ -24,6 +26,21 @@ module.exports = function( RED ) {
 
             const modelConfig = RED.nodes.getNode( config.model )
             const model = ( modelConfig ) ? modelConfig.name : payloadModel
+
+            let messages = null
+            if( !!config.messages ) {
+                if( messagesType === 'msg' ) {
+                    messages = msg[ config.messages ]
+                } else if( messagesType === 'flow' ) {
+                    messages = node.context().flow.get( config.messages )
+                } else if( messagesType === 'global' ) {
+                    messages = node.context().global.get( config.messages )
+                } else if( messagesType === 'json' ) {
+                    messages = JSON.parse( config.messages )
+                }
+            } else {
+                messages = payloadMessages
+            }
 
             const formatConfig = RED.nodes.getNode( config.format )
             const format = ( formatConfig ) ? formatConfig.json : payloadFormat

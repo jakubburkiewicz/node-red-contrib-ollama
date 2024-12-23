@@ -6,6 +6,8 @@
             name: { value: 'Ollama Chat' },
             server: { value: '', type: 'ollama-config-server', required: false },
             model: { value: '', type: 'ollama-config-model', required: true },
+            messages: { value: 'payload', required: false },
+            messagesType: { value: 'mgs', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
             tools: { value: '', type: 'ollama-config-tools', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
@@ -16,6 +18,17 @@
         label: function() {
             return this.name || 'ollama-chat';
         },
+        oneditprepare: function() {
+            if( !this.messagesType ) {
+                this.messagesType = 'msg'
+            }
+
+            $( '#node-input-messages' ).typedInput( {
+                type: 'msg',
+                types: [ 'msg', 'flow', 'global', 'json' ],
+                typeField: '#node-input-messagesType'
+            } )
+        }
     } )
 </script>
 
@@ -33,6 +46,12 @@
     <div class="form-row">
         <label for="node-input-model"><i class="fa fa-bookmark"></i> Model</label>
         <input type="text" id="node-input-model" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-messages"><i class="fa fa-comment"></i> Messages</label>
+        <input type="text" id="node-input-messages" />
+        <input type="hidden" id="node-input-messagesType" />
     </div>
 
     <div class="form-row">
@@ -86,6 +105,7 @@
                 </dt>
                 <dd>
                     The chat history to use for generating the next message.<br />
+                    <em>Alternative to the <code>Messages</code> field.</em>
 
                     <h4>Message</h4>
                     <dl class="message-properties">
