@@ -8,6 +8,7 @@ module.exports = function( RED ) {
         this.messagesType = config.messagesType || 'msg'
         this.stream = config.stream || false
         this.keepAliveType = config.keepAliveType || 'str'
+        this.think = config.think || false
 
         const node = this
         node.on( 'input', async function( msg ) {
@@ -65,6 +66,8 @@ module.exports = function( RED ) {
             const toolsConfig = RED.nodes.getNode( config.tools )
             const tools = msg?.payload?.tools || ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : null
 
+            const think = ( msg?.payload?.think !== undefined ) ? msg?.payload?.think : node.think
+
             const optionsConfig = RED.nodes.getNode( config.options )
             const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
 
@@ -75,6 +78,7 @@ module.exports = function( RED ) {
                     stream,
                     keep_alive,
                     tools,
+                    think,
                     options
                 } )
                 .catch( error => {

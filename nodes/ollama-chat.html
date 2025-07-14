@@ -14,6 +14,7 @@
             keepAlive: { value: '5m', required: false },
             keepAliveType: { value: 'str', required: false },
             tools: { value: '', type: 'ollama-config-tools', required: false },
+            think: { value: false },
             options: { value: '', type: 'ollama-config-options', required: false },
         },
         inputs: 1,
@@ -98,6 +99,11 @@
     <div class="form-row">
         <label for="node-input-tools"><i class="fa fa-cog"></i> Tools</label>
         <input type="text" id="node-input-tools" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-think"><i class="fa fa-cog"></i> Think</label>
+        <input type="checkbox" id="node-input-think" />
     </div>
 
     <div class="form-row">
