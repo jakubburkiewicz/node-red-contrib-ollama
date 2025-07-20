@@ -5,12 +5,16 @@
         defaults: {
             name: { value: 'Ollama Create' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', required: false },
-            modelType: { value: 'str', required: false },
-            modelfile: { value: '', required: false },
-            stream: { value: false },
-            path: { value: '', required: false },
-            pathType: { value: 'str', required: false },
+            model: { value: '', type: 'typedInput', required: true },
+            from: { value: '', type: 'typedInput', required: true },
+            stream: { value: false, type: 'boolean', required: false },
+            quantize: { value: '', type: 'typedInput', required: true },
+            template: { value: '', type: 'typedInput', required: false },
+            license: { value: '', type: 'typedInput', required: false },
+            system: { value: '', type: 'typedInput', required: false },
+            parameters: { value: '', type: 'typedInput', required: false },
+            messages: { value: '', type: 'typedInput', required: false },
+            adapters: { value: '', type: 'typedInput', required: false }
         },
         inputs: 1,
         outputs: 1,
@@ -29,21 +33,52 @@
                 typeField: '#node-input-modelType'
             } )
 
-            this.editor = RED.editor.createEditor( {
-                id: 'node-input-modelfile-editor',
-                mode: 'yaml',
-                value: this.modelfile,
-                mode: 'ace/mode/text'
-            } )
-
-            if( !this.pathType ) {
-                this.pathType = 'str'
-            }
-
-            $( '#node-input-path' ).typedInput( {
+            $( '#node-input-from' ).typedInput( {
                 type: 'str',
                 types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-pathType'
+                typeField: '#node-input-fromType'
+            } )
+
+            $( '#node-input-quantize' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-quantizeType'
+            } )
+
+            $( '#node-input-template' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-templateType'
+            } )
+
+            $( '#node-input-license' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-licenseType'
+            } )
+
+            $( '#node-input-system' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-systemType'
+            } )
+
+            $( '#node-input-parameters' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-parametersType'
+            } )
+
+            $( '#node-input-messages' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-messagesType'
+            } )
+
+            $( '#node-input-adapters' ).typedInput( {
+                type: 'str',
+                types: [ 'str', 'msg', 'flow', 'global' ],
+                typeField: '#node-input-adaptersType'
             } )
         },
         oneditsave: function() {
@@ -76,18 +111,57 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-stream"><i class="fa fa-cog"></i> Stream</label>
+        <label for="node-input-from"><i class="fa fa-file"></i> From</label>
+        <input type="text" id="node-input-from" />
+        <input type="hidden" id="node-input-fromType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-stream"><i class="fa fa-stream"></i> Stream</label>
         <input type="checkbox" id="node-input-stream" />
     </div>
 
     <div class="form-row">
-        <label for="node-input-path"><i class="fa fa-comment"></i> Path</label>
-        <input type="text" id="node-input-path" />
-        <input type="hidden" id="node-input-pathType" />
+        <label for="node-input-quantize"><i class="fa fa-compress"></i> Quantize</label>
+        <input type="text" id="node-input-quantize" />
+        <input type="hidden" id="node-input-quantizeType" />
     </div>
 
-    <label>Modelfile</label>
-    <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-modelfile-editor" />
+    <div class="form-row">
+        <label for="node-input-template"><i class="fa fa-file-code"></i> Template</label>
+        <input type="text" id="node-input-template" />
+        <input type="hidden" id="node-input-templateType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-license"><i class="fa fa-certificate"></i> License</label>
+        <input type="text" id="node-input-license" />
+        <input type="hidden" id="node-input-licenseType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-system"><i class="fa fa-cog"></i> System</label>
+        <input type="text" id="node-input-system" />
+        <input type="hidden" id="node-input-systemType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-parameters"><i class="fa fa-cogs"></i> Parameters</label>
+        <input type="text" id="node-input-parameters" />
+        <input type="hidden" id="node-input-parametersType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-messages"><i class="fa fa-comments"></i> Messages</label>
+        <input type="text" id="node-input-messages" />
+        <input type="hidden" id="node-input-messagesType" />
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-adapters"><i class="fa fa-plug"></i> Adapters</label>
+        <input type="text" id="node-input-adapters" />
+        <input type="hidden" id="node-input-adaptersType" />
+    </div>
 </script>
 
 <script type="text/html" data-help-name="ollama-create">
@@ -116,19 +190,49 @@
                 <dd>The name of the model to create.</dd>
 
                 <dt class="optional">
-                    payload.path <span class="property-type">string</span>
+                    payload.from <span class="property-type">string</span>
                 </dt>
-                <dd>The path to the Modelfile to use for creating the model.</dd>
-
-                <dt class="optional">
-                    payload.modelfile <span class="property-type">string</span>
-                </dt>
-                <dd>The content of the Modelfile to create.</dd>
+                <dd>The base model to derive from.</dd>
 
                 <dt class="optional">
                     payload.stream <span class="property-type">boolean</span>
                 </dt>
-                <dd>When true an AsyncGenerator is returned.</dd>
+                <dd>When true an <code>AsyncGenerator</code> is returned.</dd>
+
+                <dt class="optional">
+                    payload.quantize <span class="property-type">string</span>
+                </dt>
+                <dd>Quanization precision level (<code>q8_0</code>, <code>q4_K_M</code>, etc.).</dd>
+
+                <dt class="optional">
+                    payload.template <span class="property-type">string</span>
+                </dt>
+                <dd>The prompt template to use with the model.</dd>
+
+                <dt class="optional">
+                    payload.license <span class="property-type">string</span>
+                </dt>
+                <dd>The license(s) associated with the model.</dd>
+
+                <dt class="optional">
+                    payload.system <span class="property-type">string</span>
+                </dt>
+                <dd>The system prompt for the model.</dd>
+
+                <dt class="optional">
+                    payload.parameters <span class="property-type">object</span>
+                </dt>
+                <dd>Additional model parameters as key-value pairs.</dd>
+
+                <dt class="optional">
+                    payload.messages <span class="property-type">array</span>
+                </dt>
+                <dd>Initial chat messages for the model.</dd>
+
+                <dt class="optional">
+                    payload.adapters <span class="property-type">object</span>
+                </dt>
+                <dd>A key-value map of LoRA adapter configurations.</dd>
             </dl>
         </dd>
     </dl>
