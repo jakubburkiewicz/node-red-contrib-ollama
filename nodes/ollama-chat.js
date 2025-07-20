@@ -1,7 +1,7 @@
 module.exports = function( RED ) {
     const { Ollama } = require( 'ollama' )
 
-    function OllamaChatNode( config )  {
+    function OllamaChatNode( config ) {
         RED.nodes.createNode( this, config )
 
         this.modelType = config.modelType || 'str'
@@ -51,6 +51,8 @@ module.exports = function( RED ) {
 
             const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
 
+            const think = ( msg?.payload?.think !== undefined ) ? msg?.payload?.think : config.think || false
+
             let keep_alive = null
             if( msg?.payload?.keep_alive ) {
                 keep_alive = msg?.payload?.keep_alive
@@ -73,6 +75,7 @@ module.exports = function( RED ) {
                     messages,
                     format,
                     stream,
+                    think,
                     keep_alive,
                     tools,
                     options
