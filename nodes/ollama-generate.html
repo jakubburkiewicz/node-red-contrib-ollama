@@ -20,6 +20,7 @@
             images: { value: '', required: false },
             imagesType: { value: 'json', required: false },
             stream: { value: false },
+            think: { value: false },
             keepAlive: { value: '5m', required: false },
             keepAliveType: { value: 'str', required: false },
             options: { value: '', type: 'ollama-config-options', required: false },
@@ -167,6 +168,11 @@
     </div>
 
     <div class="form-row">
+        <label for="node-input-think"><i class="fa fa-cog"></i> Think</label>
+        <input type="checkbox" id="node-input-think" />
+    </div>
+
+    <div class="form-row">
         <label for="node-input-keepAlive"><i class="fa fa-cog"></i> Keep Alive</label>
         <input type="text" id="node-input-keepAlive" />
         <input type="hidden" id="node-input-keepAliveType" />
@@ -242,6 +248,13 @@
                     payload.stream <span class="property-type">boolean</span>
                 </dt>
                 <dd>If <code>false</code> the response will be returned as a single response object, rather than a stream of objects.</dd>
+
+                <dt class="optional">
+                    payload.think <span class="property-type">boolean</span>
+                </dt>
+                <dd>
+                    When <code>true</code>, the model will think about the response before responding. Requires thinking support from the model.
+                </dd>
 
                 <dt class="optional">
                     payload.raw <span class="property-type">boolean</span>

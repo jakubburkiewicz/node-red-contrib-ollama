@@ -11,6 +11,7 @@
             messagesType: { value: 'msg', required: false },
             format: { value: '', type: 'ollama-config-format', required: false },
             stream: { value: false },
+            think: { value: false },
             keepAlive: { value: '5m', required: false },
             keepAliveType: { value: 'str', required: false },
             tools: { value: '', type: 'ollama-config-tools', required: false },
@@ -90,6 +91,11 @@
     </div>
 
     <div class="form-row">
+        <label for="node-input-think"><i class="fa fa-cog"></i> Think</label>
+        <input type="checkbox" id="node-input-think" />
+    </div>
+
+    <div class="form-row">
         <label for="node-input-keepAlive"><i class="fa fa-cog"></i> Keep Alive</label>
         <input type="text" id="node-input-keepAlive" />
         <input type="hidden" id="node-input-keepAliveType" />
@@ -165,6 +171,13 @@
                     payload.format <span class="property-type">string</span>
                 </dt>
                 <dd>The format of the response (only <code>json</code> for now).</dd>
+
+                <dt class="optional">
+                    payload.think <span class="property-type">boolean</span>
+                </dt>
+                <dd>
+                    When true, the model will think about the response before responding. Requires thinking support from the model.
+                </dd>
 
                 <dt class="optional">
                     payload.keep_alive <span class="property-type">array</span>

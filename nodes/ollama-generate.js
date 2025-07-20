@@ -12,6 +12,7 @@ module.exports = function( RED ) {
         this.raw = config.raw || false
         this.imagesType = config.imagesType || 'json'
         this.stream = config.stream || false
+        this.think = config.think || false
         this.keepAliveType = config.keepAliveType || 'str'
 
         const node = this
@@ -118,6 +119,8 @@ module.exports = function( RED ) {
 
             const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
 
+            const think = ( msg?.payload?.think !== undefined ) ? msg?.payload?.think : node.think || false
+
             let keep_alive = null
             if( msg?.payload?.keep_alive ) {
                 keep_alive = msg?.payload?.keep_alive
@@ -142,6 +145,7 @@ module.exports = function( RED ) {
                 images,
                 format,
                 stream,
+                think,
                 keep_alive,
                 options
             } )
