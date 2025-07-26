@@ -47,7 +47,10 @@ module.exports = function( RED ) {
             }
 
             const formatConfig = RED.nodes.getNode( config.format )
-            const format = msg?.payload?.format || ( formatConfig ) ? formatConfig.json : null
+            const format = msg?.payload?.format
+                ? JSON.parse( msg?.payload?.format )
+                : ( formatConfig ) ? JSON.parse( formatConfig.json )
+                : null
 
             const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
 
