@@ -8,9 +8,26 @@ module.exports = function( RED ) {
         node.on( 'input', async function( msg ) {
             const server = RED.nodes.getNode( config.server )
 
-            const host = msg?.payload?.host || ( server ) ? server.host + ':' + server.port : null
+            // Construct host URL
+            let host = msg?.payload?.host
+            if ( !host && server ) {
+                // Check if host already includes protocol
+                if ( server.host.startsWith('http://') || server.host.startsWith('https://') ) {
+                    host = server.host
+                } else {
+                    host = `http://${server.host}:${server.port}`
+                }
+            }
 
-            const ollama = new Ollama( { host } )
+            // Ollama Cloud configuration
+            const ollamaConfig = { host }
+            if ( server && server.useCloud && server.credentials && server.credentials.apiKey ) {
+                ollamaConfig.headers = {
+                    'Authorization': `Bearer ${server.credentials.apiKey}`
+                }
+            }
+
+            const ollama = new Ollama( ollamaConfig )
 
             const response = await ollama.abort()
                 .catch( error => {

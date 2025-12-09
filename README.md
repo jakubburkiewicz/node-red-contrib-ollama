@@ -14,7 +14,9 @@ This module requires Node.js version 18 or higher.
 
 To use it, you need to have Node-RED installed on your system. For more information on how to install Node-RED, refer to the official [Node-RED documentation](https://nodered.org/docs/getting-started/).
 
-You also need Ollama running on the same or a different system. For detailed instructions on how to install Ollama, please refer to the official [Ollama site](https://ollama.com/).
+You also need either:
+- Ollama running on the same or a different system (local installation). For detailed instructions on how to install Ollama, please refer to the official [Ollama site](https://ollama.com/).
+- An Ollama Cloud account with an API key. Get your API key from [Ollama Cloud Settings](https://ollama.com/settings/keys).
 
 ## Installation
 
@@ -40,6 +42,29 @@ npm install node-red-contrib-ollama
 
 After installing the module, you need to restart Node-RED to apply the changes.
 
+## Configuration
+
+### Server Configuration
+
+Before using any Ollama nodes, you need to configure the Ollama server connection:
+
+1. Add any Ollama node to your flow
+2. Open the node configuration
+3. Create a new Ollama server configuration
+
+#### Local Ollama Server
+
+For a local Ollama installation:
+- **Host**: localhost (or the IP address of your Ollama server)
+- **Port**: 11434 (default Ollama port)
+
+#### Ollama Cloud
+
+For Ollama Cloud:
+1. Check the "Use Ollama Cloud" checkbox
+2. Enter your API Key (get it from [Ollama Cloud Settings](https://ollama.com/settings/keys))
+3. The host will automatically be set to `ollama.com` and port to `443`
+
 ## Usage
 
 The module provides a set of nodes that can be used to interact with the ollama.js library. The nodes are:
@@ -50,7 +75,7 @@ The module provides a set of nodes that can be used to interact with the ollama.
 - **Delete**: Delete a model and its data.
 - **Embed**: Generate embeddings from a model.
 - **Generate**: Generate a response for a given prompt with a provided model.
-- **List**: List models that are available locally.
+- **List**: List models that are available.
 - **Pull**: Download a model from the [ollama library](https://ollama.com/library).
 - **Push**: Upload a model to a model library. Requires registering for ollama.ai and adding a public key first.
 - **Show**: Show information about a model including details, modelfile, template, parameters, license, and system prompt.

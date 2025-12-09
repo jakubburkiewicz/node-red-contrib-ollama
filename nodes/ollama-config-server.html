@@ -3,22 +3,66 @@
         category: 'config',
         defaults: {
             host: { value: 'localhost', required: true },
-            port: { value: 11434, required: true, validate: RED.validators.number() }
+            port: { value: 11434, required: true, validate: RED.validators.number() },
+            useCloud: { value: false }
+        },
+        credentials: {
+            apiKey: { type: "password" }
         },
         label: function() {
+            if (this.useCloud) {
+                return 'Ollama Cloud';
+            }
             return this.host + ':' + this.port;
+        },
+        oneditprepare: function() {
+            const node = this;
+
+            function toggleCloudFields() {
+                const useCloud = $('#node-config-input-useCloud').is(':checked');
+                if (useCloud) {
+                    $('.local-server-row').hide();
+                    $('.cloud-server-row').show();
+                    $('#node-config-input-host').val('https://ollama.com');
+                    $('#node-config-input-port').val('443');
+                } else {
+                    $('.local-server-row').show();
+                    $('.cloud-server-row').hide();
+                    if ($('#node-config-input-host').val() === 'https://ollama.com') {
+                        $('#node-config-input-host').val('localhost');
+                        $('#node-config-input-port').val('11434');
+                    }
+                }
+            }
+
+            $('#node-config-input-useCloud').on('change', toggleCloudFields);
+            toggleCloudFields();
         }
     } )
 </script>
 
 <script type="text/html" data-template-name="ollama-config-server">
     <div class="form-row">
+        <label for="node-config-input-useCloud"><i class="fa fa-cloud"></i> Use Ollama Cloud</label>
+        <input type="checkbox" id="node-config-input-useCloud" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+
+    <div class="form-row local-server-row">
         <label for="node-config-input-host"><i class="fa fa-server"></i> Host</label>
         <input type="text" id="node-config-input-host" placeholder="localhost" />
     </div>
 
-    <div class="form-row">
-        <label for="node-config-input-port"><i class="fa fa-port"></i> Port</label>
+    <div class="form-row local-server-row">
+        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
         <input type="text" id="node-config-input-port" placeholder="11434" />
+    </div>
+
+    <div class="form-row cloud-server-row" style="display:none;">
+        <label for="node-config-input-apiKey"><i class="fa fa-key"></i> API Key</label>
+        <input type="password" id="node-config-input-apiKey" placeholder="Enter your Ollama Cloud API key" />
+    </div>
+
+    <div class="form-tips cloud-server-row" style="display:none;">
+        <strong>Note:</strong> Get your API key from <a href="https://ollama.com/settings/keys" target="_blank">Ollama Cloud Settings</a>
     </div>
 </script>
