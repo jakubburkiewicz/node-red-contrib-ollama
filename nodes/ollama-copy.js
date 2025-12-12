@@ -12,13 +12,26 @@ module.exports = function( RED ) {
             const server = RED.nodes.getNode( config.server )
 
             // Construct host URL
-            let host = msg?.payload?.host
+            let host = null
             if ( !host && server ) {
-                // Check if host already includes protocol
-                if ( server.host.startsWith('http://') || server.host.startsWith('https://') ) {
-                    host = server.host
+                if ( server.useCloud ) {
+                    // For Ollama Cloud, always use the configured host (https://ollama.com)
+                    // NEVER allow msg.payload.host override when using API key authentication
+                    if ( server.host.startsWith('http://') || server.host.startsWith('https://') ) {
+                        host = server.host
+                    } else {
+                        host = `https://${server.host}:${server.port}`
+                    }
                 } else {
-                    host = `http://${server.host}:${server.port}`
+                    // For local Ollama servers, allow host override from message
+                    host = msg?.payload?.host
+                    if ( !host ) {
+                        if ( server.host.startsWith('http://') || server.host.startsWith('https://') ) {
+                            host = server.host
+                        } else {
+                            host = `http://${server.host}:${server.port}`
+                        }
+                    }
                 }
             }
 
