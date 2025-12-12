@@ -3,7 +3,7 @@
         category: 'AI',
         color: 'rgb(186 230 253)',
         defaults: {
-            name: { value: 'Ollama List Local Models' },
+            name: { value: 'Ollama List Models' },
             server: { value: '', type: 'ollama-config-server', required: false }
         },
         inputs: 1,
@@ -28,7 +28,7 @@
 </script>
 
 <script type="text/html" data-help-name="ollama-list">
-    <p>List models that are available locally.</p>
+    <p>List models that are available.</p>
 
     <h3>Inputs</h3>
 
@@ -59,7 +59,7 @@
             <span class="property-type">array</span>
         </dt>
         <dd>
-            The list of models that are available locally.<br />
+            The list of models that are available.<br />
 
             <h4>Model</h4>
             <dl class="message-properties">
