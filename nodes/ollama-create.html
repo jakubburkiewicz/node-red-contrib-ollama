@@ -3,42 +3,42 @@
         category: 'AI',
         color: 'rgb(186 230 253)',
         defaults: {
-            name: { value: 'Ollama Create' },
+            name: { value: '' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            stream: { value: false, type: 'boolean', required: false },
+            stream: { value: false, required: false },
 
-            model: { value: '', type: 'typedInput', required: true },
+            model: { value: '', required: true },
             modelType: { value: "str" },
 
-            from: { value: '', type: 'typedInput', required: false },
+            from: { value: '',  required: false },
             fromType: { value: "str" },
 
-            quantize: { value: '', type: 'typedInput', required: false },
+            quantize: { value: '', required: false },
             quantizeType: { value: "str" },
 
-            template: { value: '', type: 'typedInput', required: false },
+            template: { value: '', required: false },
             templateType: { value: "str" },
 
-            license: { value: '', type: 'typedInput', required: false },
+            license: { value: '', required: false },
             licenseType: { value: "str" },
 
-            system: { value: '', type: 'typedInput', required: false },
+            system: { value: '', required: false },
             systemType: { value: "str" },
 
-            parameters: { value: '', type: 'typedInput', required: false },
-            parametersType: { value: "str" },
+            parameters: { value: '[]', required: false },
+            parametersType: { value: "json" },
 
-            messages: { value: '', type: 'typedInput', required: false },
+            messages: { value: '', required: false },
             messagesType: { value: "str" },
 
-            adapters: { value: '', type: 'typedInput', required: false },
+            adapters: { value: '', required: false },
             adaptersType: { value: "str" }
         },
         inputs: 1,
         outputs: 1,
         icon: 'ollama.png',
         label: function() {
-            return this.name || 'ollama-create';
+            return this.name || (this.modelType === 'str' && this.model) || 'ollama-create';
         },
 
         oneditprepare: function() {
@@ -49,7 +49,6 @@
                 "template",
                 "license",
                 "system",
-                "parameters",
                 "messages",
                 "adapters"
             ].forEach( parameter => {
@@ -57,7 +56,17 @@
                     types: [ 'str', 'msg', 'flow', 'global' ],
                     typeField: `#node-input-${parameter}Type`
                 })
-            })
+            });
+
+            // not 'str' but 'json'
+            [
+                "parameters"
+            ].forEach( parameter => {
+                $( `#node-input-${parameter}` ).typedInput( {
+                    types: [ 'json', 'msg', 'flow', 'global' ],
+                    typeField: `#node-input-${parameter}Type`
+                })
+            });
         },
 
         oneditsave: function() {
