@@ -3,92 +3,76 @@
         category: 'AI',
         color: 'rgb(186 230 253)',
         defaults: {
-            name: { value: 'Ollama Create' },
+            name: { value: '' },
             server: { value: '', type: 'ollama-config-server', required: false },
-            model: { value: '', type: 'typedInput', required: true },
-            from: { value: '', type: 'typedInput', required: true },
-            stream: { value: false, type: 'boolean', required: false },
-            quantize: { value: '', type: 'typedInput', required: true },
-            template: { value: '', type: 'typedInput', required: false },
-            license: { value: '', type: 'typedInput', required: false },
-            system: { value: '', type: 'typedInput', required: false },
-            parameters: { value: '', type: 'typedInput', required: false },
-            messages: { value: '', type: 'typedInput', required: false },
-            adapters: { value: '', type: 'typedInput', required: false }
+            stream: { value: false, required: false },
+
+            model: { value: '', required: true },
+            modelType: { value: "str" },
+
+            from: { value: '',  required: false },
+            fromType: { value: "str" },
+
+            quantize: { value: '', required: false },
+            quantizeType: { value: "str" },
+
+            template: { value: '', required: false },
+            templateType: { value: "str" },
+
+            license: { value: '', required: false },
+            licenseType: { value: "str" },
+
+            system: { value: '', required: false },
+            systemType: { value: "str" },
+
+            parameters: { value: '[]', required: false },
+            parametersType: { value: "json" },
+
+            messages: { value: '', required: false },
+            messagesType: { value: "str" },
+
+            adapters: { value: '', required: false },
+            adaptersType: { value: "str" }
         },
         inputs: 1,
         outputs: 1,
         icon: 'ollama.png',
         label: function() {
-            return this.name || 'ollama-create';
+            return this.name || (this.modelType === 'str' && this.model) || 'ollama-create';
         },
+
         oneditprepare: function() {
-            if( !this.modelType ) {
-                this.modelType = 'str'
-            }
+            [
+                "model",
+                "from",
+                "quantize",
+                "template",
+                "license",
+                "system",
+                "messages",
+                "adapters"
+            ].forEach( parameter => {
+                $( `#node-input-${parameter}` ).typedInput( {
+                    types: [ 'str', 'msg', 'flow', 'global' ],
+                    typeField: `#node-input-${parameter}Type`
+                })
+            });
 
-            $( '#node-input-model' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-modelType'
-            } )
-
-            $( '#node-input-from' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-fromType'
-            } )
-
-            $( '#node-input-quantize' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-quantizeType'
-            } )
-
-            $( '#node-input-template' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-templateType'
-            } )
-
-            $( '#node-input-license' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-licenseType'
-            } )
-
-            $( '#node-input-system' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-systemType'
-            } )
-
-            $( '#node-input-parameters' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-parametersType'
-            } )
-
-            $( '#node-input-messages' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-messagesType'
-            } )
-
-            $( '#node-input-adapters' ).typedInput( {
-                type: 'str',
-                types: [ 'str', 'msg', 'flow', 'global' ],
-                typeField: '#node-input-adaptersType'
-            } )
+            // not 'str' but 'json'
+            [
+                "parameters"
+            ].forEach( parameter => {
+                $( `#node-input-${parameter}` ).typedInput( {
+                    types: [ 'json', 'msg', 'flow', 'global' ],
+                    typeField: `#node-input-${parameter}Type`
+                })
+            });
         },
+
         oneditsave: function() {
-            this.modelfile = this.editor.getValue()
-            this.editor.destroy()
-            delete this.editor
         },
+
         oneditcancel: function() {
-            this.editor.destroy()
-            delete this.editor
         }
     } )
 </script>
@@ -117,7 +101,7 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-stream"><i class="fa fa-stream"></i> Stream</label>
+        <label for="node-input-stream"><i class="fa fa-umbrella"></i> Stream</label>
         <input type="checkbox" id="node-input-stream" />
     </div>
 
@@ -128,7 +112,7 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-template"><i class="fa fa-file-code"></i> Template</label>
+        <label for="node-input-template"><i class="fa fa-file-code-o"></i> Template</label>
         <input type="text" id="node-input-template" />
         <input type="hidden" id="node-input-templateType" />
     </div>
