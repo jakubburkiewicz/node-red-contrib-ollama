@@ -254,7 +254,7 @@
     },
     {
         "id": "66e2fb897f54a093",
-        "type": "ollama-embeddings",
+        "type": "ollama-embed",
         "z": "3bccaf6e46d3dbf5",
         "name": "Embeddings",
         "x": 450,
@@ -280,7 +280,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"model\":\"llama2\",\"prompt\":\"Why is the sky blue?\"}",
+        "payload": "{\"model\":\"llama2\",\"input\":\"Why is the sky blue?\"}",
         "payloadType": "json",
         "x": 270,
         "y": 320,
