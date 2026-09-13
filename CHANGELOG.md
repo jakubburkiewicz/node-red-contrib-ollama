@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.6.0] - 2026-09-13
+
+### Added
+
+- `ollama-chat`, `ollama-generate`, `ollama-pull` and `ollama-push` now emit one output message per streamed chunk when `stream` is `true`, instead of a single message with an unusable raw iterator as `payload` ([#17](https://github.com/jakubburkiewicz/node-red-contrib-ollama/issues/17)). Non-streaming behavior (the default) is unchanged.
+
 ## [0.5.5] - 2026-09-13
 
 ### Fixed
