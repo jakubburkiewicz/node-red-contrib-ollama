@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.5.4] - 2026-09-13
+
+### Fixed
+
+- `msg.payload.host` being silently ignored on all nodes when the node's Server field is set to "none", instead of being used to reach the Ollama instance directly ([#28](https://github.com/jakubburkiewicz/node-red-contrib-ollama/issues/28), [#20](https://github.com/jakubburkiewicz/node-red-contrib-ollama/issues/20)).
+
 ## [0.5.3] - 2026-09-13
 
 ### Fixed
