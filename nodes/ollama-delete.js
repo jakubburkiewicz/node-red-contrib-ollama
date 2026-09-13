@@ -12,7 +12,7 @@ module.exports = function( RED ) {
 
             // Construct host URL
             let host = null
-            if ( !host && server ) {
+            if ( server ) {
                 if ( server.useCloud ) {
                     // For Ollama Cloud, always use the configured host (https://ollama.com)
                     // NEVER allow msg.payload.host override when using API key authentication
@@ -32,6 +32,9 @@ module.exports = function( RED ) {
                         }
                     }
                 }
+            } else {
+                // No server configured - allow msg.payload.host directly
+                host = msg?.payload?.host || null
             }
 
             // Ollama Cloud configuration
