@@ -92,7 +92,7 @@ module.exports = function( RED ) {
             }
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
+            const options = msg?.payload?.options || ( optionsConfig ? JSON.parse( optionsConfig.json ) : null )
 
             ollama.show( {
                     model,

@@ -99,10 +99,10 @@ module.exports = function( RED ) {
             }
 
             const toolsConfig = RED.nodes.getNode( config.tools )
-            const tools = msg?.payload?.tools || ( toolsConfig ) ? JSON.parse( toolsConfig.json ) : null
+            const tools = msg?.payload?.tools || ( toolsConfig ? JSON.parse( toolsConfig.json ) : null )
 
             const optionsConfig = RED.nodes.getNode( config.options )
-            const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
+            const options = msg?.payload?.options || ( optionsConfig ? JSON.parse( optionsConfig.json ) : null )
 
             ollama.chat( {
                     model,
