@@ -6,7 +6,7 @@ module.exports = function( RED ) {
 
         this.modelType = config.modelType || 'str'
         this.inputType = config.inputType || 'str'
-        this.thuncate = config.thuncate || false
+        this.truncate = config.truncate || false
         this.keepAliveType = config.keepAliveType || 'str'
 
         const node = this
