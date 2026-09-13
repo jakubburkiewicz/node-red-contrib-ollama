@@ -73,9 +73,17 @@ module.exports = function( RED ) {
                     insecure,
                     stream
                 } )
-                .then( response => {
-                    msg.payload = response
-                    node.send( msg )
+                .then( async response => {
+                    if ( stream ) {
+                        for await ( const part of response ) {
+                            const chunkMsg = RED.util.cloneMessage( msg )
+                            chunkMsg.payload = part
+                            node.send( chunkMsg )
+                        }
+                    } else {
+                        msg.payload = response
+                        node.send( msg )
+                    }
                 } )
                 .catch( error => {
                     node.error( error )
