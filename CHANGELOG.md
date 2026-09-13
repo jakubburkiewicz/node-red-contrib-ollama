@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.5.2] - 2026-09-13
+
+### Fixed
+
+- `ollama-embed` node ignoring the "Truncate" setting due to a config property name typo.
+- All nodes emitting an output message with an empty payload after a failed Ollama call, instead of only reporting the error.
+
 ## [0.5.1] - 2026-09-13
 
 ### Fixed
