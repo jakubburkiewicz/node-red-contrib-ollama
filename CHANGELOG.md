@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.5.5] - 2026-09-13
+
+### Fixed
+
+- The "Embeddings" node in the example flow using a stale node type (`ollama-embeddings` instead of `ollama-embed`) and a payload shaped for `ollama-generate` instead of `ollama-embed` ([#18](https://github.com/jakubburkiewicz/node-red-contrib-ollama/issues/18)).
+
 ## [0.5.4] - 2026-09-13
 
 ### Fixed
