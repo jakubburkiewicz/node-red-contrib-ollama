@@ -169,7 +169,7 @@ module.exports = function( RED ) {
             const optionsConfig = RED.nodes.getNode( config.options )
             const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
 
-            const response = await ollama.generate( {
+            ollama.generate( {
                 model,
                 prompt,
                 suffix,
@@ -183,12 +183,13 @@ module.exports = function( RED ) {
                 keep_alive,
                 options
             } )
+            .then( response => {
+                msg.payload = response
+                node.send( msg )
+            } )
             .catch( error => {
                 node.error( error )
             } )
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 

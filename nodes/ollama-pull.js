@@ -65,17 +65,18 @@ module.exports = function( RED ) {
 
             const stream = ( msg?.payload?.stream !== undefined ) ? msg?.payload?.stream : node.stream
 
-            const response = await ollama.pull( {
+            ollama.pull( {
                     model,
                     insecure,
                     stream
                 } )
+                .then( response => {
+                    msg.payload = response
+                    node.send( msg )
+                } )
                 .catch( error => {
                     node.error( error )
                 } )
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 

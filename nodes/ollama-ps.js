@@ -42,13 +42,14 @@ module.exports = function( RED ) {
 
             const ollama = new Ollama( ollamaConfig )
 
-            const response = await ollama.ps()
+            ollama.ps()
+                .then( response => {
+                    msg.payload = response
+                    node.send( msg )
+                } )
                 .catch( error => {
                     node.error( error )
                 } )
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 

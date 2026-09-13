@@ -104,7 +104,7 @@ module.exports = function( RED ) {
             const optionsConfig = RED.nodes.getNode( config.options )
             const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
 
-            const response = await ollama.chat( {
+            ollama.chat( {
                     model,
                     messages,
                     format,
@@ -114,12 +114,13 @@ module.exports = function( RED ) {
                     tools,
                     options
                 } )
+                .then( response => {
+                    msg.payload = response
+                    node.send( msg )
+                } )
                 .catch( error => {
                     node.error( error )
                 } )
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 

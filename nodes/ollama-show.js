@@ -94,18 +94,19 @@ module.exports = function( RED ) {
             const optionsConfig = RED.nodes.getNode( config.options )
             const options = msg?.payload?.options || ( optionsConfig ) ? JSON.parse( optionsConfig.json ) : null
 
-            const response = await ollama.show( {
+            ollama.show( {
                     model,
                     system,
                     template,
                     options
                 } )
+                .then( response => {
+                    msg.payload = response
+                    node.send( msg )
+                } )
                 .catch( error => {
                     node.error( error )
                 } )
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 

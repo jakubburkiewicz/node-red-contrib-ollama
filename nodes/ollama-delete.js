@@ -59,13 +59,14 @@ module.exports = function( RED ) {
                 }
             }
 
-            const response = await ollama.delete( { model } )
+            ollama.delete( { model } )
+                .then( response => {
+                    msg.payload = response
+                    node.send( msg )
+                } )
                 .catch( error => {
                     node.error( error )
                 } )
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 

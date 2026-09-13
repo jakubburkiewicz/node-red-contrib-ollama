@@ -75,16 +75,17 @@ module.exports = function( RED ) {
                 }
             }
 
-            const response = await ollama.copy( {
+            ollama.copy( {
                     source,
                     destination
+                } )
+                .then( response => {
+                    msg.payload = response
+                    node.send( msg )
                 } )
                 .catch( error => {
                     node.error( error )
                 } )
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 

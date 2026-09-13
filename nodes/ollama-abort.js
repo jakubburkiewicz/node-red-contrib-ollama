@@ -44,16 +44,13 @@ module.exports = function( RED ) {
 
             // Unlike the other client methods, abort() is synchronous and
             // returns nothing - it just cancels ongoing streamed requests.
-            let response = null
             try {
                 ollama.abort()
-                response = { status: 'success' }
+                msg.payload = { status: 'success' }
+                node.send( msg )
             } catch ( error ) {
                 node.error( error )
             }
-
-            msg.payload = response
-            node.send( msg )
         } )
     }
 
