@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.6.1] - 2026-09-13
+
+### Fixed
+
+- `ollama-create` node configuration fields (model, from, quantize, template, license, system, parameters, messages, adapters) were never actually used — only `msg.payload` overrides worked. Switched to `RED.util.evaluateNodeProperty` and fixed the node's `typedInput` setup. Also removed dead `this.editor` references that threw on every save/cancel, made `parameters` a proper JSON field, and made `quantize` optional ([#32](https://github.com/jakubburkiewicz/node-red-contrib-ollama/pull/32), thanks @gorenje).
+
 ## [0.6.0] - 2026-09-13
 
 ### Added
