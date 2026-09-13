@@ -42,10 +42,15 @@ module.exports = function( RED ) {
 
             const ollama = new Ollama( ollamaConfig )
 
-            const response = await ollama.abort()
-                .catch( error => {
-                    node.error( error )
-                } )
+            // Unlike the other client methods, abort() is synchronous and
+            // returns nothing - it just cancels ongoing streamed requests.
+            let response = null
+            try {
+                ollama.abort()
+                response = { status: 'success' }
+            } catch ( error ) {
+                node.error( error )
+            }
 
             msg.payload = response
             node.send( msg )
