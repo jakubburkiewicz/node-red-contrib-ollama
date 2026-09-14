@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { configNodes, actionNodes } from '../data/nodes';
+import { examples, toFlowJson } from '../data/examples';
 
 const repoUrl = 'https://github.com/jakubburkiewicz/node-red-contrib-ollama';
 const npmUrl = 'https://www.npmjs.com/package/node-red-contrib-ollama';
@@ -12,7 +13,8 @@ const version = '0.6.1';
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
+		<link rel="icon" href={`${import.meta.env.BASE_URL}/favicon.ico`} sizes="any" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>node-red-contrib-ollama</title>
@@ -52,7 +54,7 @@ const version = '0.6.1';
 				</div>
 				<img
 					class="hero-logo"
-					src={`${import.meta.env.BASE_URL}assets/logo.png`}
+					src={`${import.meta.env.BASE_URL}/assets/logo.png`}
 					alt="node-red-contrib-ollama logo"
 					width="230"
 					height="230"
@@ -159,6 +161,50 @@ const version = '0.6.1';
 			</div>
 		</section>
 
+		<section id="examples">
+			<div class="wrap">
+				<p class="eyebrow">Examples</p>
+				<h2>Examples</h2>
+				<p>
+					Node-RED wires the logic — these nodes replace the <code>ollama.js</code> client calls
+					you'd otherwise write by hand.
+				</p>
+				<div class="examples-list">
+					{examples.map((example, i) => (
+						<div class="example-card">
+							<div class="example-head">
+								<span class="badge">{example.node}</span>
+								<h3 class="example-title">{example.title}</h3>
+							</div>
+							<p>{example.description}</p>
+							<div
+								class="flow-embed"
+								data-flow-index={i}
+								data-flow-w={example.viewBox.split(' ')[2]}
+								data-flow-h={example.viewBox.split(' ')[3]}
+							>
+								<svg>
+									<g class="flowGridlines"></g>
+									<g class="containerGroup"></g>
+									<g class="flowGroups"></g>
+									<g class="flowWires"></g>
+									<g class="flowNodes"></g>
+								</svg>
+							</div>
+							<p class="flow-embed-hint">Scroll or pinch to zoom, drag to pan.</p>
+							<details class="json-details">
+								<summary>View flow JSON</summary>
+								<div class="json-details-body">
+									<button type="button" class="copy-json-btn" data-json-index={i}>Copy JSON</button>
+									<pre><code>{JSON.stringify(toFlowJson(example.flow), null, 2)}</code></pre>
+								</div>
+							</details>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
 		<section id="support">
 			<div class="wrap">
 				<p class="eyebrow">Support the project</p>
@@ -209,6 +255,154 @@ const version = '0.6.1';
 				});
 
 				render();
+			})();
+		</script>
+
+		<script is:inline>
+			(function () {
+				document.querySelectorAll('.copy-json-btn').forEach(function (btn) {
+					btn.addEventListener('click', function () {
+						var code = btn.parentElement.querySelector('pre code');
+						var text = code ? code.textContent : '';
+						var done = function () {
+							var original = btn.textContent;
+							btn.textContent = 'Copied!';
+							setTimeout(function () { btn.textContent = original; }, 1500);
+						};
+						if (navigator.clipboard && navigator.clipboard.writeText) {
+							navigator.clipboard.writeText(text).then(done);
+						} else {
+							var ta = document.createElement('textarea');
+							ta.value = text;
+							ta.style.position = 'fixed';
+							ta.style.opacity = '0';
+							document.body.appendChild(ta);
+							ta.select();
+							document.execCommand('copy');
+							document.body.removeChild(ta);
+							done();
+						}
+					});
+				});
+			})();
+		</script>
+
+		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+		<script is:inline src={`${import.meta.env.BASE_URL}/vendor/flowviewer.js`}></script>
+
+		<script define:vars={{ base: import.meta.env.BASE_URL, exampleFlows: examples.map((e) => e.flow) }}>
+			(function () {
+				function toFlowJson(nodes) {
+					var tab = 'tab1';
+					return [{ id: tab, type: 'tab', label: 'Flow 1', disabled: false, info: '', env: [] }].concat(
+						nodes.map(function (n) {
+							// Config nodes (no x/y — never drawn on canvas) stay global,
+							// same as in a real exported flow; giving them a `z` made the
+							// renderer try to draw them at NaN,NaN.
+							if (n.x === undefined || n.y === undefined) return n;
+							return Object.assign({ z: tab }, n);
+						})
+					);
+				}
+
+				function addPanZoom(el) {
+					if (typeof d3 === 'undefined') return;
+
+					var svgNode = el.querySelector('svg');
+					var svg = d3.select(svgNode);
+					// wrap the rendered content in a <g> so a single transform can pan/zoom it
+					svg.html('<g>' + svg.html() + '</g>');
+					var inner = svg.select('g');
+
+					// The flow's content sits roughly in [0,0]..[flowW,flowH] — that's also
+					// the extent the vendored renderer draws its background grid over, so we
+					// keep panning within it (plus a small margin) rather than revealing the
+					// grid-less area beyond it.
+					var flowW = Number(el.dataset.flowW) || 1000;
+					var flowH = Number(el.dataset.flowH) || 200;
+					var margin = 40;
+
+					var rect = svgNode.getBoundingClientRect();
+					var containerW = rect.width || flowW;
+					var containerH = rect.height || flowH;
+
+					var fitScale = Math.max(0.4, Math.min(1, (containerW - margin) / flowW, (containerH - margin) / flowH));
+					var initialX = (containerW - flowW * fitScale) / 2;
+					var initialY = (containerH - flowH * fitScale) / 2;
+
+					var zoom = d3.zoom()
+						.scaleExtent([0.4, 2.5])
+						.translateExtent([[-margin, -margin], [flowW + margin, flowH + margin]])
+						.on('start', function () { svg.classed('dragging', true); })
+						.on('zoom', function (event) { inner.attr('transform', event.transform); })
+						.on('end', function () { svg.classed('dragging', false); });
+
+					svg.call(zoom);
+					svg.call(zoom.transform, d3.zoomIdentity.translate(initialX, initialY).scale(fitScale));
+				}
+
+				function init() {
+					if (typeof renderFlow !== 'function' || typeof jQuery === 'undefined') return;
+
+					// Teach the generic flow renderer the colour our own node types use in
+					// the real editor (declared in each node's .html, so it's accurate).
+					// We deliberately do NOT give them a fake in-node icon: the node .html
+					// files reference an icon file ('ollama.png') that isn't actually
+					// shipped in the package, so the real editor doesn't show one either —
+					// faking it here would misrepresent how the node currently looks.
+					var ollamaTypes = [
+						'ollama-chat', 'ollama-generate', 'ollama-embed', 'ollama-list', 'ollama-show',
+						'ollama-ps', 'ollama-pull', 'ollama-push', 'ollama-create', 'ollama-copy',
+						'ollama-delete', 'ollama-abort',
+					];
+					ollamaTypes.forEach(function (type) {
+						clrByType[type] = _hshClr('rgb(186 230 253)');
+					});
+
+					var logoUrl = base + '/assets/logo.png';
+					var BADGE = 48;
+					var BADGE_GAP = 18;
+					var NODE_HALF_H = 15;
+
+					document.querySelectorAll('.flow-embed').forEach(function (el) {
+						var nodes = exampleFlows[Number(el.dataset.flowIndex)];
+						var flow = toFlowJson(nodes);
+						renderFlow('tab1', flow, jQuery(el.querySelector('svg')), {
+							arrows: false,
+							gridlines: true,
+							zoom: false,
+							images: true,
+							linklines: false,
+							dllink: false,
+							labels: true,
+						});
+
+						// Mark which nodes come from the plugin by floating the plugin's
+						// logo above them — not inside them, since that's not how they
+						// actually render today.
+						var flowNodesGroup = d3.select(el.querySelector('.flowNodes'));
+						nodes.forEach(function (n) {
+							if (ollamaTypes.indexOf(n.type) === -1) return;
+							var cy = n.y - NODE_HALF_H - BADGE_GAP - BADGE / 2;
+							flowNodesGroup.append('image')
+								.attr('class', 'ollama-badge')
+								.attr('href', logoUrl)
+								.attr('x', n.x - BADGE / 2)
+								.attr('y', cy - BADGE / 2)
+								.attr('width', BADGE)
+								.attr('height', BADGE);
+						});
+
+						addPanZoom(el);
+					});
+				}
+
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', init);
+				} else {
+					init();
+				}
 			})();
 		</script>
 	</body>
