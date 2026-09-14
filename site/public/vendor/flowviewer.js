@@ -569,37 +569,12 @@ function getNode(n, v) {
     return elm;
 }
 
-function fillFlowSelector(selectedFlowId, flowdata) {
-    var sltObj = $('#flowSelector');
-
-    flowdata.forEach(function (obj) {
-        if (obj.type == "tab" || obj.type == "subflow") {
-            sltObj.append($('<option></option>').val(obj.id).html(
-                (obj.type == "subflow" ? " [SF] " : "") + (obj.label || obj.name)
-            ));
-        }
-    });
-
-    sltObj.find('[value="' + selectedFlowId + '"]').attr('selected', 'selected');
-}
-
-function onChangeFlowSelectorNew(e) {
-    e.preventDefault();
-
-    var svgjQueryObj = $($('#svgelem')[0]);
-
-    ["flowNodes", "flowGroups", "flowWires", "flowGridlines"].forEach(function (cls) {
-        $(svgjQueryObj.find('.' + cls)[0]).html("");
-    });
-
-    $('#flowLinkToOriginal').attr('href', "https://demo.openmindmap.org/omm/#flow/" + $('#flowSelector').val());
-
-    renderFlow($('#flowSelector').val(), flowData, svgjQueryObj, { 
-        gridlines: true, 
-        images: true, 
-        linklines: true 
-    });
-}
+// NOTE: upstream also had fillFlowSelector()/onChangeFlowSelectorNew() here —
+// UI wiring for a multi-flow tab selector (#flowSelector/#svgelem) tied to a
+// different site (demo.openmindmap.org) that we don't use and never render.
+// Removed: dead code, and it set DOM text as HTML without escaping it
+// (CodeQL: "DOM text reinterpreted as HTML"). We call renderFlow() directly
+// ourselves instead.
 
 function highlightLink(fromNodeId, toNodeId) {
     $('.link-from-' + fromNodeId + "-to-" + toNodeId).addClass('link-highlight');
