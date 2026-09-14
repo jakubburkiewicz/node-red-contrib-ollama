@@ -180,6 +180,10 @@ p {
 	gap: 32px;
 }
 
+.cols > * {
+	min-width: 0;
+}
+
 .theme-toggle {
 	position: fixed;
 	top: 20px;
