@@ -84,7 +84,7 @@ export const examples: ExampleInfo[] = [
 		node: 'Generate',
 		title: 'Ticket triage & escalation',
 		description:
-			'Incoming support tickets get a one-line prompt built from their body, a triage summary from Ollama, and get routed to Slack when the reply flags them urgent — everything else is just logged.',
+			"Incoming support tickets are acknowledged immediately, then a prompt built from the ticket's subject and body asks Ollama for a one-sentence triage summary — replies flagged urgent get routed to Slack, everything else is just logged.",
 		viewBox: '0 0 1250 260',
 		flow: [
 			{ id: 'srv2', type: 'ollama-config-server', name: 'Local Ollama', host: 'localhost', port: 11434, useCloud: false },
@@ -153,7 +153,7 @@ export const examples: ExampleInfo[] = [
 		node: 'Embed',
 		title: 'Index new documents for search',
 		description:
-			'Whenever a file lands in a watched folder, its contents are embedded and appended to a flat-file vector store, ready for semantic search later.',
+			"Read a file's contents, embed them, and append the vector to a flat-file store, ready for semantic search later — swap the manual trigger for a file-watch node to run it automatically.",
 		viewBox: '0 0 1250 190',
 		flow: [
 			{ id: 'srv3', type: 'ollama-config-server', name: 'Local Ollama', host: 'localhost', port: 11434, useCloud: false },
