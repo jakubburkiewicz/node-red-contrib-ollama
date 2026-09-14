@@ -96,6 +96,9 @@ h2 {
 p {
 	color: var(--fg-muted);
 	margin: 0 0 16px;
+}
+
+section p {
 	max-width: 65ch;
 }
 
@@ -409,4 +412,21 @@ footer {
 
 footer p {
 	font-size: 0.85rem;
+}
+
+.footer-links {
+	display: flex;
+	flex-wrap: wrap;
+	row-gap: 4px;
+	max-width: none;
+}
+
+.footer-links > span {
+	white-space: nowrap;
+}
+
+.footer-links > span:not(:first-child)::before {
+	content: '·';
+	margin: 0 8px;
+	color: var(--fg-muted);
 }

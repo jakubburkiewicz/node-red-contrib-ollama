@@ -122,7 +122,7 @@ const version = '0.6.1';
 			<div class="wrap">
 				<p class="eyebrow">Configuration</p>
 				<h2>Point it at a server</h2>
-				<p>Every action node reads its connection from a <strong>Server</strong> config node, shared across your flow.</p>
+				<p>Every action node connects through a shared <strong>Server</strong> config node.</p>
 				<div class="cols">
 					<div class="card">
 						<h3>Local Ollama</h3>
@@ -221,10 +221,11 @@ const version = '0.6.1';
 		</section>
 
 		<footer class="wrap">
-			<p>
-				MIT licensed. <a href={`${repoUrl}/issues`} style="text-decoration: underline;">Report an issue</a>
-				· <a href={repoUrl} style="text-decoration: underline;">Source on GitHub</a>
-				· Made by <a href="https://burkiewicz.dev" style="text-decoration: underline;">Jakub Burkiewicz</a>
+			<p class="footer-links">
+				<span>MIT licensed.</span>
+				<span><a href={`${repoUrl}/issues`} style="text-decoration: underline;">Report an issue</a></span>
+				<span><a href={repoUrl} style="text-decoration: underline;">Source on GitHub</a></span>
+				<span>Made with ❤️ and 🤖 by <a href="https://burkiewicz.dev" style="text-decoration: underline;">Jakub Burkiewicz</a></span>
 			</p>
 		</footer>
 
