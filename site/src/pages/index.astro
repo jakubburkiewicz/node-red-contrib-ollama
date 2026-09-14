@@ -1,17 +1,215 @@
 ---
+import '../styles/global.css';
+import { configNodes, actionNodes } from '../data/nodes';
 
+const repoUrl = 'https://github.com/jakubburkiewicz/node-red-contrib-ollama';
+const npmUrl = 'https://www.npmjs.com/package/node-red-contrib-ollama';
+const flowsUrl = 'https://flows.nodered.org/node/node-red-contrib-ollama';
+const sponsorUrl = 'https://github.com/sponsors/jakubburkiewicz';
+const version = '0.6.1';
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>node-red-contrib-ollama</title>
+		<meta name="description" content="Add AI functionality to your Node-RED flows with a set of nodes for Ollama, local or in the cloud." />
+		<script is:inline>
+			(function () {
+				var stored = localStorage.getItem('theme');
+				if (stored === 'light' || stored === 'dark') {
+					document.documentElement.setAttribute('data-theme', stored);
+				}
+			})();
+		</script>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<button id="theme-toggle" class="theme-toggle" aria-label="Toggle color theme" type="button"></button>
+
+		<section id="hero" style="padding-top: 64px;">
+			<div class="wrap hero-inner">
+				<div class="hero-copy">
+					<p class="eyebrow">Node-RED plugin</p>
+					<h1 style="font-size: clamp(2rem, 5vw, 3.2rem);">node-red-contrib-ollama</h1>
+					<p style="font-size: 1.15rem; max-width: 56ch;">
+						Add AI to your flows. A set of Node-RED nodes that wrap{' '}
+						<a href="https://github.com/ollama/ollama-js" style="text-decoration: underline;">ollama.js</a>,
+						so you can chat, generate, and embed with any model — local Ollama or Ollama Cloud — without writing a line of code.
+					</p>
+					<div class="badges">
+						<span class="badge">v{version}</span>
+						<span class="badge">MIT license</span>
+						<span class="badge">Node.js ≥ 18</span>
+					</div>
+					<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+						<a class="btn btn-primary" href={flowsUrl}>View on Node-RED Library</a>
+						<a class="btn btn-secondary" href={repoUrl}>View on GitHub</a>
+						<a class="btn btn-secondary" href={npmUrl}>View on npm</a>
+					</div>
+				</div>
+				<img
+					class="hero-logo"
+					src={`${import.meta.env.BASE_URL}assets/logo.png`}
+					alt="node-red-contrib-ollama logo"
+					width="230"
+					height="230"
+				/>
+			</div>
+		</section>
+
+		<section id="what">
+			<div class="wrap">
+				<p class="eyebrow">What it is</p>
+				<h2>Ollama, as flow-native nodes</h2>
+				<p>
+					Instead of calling the Ollama API from a Function node, drop in a config node for your server
+					and wire up dedicated nodes for chat, generation, embeddings and model management. Every node
+					mirrors an <code>ollama.js</code> client call, with per-call parameters resolvable from either
+					the node's own configuration or an incoming <code>msg.payload</code> field.
+				</p>
+				<p>
+					Works with a local Ollama install, or with <strong>Ollama Cloud</strong> using an API key —
+					same nodes, same flows.
+				</p>
+			</div>
+		</section>
+
+		<section id="requirements">
+			<div class="wrap">
+				<p class="eyebrow">Requirements</p>
+				<h2>Before you start</h2>
+				<ul>
+					<li>Node.js 18 or higher</li>
+					<li><a href="https://nodered.org/docs/getting-started/">Node-RED</a> installed</li>
+					<li>
+						Either <a href="https://ollama.com/">Ollama</a> running locally (or reachable over the network),
+						or an <a href="https://ollama.com/settings/keys">Ollama Cloud</a> API key
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<section id="install">
+			<div class="wrap">
+				<p class="eyebrow">Installation</p>
+				<h2>Two ways to install</h2>
+				<div class="cols">
+					<div>
+						<h3 style="font-family: var(--font-mono); font-size: 1rem;">Node-RED editor</h3>
+						<ol>
+							<li>Menu → <em>Manage palette</em></li>
+							<li>Go to the <em>Install</em> tab</li>
+							<li>Search for <code>node-red-contrib-ollama</code></li>
+							<li>Click <em>Install</em></li>
+						</ol>
+					</div>
+					<div>
+						<h3 style="font-family: var(--font-mono); font-size: 1rem;">Command line</h3>
+						<p>From your Node-RED user directory:</p>
+						<pre style="background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; overflow-x: auto;"><code style="background: none; border: none; padding: 0;">npm install node-red-contrib-ollama</code></pre>
+						<p>Restart Node-RED to load the new nodes.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="config">
+			<div class="wrap">
+				<p class="eyebrow">Configuration</p>
+				<h2>Point it at a server</h2>
+				<p>Every action node reads its connection from a <strong>Server</strong> config node, shared across your flow.</p>
+				<div class="cols">
+					<div class="card">
+						<h3>Local Ollama</h3>
+						<p>Host: <code>localhost</code> (or your server's address)<br />Port: <code>11434</code></p>
+					</div>
+					<div class="card">
+						<h3>Ollama Cloud</h3>
+						<p>Check "Use Ollama Cloud" and paste an API key — host/port are set automatically.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="nodes">
+			<div class="wrap">
+				<p class="eyebrow">Nodes</p>
+				<h2>Config nodes</h2>
+				<div class="grid">
+					{configNodes.map((node) => (
+						<div class="card">
+							<h3>{node.name}</h3>
+							<p>{node.summary}</p>
+						</div>
+					))}
+				</div>
+
+				<h2 style="margin-top: 40px;">Action nodes</h2>
+				<div class="grid">
+					{actionNodes.map((node) => (
+						<div class="card">
+							<h3>{node.name}</h3>
+							<p>{node.summary}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section id="support">
+			<div class="wrap">
+				<p class="eyebrow">Support the project</p>
+				<h2>Like using it?</h2>
+				<p>
+					This is a free, open-source project maintained in spare time. If it's useful to you,
+					a star or a sponsorship goes a long way.
+				</p>
+				<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+					<a class="btn btn-primary" href={sponsorUrl}>♥ Sponsor on GitHub</a>
+					<a class="btn btn-secondary" href={repoUrl}>★ Star the repo</a>
+				</div>
+			</div>
+		</section>
+
+		<footer class="wrap">
+			<p>
+				MIT licensed. <a href={`${repoUrl}/issues`} style="text-decoration: underline;">Report an issue</a>
+				· <a href={repoUrl} style="text-decoration: underline;">Source on GitHub</a>
+			</p>
+		</footer>
+
+		<script is:inline>
+			(function () {
+				var root = document.documentElement;
+				var btn = document.getElementById('theme-toggle');
+				var media = window.matchMedia('(prefers-color-scheme: dark)');
+
+				function effectiveTheme() {
+					var explicit = root.getAttribute('data-theme');
+					if (explicit === 'light' || explicit === 'dark') return explicit;
+					return media.matches ? 'dark' : 'light';
+				}
+
+				function render() {
+					btn.textContent = effectiveTheme() === 'dark' ? '☀️' : '🌙';
+				}
+
+				btn.addEventListener('click', function () {
+					var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+					root.setAttribute('data-theme', next);
+					localStorage.setItem('theme', next);
+					render();
+				});
+
+				media.addEventListener('change', function () {
+					if (!root.getAttribute('data-theme')) render();
+				});
+
+				render();
+			})();
+		</script>
 	</body>
 </html>
