@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.6.2] - 2026-09-15
+
+### Fixed
+
+- Added `ollama-ps` and `ollama-abort` to the bundled example flow (`examples/Example.json`) — they were the only two action nodes not demonstrated in any example, which the Node-RED flow library scorecard flags as missing example coverage.
+
 ## [0.6.1] - 2026-09-13
 
 ### Fixed

@@ -403,5 +403,81 @@
                 "c74ec4ac9b76d0f4"
             ]
         ]
+    },
+    {
+        "id": "f1a2b3c4d5e6f708",
+        "type": "ollama-ps",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Running models",
+        "x": 450,
+        "y": 700,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "a1b2c3d4e5f60718",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 270,
+        "y": 700,
+        "wires": [
+            [
+                "f1a2b3c4d5e6f708"
+            ]
+        ]
+    },
+    {
+        "id": "b2c3d4e5f6071829",
+        "type": "ollama-abort",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Abort",
+        "x": 430,
+        "y": 760,
+        "wires": [
+            [
+                "03ee0eeb510c4079"
+            ]
+        ]
+    },
+    {
+        "id": "c3d4e5f607182930",
+        "type": "inject",
+        "z": "3bccaf6e46d3dbf5",
+        "name": "Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 270,
+        "y": 760,
+        "wires": [
+            [
+                "b2c3d4e5f6071829"
+            ]
+        ]
     }
 ]
