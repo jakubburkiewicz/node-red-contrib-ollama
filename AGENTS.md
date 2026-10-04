@@ -18,4 +18,4 @@ Node-RED plugin wrapping the `ollama` JS client library as configurable nodes. E
 ## Style
 
 - 4-space indentation, a space inside parens in declarations/conditions (`function( RED )`, `if( config.model )`) — match this in new code, even though it's an unusual style choice.
-- Commit messages in this repo are written in English and follow Conventional Commits (`<type>[(scope)]: <description>`, e.g. `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`).
+- Git activity in this repo (commit messages, PR/issue comments and discussion) follows the rule in the root `AGENTS.md` (always English, Conventional Commits) — not repeated here.
